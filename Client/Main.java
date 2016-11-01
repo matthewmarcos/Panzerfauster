@@ -1,5 +1,10 @@
 public class Main {
     public static void main(String[] args) {
-        Client client = new Client();
+        try {
+            new Client();
+        }
+        catch (Exception e) {
+            System.out.println("Error in Client");
+        }
     }
 }
