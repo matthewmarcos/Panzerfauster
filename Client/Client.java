@@ -13,12 +13,13 @@ public class Client extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(Client.DIMENSION);
 
+        currentGame = new Game();
+
         cont = this.getContentPane();
         cont.setSize(Client.DIMENSION);
-        currentGame = new Game();
+        cont.removeAll();
         cont.add(currentGame);
 
         this.setVisible(true);
-        // cont.removeAll();
     }
 }
