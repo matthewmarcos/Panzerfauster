@@ -13,6 +13,7 @@ public class Game extends JPanel {
         this.chatbox = new Chatbox();
         this.chatbar = new Chatbar(this.chatbox);
         this.add(chatbar, BorderLayout.SOUTH);
+        this.add(chatbox, BorderLayout.NORTH);
     }
 
     public Game() {

@@ -12,13 +12,16 @@ public class Chatbar extends JTextField {
         this.addKeyListener(new KeyListener() {
 
             public void keyPressed(KeyEvent ev) {
-                // System.out.println(ev.getKeyChar());
-                if(ev.getKeyCode() == KeyEvent.VK_ENTER) {
-                    System.out.println("Enter key!");
-                }
-                // Chatbar textField = (Chatbar) ev.getSource();
-                // String text = textField.getText();
-                // textField.setText(text.toUpperCase());
+                // Fire this action only if the user pressed enter
+                if(ev.getKeyCode() != KeyEvent.VK_ENTER) return;
+
+                String content;
+                Chatbar textField = (Chatbar) ev.getSource();
+
+                content = textField.getText();
+
+                textField.setText("");
+                chatbox.add(content);
             }
 
             public void keyTyped(KeyEvent ev) {}
