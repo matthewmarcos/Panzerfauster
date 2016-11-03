@@ -8,12 +8,15 @@ public class Client extends JFrame {
     private static Container cont;
     private Game currentGame;
 
-    public Client() throws Exception {
+    public Client(String serverIP, int port, String name) throws Exception {
         super(APP_NAME);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(Client.DIMENSION);
 
-        currentGame = new Game();
+        currentGame = new Game(serverIP, port, name);
+
+        Thread t = new Thread(currentGame);
+        t.start();
 
         cont = this.getContentPane();
         cont.setSize(Client.DIMENSION);

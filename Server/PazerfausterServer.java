@@ -18,6 +18,13 @@ public class PazerfausterServer implements Runnable {
     }
 
     public void run() {
-        System.out.println(port);
+        System.out.println("Listening to port: " + port);
+
+        while(true) {
+            try {
+                Socket client = serverSocket.accept();
+                client.getOutputStream();
+            }
+        }
     }
 }
