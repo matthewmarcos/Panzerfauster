@@ -3,14 +3,21 @@ import javax.swing.*;
 
 public class Game extends JPanel {
 
+    private Chatbox chatbox;
+    private Chatbar chatbar;
+
     private void initialize() {
-        System.out.println("Set up the values of the game here.");
+        this.setLayout(new BorderLayout());
+        this.setSize(Client.DIMENSION);
+
+        this.chatbox = new Chatbox();
+        this.chatbar = new Chatbar(this.chatbox);
+        this.add(chatbar, BorderLayout.SOUTH);
+        this.add(chatbox, BorderLayout.NORTH);
     }
 
     public Game() {
         super();
-        this.setLayout(null);
-        this.setSize(Client.DIMENSION);
         initialize();
     }
 }
