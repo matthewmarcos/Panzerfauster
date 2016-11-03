@@ -4,14 +4,20 @@ import java.io.*;
 public class PazerfausterServer implements Runnable {
 
     private ServerSocket serverSocket;
+    private int port;
 
     public PazerfausterServer(int port) {
-        System.out.println(port);
-        serverSocket = new ServerSocket(port);
-        serverSocket.setSoTimeout(0);
+        this.port = port;
+
+        try {
+            serverSocket = new ServerSocket(port);
+            serverSocket.setSoTimeout(0);
+        }
+        catch (Exception e) {}
+
     }
 
     public void run() {
-
+        System.out.println(port);
     }
 }
