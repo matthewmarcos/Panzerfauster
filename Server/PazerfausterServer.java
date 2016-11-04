@@ -30,13 +30,16 @@ public class PazerfausterServer implements Runnable {
             try {
                 // Listen for connections
                 Socket server = serverSocket.accept();
+                //server.setSoTimeout(0);
                 System.out.println("A client has connected!");
+
+
 
                 // Getting input and output streams of client
                 out = new DataOutputStream(
                     server.getOutputStream()
                 );
-                in = new  DataInputStream(
+                in = new DataInputStream(
                     server.getInputStream()
                 );
 

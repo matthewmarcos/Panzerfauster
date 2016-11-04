@@ -6,6 +6,7 @@ public class Client extends JFrame {
     public static final Dimension DIMENSION = new Dimension(800, 600);
     public static final String APP_NAME = new String("Panzerfauster");
     private static Container cont;
+    private String message;
     private Game currentGame;
 
     public Client(String serverIP, int port, String name) {

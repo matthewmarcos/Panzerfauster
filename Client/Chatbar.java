@@ -30,8 +30,11 @@ public class Chatbar extends JTextField {
 
                 try {
                     out.writeUTF(content);
+                    System.out.println(content);
                 }
-                catch (Exception e) {}
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
 

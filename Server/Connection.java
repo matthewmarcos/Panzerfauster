@@ -15,9 +15,18 @@ public class Connection implements Runnable {
 
     public void run() {
         // Main listening for inputs
-        while(true) {
-            // System.out.println();
+        String msg ="";
+        try{
+          msg = in.readUTF();
+           System.out.println(msg);
+        }catch(Exception e)
+        {
+            e.printStackTrace();
         }
+        while(msg != "") {
+             write(msg);
+            }
+
     }
 
     public void write(String message) {
