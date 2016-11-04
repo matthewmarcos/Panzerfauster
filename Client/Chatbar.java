@@ -5,10 +5,13 @@ import javax.swing.*;
 public class Chatbar extends JTextField {
 
     private Chatbox chatbox;
+    private DataOutputStream out;
 
-    public Chatbar(Chatbox chatbox) {
+    public Chatbar(Chatbox chatbox, DataOutputStream out) {
         super(8);
         this.chatbox = chatbox;
+        this.out = out;
+
         this.addKeyListener(new KeyListener() {
 
             public void keyPressed(KeyEvent ev) {
@@ -22,6 +25,7 @@ public class Chatbar extends JTextField {
 
                 textField.setText("");
                 chatbox.add(content);
+                out.writeUTF(content);
             }
 
             public void keyTyped(KeyEvent ev) {}

@@ -1,5 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
+import java.net.*;
+import java.io.*;
 
 public class Game extends JPanel implements Runnable{
 
@@ -8,10 +10,11 @@ public class Game extends JPanel implements Runnable{
     private String serverIP;
     private int port;
 
+    private DataOutputStream out;
+    private DataInputStream in;
+
     private void initialize() {
 
-        DataOutputStream out;
-        DataInputStream in;
 
         try {
             Socket conn = new Socket(hostName, portNumber);
@@ -32,7 +35,7 @@ public class Game extends JPanel implements Runnable{
         this.setSize(Client.DIMENSION);
 
         this.chatbox = new Chatbox();
-        this.chatbar = new Chatbar(this.chatbox);
+        this.chatbar = new Chatbar(this.chatbox, out);
         this.add(chatbar, BorderLayout.SOUTH);
         this.add(chatbox, BorderLayout.NORTH);
     }
@@ -51,5 +54,7 @@ public class Game extends JPanel implements Runnable{
         while(true) {
             System.out.println(in.readUTF());
         }
+
+        client.close();
     }
 }
