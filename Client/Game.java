@@ -12,23 +12,22 @@ public class Game extends JPanel implements Runnable{
 
     private DataOutputStream out;
     private DataInputStream in;
+    private Socket conn;
 
     private void initialize() {
-
-
         try {
-            Socket conn = new Socket(hostName, portNumber);
+            System.out.println(serverIP);
+            System.out.println(port);
+            conn = new Socket(serverIP, port);
             out = new DataOutputStream(
-                client.getOutputStream()
+                conn.getOutputStream()
             );
-            in = new new DataInputStream(
-                client.getInputStream()
+            in = new  DataInputStream(
+                conn.getInputStream()
             );
+            chatbox.add("Connected to" + serverIP + ", port " + port);
         }
         catch (Exception e) {}
-        finally {
-            chatbox.add("Connected to" + hostName + ", port " + portNumber);
-        }
 
 
         this.setLayout(new BorderLayout());
@@ -51,10 +50,12 @@ public class Game extends JPanel implements Runnable{
 
     public void run() {
         // Update chatbox from server here
-        while(true) {
-            System.out.println(in.readUTF());
-        }
+        // while(true) {
+        // }
 
-        client.close();
+        try {
+            conn.close();
+        }
+        catch (Exception e) {}
     }
 }

@@ -8,12 +8,18 @@ public class Client extends JFrame {
     private static Container cont;
     private Game currentGame;
 
-    public Client(String serverIP, int port, String name) throws Exception {
+    public Client(String serverIP, int port, String name) {
+        // Setting up GUI
         super(APP_NAME);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(Client.DIMENSION);
 
-        currentGame = new Game(serverIP, port, name);
+        try {
+            currentGame = new Game(serverIP, port, name);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Thread t = new Thread(currentGame);
         t.start();

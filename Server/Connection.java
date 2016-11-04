@@ -16,7 +16,7 @@ public class Connection implements Runnable {
     public void run() {
         // Main listening for inputs
         while(true) {
-
+            // System.out.println();
         }
     }
 

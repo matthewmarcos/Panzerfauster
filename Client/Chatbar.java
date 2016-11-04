@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.net.*;
+import java.io.*;
 
 public class Chatbar extends JTextField {
 
@@ -25,7 +27,12 @@ public class Chatbar extends JTextField {
 
                 textField.setText("");
                 chatbox.add(content);
-                out.writeUTF(content);
+
+                try {
+                    out.writeUTF(content);
+                }
+                catch (Exception e) {}
+
             }
 
             public void keyTyped(KeyEvent ev) {}
