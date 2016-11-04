@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-        if(args.length == 0) {
+        if(args.length != 1) {
             System.out.println("Please add port number");
             return;
         }

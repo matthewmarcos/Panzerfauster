@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 public class PazerfausterServer implements Runnable {
 
@@ -7,11 +8,13 @@ public class PazerfausterServer implements Runnable {
 
     private DataOutputStream out;
     private DataInputStream in;
-
     private int port;
+    private ArrayList<Thread> clients;
 
     public PazerfausterServer(int port) {
+
         this.port = port;
+        this.clients = new ArrayList<Thread>();
 
         try {
             serverSocket = new ServerSocket(port);
@@ -21,23 +24,26 @@ public class PazerfausterServer implements Runnable {
 
     }
 
-    public void run() throws Exception {
+    public void run() {
         System.out.println("Listening to port: " + port);
-
-        Socket server = serverSocket.accept();
-
-        out = new DataOutputStream(
-            server.getOutputStream()
-        );
-
-        in = new new DataInputStream(
-            server.getInputStream()
-        );
-
         while(true) {
             try {
+                // Listen for connections
+                Socket server = serverSocket.accept();
 
+                // Getting input and output streams of client
+                out = new DataOutputStream(
+                    server.getOutputStream()
+                );
+                in = new  DataInputStream(
+                    server.getInputStream()
+                );
+
+                Thread temp = new Thread(new Connection(server, out, in));
+                clients.add(temp);
+                temp.start();
             }
+            catch (Exception e) {}
         }
     }
 }
