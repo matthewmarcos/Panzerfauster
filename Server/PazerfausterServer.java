@@ -10,6 +10,8 @@ public class PazerfausterServer implements Runnable {
     private DataInputStream in;
     private int port;
     private ArrayList<Thread> clients;
+    private ArrayList<Connection> connections;
+
 
     public PazerfausterServer(int port) {
 
@@ -30,10 +32,8 @@ public class PazerfausterServer implements Runnable {
             try {
                 // Listen for connections
                 Socket server = serverSocket.accept();
-                //server.setSoTimeout(0);
+                server.setSoTimeout(0);
                 System.out.println("A client has connected!");
-
-
 
                 // Getting input and output streams of client
                 out = new DataOutputStream(
@@ -42,12 +42,19 @@ public class PazerfausterServer implements Runnable {
                 in = new DataInputStream(
                     server.getInputStream()
                 );
-
-                Thread temp = new Thread(new Connection(server, out, in));
+                Connection newConn = new Connection(server, out, in);
+                connections.add(newConn);
+                Thread temp = new Thread(newConn);
                 clients.add(temp);
                 temp.start();
             }
             catch (Exception e) {}
         }
+    }
+
+    public void broadcastText(String f) {
+        // for(Connection c : connections) {
+
+        // }
     }
 }
