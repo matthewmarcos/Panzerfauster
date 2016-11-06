@@ -19,6 +19,7 @@ public class Game extends JPanel implements Runnable{
             System.out.println(serverIP);
             System.out.println(port);
             conn = new Socket(serverIP, port);
+            conn.setSoTimeout(0); //Do not close socket
             out = new DataOutputStream(
                 conn.getOutputStream()
             );
@@ -34,7 +35,7 @@ public class Game extends JPanel implements Runnable{
         this.setSize(Client.DIMENSION);
 
         this.chatbox = new Chatbox();
-        this.chatbar = new Chatbar(this.chatbox, out);
+        this.chatbar = new Chatbar(this.chatbox, conn);
         this.add(chatbar, BorderLayout.SOUTH);
         this.add(chatbox, BorderLayout.NORTH);
     }

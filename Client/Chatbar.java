@@ -8,11 +8,13 @@ public class Chatbar extends JTextField {
 
     private Chatbox chatbox;
     private DataOutputStream out;
+    private Socket conn;
 
-    public Chatbar(Chatbox chatbox, DataOutputStream out) {
+    public Chatbar(Chatbox chatbox, Socket conn) {
         super(8);
         this.chatbox = chatbox;
-        this.out = out;
+        // this.out = out;
+        this.conn = conn;
 
         this.addKeyListener(new KeyListener() {
 
@@ -29,6 +31,10 @@ public class Chatbar extends JTextField {
                 chatbox.add(content);
 
                 try {
+                    out = new DataOutputStream(
+                        conn.getOutputStream()
+                    );
+
                     out.writeUTF(content);
                     System.out.println(content);
                 }

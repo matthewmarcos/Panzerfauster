@@ -16,15 +16,15 @@ public class Connection implements Runnable {
     public void run() {
         // Main listening for inputs
         String msg ="";
-        try {
-            msg = in.readUTF();
-            System.out.println(msg);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-        while(msg != "") {
-            write(msg);
+        while(conn.isConnected()) {
+            System.out.println("LISTENING!");
+            try {
+                msg = in.readUTF();
+                System.out.println(msg);
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
