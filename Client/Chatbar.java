@@ -1,14 +1,19 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.net.*;
+import java.io.*;
 
 public class Chatbar extends JTextField {
 
     private Chatbox chatbox;
+    private DataOutputStream out;
 
-    public Chatbar(Chatbox chatbox) {
+    public Chatbar(Chatbox chatbox, DataOutputStream out) {
         super(8);
         this.chatbox = chatbox;
+        this.out = out;
+
         this.addKeyListener(new KeyListener() {
 
             public void keyPressed(KeyEvent ev) {
@@ -22,6 +27,15 @@ public class Chatbar extends JTextField {
 
                 textField.setText("");
                 chatbox.add(content);
+
+                try {
+                    out.writeUTF(content);
+                    System.out.println(content);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
 
             public void keyTyped(KeyEvent ev) {}
