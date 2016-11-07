@@ -1,16 +1,27 @@
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 public class Connection implements Runnable {
 
     private Socket conn;
     private DataOutputStream out;
     private DataInputStream in;
+    private PazerfausterServer server;
+    private static ArrayList<Connection> connections = new ArrayList<Connection>();
 
-    public Connection (Socket conn, DataOutputStream out, DataInputStream in) {
+    public Connection (
+            Socket conn,
+            DataOutputStream out,
+            DataInputStream in,
+            PazerfausterServer server
+        ) {
+
         this.conn = conn;
         this.out = out;
         this.in = in;
+        this.server = server;
+        connections.add(this);
     }
 
     public void run() {
@@ -18,7 +29,7 @@ public class Connection implements Runnable {
         String msg = null;
         System.out.println("running");
         while(conn.isConnected()) {
-            System.out.println("Rinning!");
+            System.out.println("Running!");
             try {
                 msg = in.readUTF();
                 if(msg == null) {
@@ -30,9 +41,7 @@ public class Connection implements Runnable {
                 e.printStackTrace();
             }
 
-            System.out.println("Sabi nya: " + msg);
-
-            write(msg);
+            this.broadcast(msg);
         }
 
         System.out.println("Escaped main loop");
@@ -46,11 +55,25 @@ public class Connection implements Runnable {
     }
 
     public void write(String message) {
-        // Send messages to out
         try {
             out.writeUTF(message);
         }
         catch (Exception e) {
+            System.out.println("error in writing");
+            e.printStackTrace();
+        }
+    }
+
+    public void broadcast(String message) {
+        // Send messages to out
+        try {
+            for(Connection c : connections) {
+                c.write(message);
+            }
+
+        }
+        catch (Exception e) {
+            System.out.println("Error in broadcasting");
             e.printStackTrace();
         }
     }

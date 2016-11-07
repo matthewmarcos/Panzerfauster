@@ -43,12 +43,10 @@ public class PazerfausterServer implements Runnable {
                     server.getInputStream()
                 );
 
-                Connection newConn = new Connection(server, out, in);
+                Connection newConn = new Connection(server, out, in, this);
                 Thread temp = new Thread(newConn);
                 temp.start();
                 clients.add(temp);
-                connections.add(newConn);
-
 
             }
             catch (Exception e) {}
@@ -56,13 +54,13 @@ public class PazerfausterServer implements Runnable {
     }
 
     public void broadcastText(String f) {
-        /*try{
-
-            for(Connection c=connections.next(); connections.hasNext(); ) {
+        try{
+            for(Connection c : this.connections) {
+            // for(Connection c = connections.next() ; connections.hasNext) {
                 c.write(f);
             }
          }catch(Exception e){
             e.printStackTrace();
-         }*/
+         }
     }
 }
