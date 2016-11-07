@@ -5,9 +5,9 @@ public class Connection implements Runnable {
 
     private Socket conn;
     private DataOutputStream out;
-    private DataInputStream in;
+    private String in;
 
-    public Connection (Socket conn, DataOutputStream out, DataInputStream in) {
+    public Connection (Socket conn, DataOutputStream out, String in) {
         this.conn = conn;
         this.out = out;
         this.in = in;
@@ -15,16 +15,13 @@ public class Connection implements Runnable {
 
     public void run() {
         // Main listening for inputs
-        String msg ="";
+        String msg;
+        System.out.println("running");
         while(conn.isConnected()) {
-            System.out.println("LISTENING!");
-            try {
-                msg = in.readUTF();
-                System.out.println(msg);
-            }
-            catch(Exception e) {
-                e.printStackTrace();
-            }
+            //System.out.println("LISTENING!");
+            System.out.println(in);
+            write(in);
+            
         }
 
     }
@@ -39,5 +36,4 @@ public class Connection implements Runnable {
         }
     }
 
-    private Connection(){}
 }

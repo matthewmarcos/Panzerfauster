@@ -7,12 +7,15 @@ import java.util.*;
 public class Chatbox extends JTextArea{
 
     private ArrayList<String> history;
+    private String message;
 
     public Chatbox() {
         history = new ArrayList<String>();
         this.setEditable(false);
         this.redraw();
+        //this.message = m;
         // Connect to server to retrieve latest set of stuff
+
         // For now, we just add it manually locally.
     }
 

@@ -14,6 +14,8 @@ public class Game extends JPanel implements Runnable{
     private DataInputStream in;
     private Socket conn;
 
+    private String message;
+
     private void initialize() {
         try {
             System.out.println(serverIP);
@@ -26,6 +28,9 @@ public class Game extends JPanel implements Runnable{
             in = new  DataInputStream(
                 conn.getInputStream()
             );
+
+            
+
             chatbox.add("Connected to" + serverIP + ", port " + port);
         }
         catch (Exception e) {}
@@ -51,12 +56,18 @@ public class Game extends JPanel implements Runnable{
 
     public void run() {
         // Update chatbox from server here
-        // while(true) {
-        // }
-
-        try {
-            conn.close();
+        while(true) {
+            try{
+              message = in.readUTF(); //gets the message from server
+              chatbox.add(message);  
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
-        catch (Exception e) {}
+
+      //  try {
+            //conn.close();
+        //}
+        //catch (Exception e) {}
     }
 }
