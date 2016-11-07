@@ -43,29 +43,13 @@ public class PazerfausterServer implements Runnable {
                     server.getInputStream()
                 );
 
-                System.out.println(in.readUTF());
-
-                //System.out.println("...");
-               Connection newConn = new Connection(server, out, in.readUTF());
+                Connection newConn = new Connection(server, out, in);
                 Thread temp = new Thread(newConn);
+                temp.start();
                 clients.add(temp);
                 connections.add(newConn);
-                temp.start();
-                
-                //System.out.println("yow");
 
-                /*while(server.isConnected()) {
-                    String msg;
-                    System.out.println("LISTENING!");
-                    try {
-                        msg = in.readUTF();
-                        System.out.println(msg);
-                    }
-                    catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }*/
-                
+
             }
             catch (Exception e) {}
         }
@@ -73,7 +57,7 @@ public class PazerfausterServer implements Runnable {
 
     public void broadcastText(String f) {
         /*try{
-            
+
             for(Connection c=connections.next(); connections.hasNext(); ) {
                 c.write(f);
             }

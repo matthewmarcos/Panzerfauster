@@ -28,19 +28,17 @@ public class Game extends JPanel implements Runnable{
             in = new  DataInputStream(
                 conn.getInputStream()
             );
-
-            
-
+            this.chatbox = new Chatbox();
+            this.chatbar = new Chatbar(this.chatbox, conn);
             chatbox.add("Connected to" + serverIP + ", port " + port);
         }
-        catch (Exception e) {}
-
+        catch (Exception e) {
+            System.out.println("Failed initialize()");
+            e.printStackTrace();
+        }
 
         this.setLayout(new BorderLayout());
         this.setSize(Client.DIMENSION);
-
-        this.chatbox = new Chatbox();
-        this.chatbar = new Chatbar(this.chatbox, conn);
         this.add(chatbar, BorderLayout.SOUTH);
         this.add(chatbox, BorderLayout.NORTH);
     }
@@ -56,10 +54,10 @@ public class Game extends JPanel implements Runnable{
 
     public void run() {
         // Update chatbox from server here
-        while(true) {
+        while(conn.isConnected()) {
             try{
               message = in.readUTF(); //gets the message from server
-              chatbox.add(message);  
+              chatbox.add(message);
             }catch(Exception e){
                 e.printStackTrace();
             }
