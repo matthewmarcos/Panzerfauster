@@ -26,9 +26,7 @@ public class Chatbar extends JTextField {
                 Chatbar textField = (Chatbar) ev.getSource();
 
                 content = textField.getText();
-
                 textField.setText("");
-                chatbox.add(content);
 
                 try {
                     out = new DataOutputStream(
@@ -36,7 +34,6 @@ public class Chatbar extends JTextField {
                     );
 
                     out.writeUTF(content);
-                    System.out.println(content);
                 }
                 catch (Exception e) {
                     e.printStackTrace();

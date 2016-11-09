@@ -13,10 +13,6 @@ public class Chatbox extends JTextArea{
         history = new ArrayList<String>();
         this.setEditable(false);
         this.redraw();
-        //this.message = m;
-        // Connect to server to retrieve latest set of stuff
-
-        // For now, we just add it manually locally.
     }
 
     public void add(String s) {
@@ -30,6 +26,7 @@ public class Chatbox extends JTextArea{
         for(String s : history) {
             content += s + "\n";
         }
+
         this.setText(content);
     }
 

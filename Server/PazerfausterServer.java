@@ -43,42 +43,24 @@ public class PazerfausterServer implements Runnable {
                     server.getInputStream()
                 );
 
-                System.out.println(in.readUTF());
-
-                //System.out.println("...");
-               Connection newConn = new Connection(server, out, in.readUTF());
+                Connection newConn = new Connection(server, out, in, this);
                 Thread temp = new Thread(newConn);
-                clients.add(temp);
-                connections.add(newConn);
                 temp.start();
-                
-                //System.out.println("yow");
+                clients.add(temp);
 
-                /*while(server.isConnected()) {
-                    String msg;
-                    System.out.println("LISTENING!");
-                    try {
-                        msg = in.readUTF();
-                        System.out.println(msg);
-                    }
-                    catch(Exception e) {
-                        e.printStackTrace();
-                    }
-                }*/
-                
             }
             catch (Exception e) {}
         }
     }
 
     public void broadcastText(String f) {
-        /*try{
-            
-            for(Connection c=connections.next(); connections.hasNext(); ) {
+        try{
+            for(Connection c : this.connections) {
+            // for(Connection c = connections.next() ; connections.hasNext) {
                 c.write(f);
             }
          }catch(Exception e){
             e.printStackTrace();
-         }*/
+         }
     }
 }
