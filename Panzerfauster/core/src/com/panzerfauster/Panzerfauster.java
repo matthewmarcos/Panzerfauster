@@ -21,7 +21,7 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
     @Override
     public void create () {
         batch = new SpriteBatch();
-        player = new Tank("sprites/Tank.png", false, "Tank", 400, 300, 5, 0);
+        player = new Tank("sprites/Tank.png", false, "Tank", 500, 300, 5, 0);
         camera = new OrthographicCamera();
     }
 

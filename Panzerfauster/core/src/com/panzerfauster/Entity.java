@@ -44,19 +44,18 @@ public class Entity {
     }
 
     public void setPosition(int x, int y) {
+//        Sets the position of the object to (x, y) and the sprite to match
         this.xcoord = x;
         this.ycoord = y;
 
         int printX = (int)(this.xcoord - this.sprite.getHeight()/2);
         int printY = (int)(this.ycoord - this.sprite.getHeight()/2);
-//        this.angle = -(float) Math.toDegrees(Math.atan2(Gdx.input.getY() - this.ycoord, Gdx.input.getX() - this.xcoord));
-//        this.lookAt(Gdx.input.getX(), Gdx.input.getY());
 
         this.sprite.setPosition(printX, printY);
     }
 
     public void lookAt(float x, float y) {
-//    Rotates the sprite of this entity to look at
+//    Rotates the sprite of this entity to look at the mouse
         float mousex, mousey, realx, realy;
         mousex = x - this.width/2;
         realx = this.xcoord - this.width/2;
@@ -68,6 +67,7 @@ public class Entity {
     }
 
     public void moveLeft() {
+//        Move left by speed
         this.move(
             -this.speed,
             0
@@ -75,6 +75,7 @@ public class Entity {
     }
 
     public void moveRight() {
+//        Move right by speed
         this.move(
             this.speed,
             0
@@ -82,6 +83,7 @@ public class Entity {
     }
 
     public void moveUp() {
+//        move up by speed
         this.move(
             0,
             this.speed
@@ -89,6 +91,7 @@ public class Entity {
     }
 
     public void moveDown() {
+//        move down by speed
         this.move(
             0,
             -this.speed
