@@ -2,6 +2,7 @@ package com.panzerfauster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
  * Created by matt on 11/10/16.
@@ -10,46 +11,88 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Entity {
 
-    protected Texture image;
-    protected int xcoord, ycoord;
+    protected Sprite sprite;
+    protected int xcoord, ycoord, width, height;
+    protected float speed;
+    protected Texture texture;
 
     protected Entity(
             String image_path, // Location of image
             boolean isEnemy, // Will it be hostile?
             String name,
             int xcoordinate, //xLocation on screen
-            int ycoordinate //yLocation on screen
+            int ycoordinate, //yLocation on screen
+            int speed,
+            float angle
     ) {
         try {
-            this.image = new Texture(Gdx.files.internal(image_path));
-            this.xcoord = xcoordinate;
-            this.ycoord = ycoordinate;
+            this.texture = new Texture(Gdx.files.internal(image_path));
+            this.sprite = new Sprite(texture);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        this.width = Gdx.graphics.getWidth();
+        this.height = Gdx.graphics.getHeight();
+
+        this.setPosition(xcoordinate, ycoordinate);
+        this.speed = speed;
+
+        System.out.println("Created: " + name);
     }
 
-    public int getX() {
-//  Returns the x coordinate to draw the image
-        return xcoord - image.getHeight() / 2;
+    public void setPosition(int x, int y) {
+        this.xcoord = x;
+        this.ycoord = y;
+
+        int printX = (int)(this.xcoord - this.sprite.getHeight()/2);
+        int printY = (int)(this.ycoord - this.sprite.getHeight()/2);
+
+        this.sprite.setPosition(printX, printY);
     }
 
-    public int getY() {
-//  Returns the y coordinate to draw the image
-        return ycoord - image.getHeight() / 2;
+    public void moveLeft() {
+        this.move(
+            -this.speed,
+            0
+        );
     }
 
-    public int getXpos() {
-        return this.xcoord;
+    public void moveRight() {
+        this.move(
+            this.speed,
+            0
+        );
     }
 
-    public int getYpos() {
-        return this.ycoord;
+    public void moveUp() {
+        this.move(
+            0,
+            this.speed
+        );
     }
 
-    public Texture getImage() {
+    public void moveDown() {
+        this.move(
+            0,
+            -this.speed
+        );
+    }
+
+    public Sprite getSprite() {
 //  Returns the image that represents this entity
-        return this.image;
+        return this.sprite;
     }
+
+    public Texture getTexture() {
+        return this.texture;
+    }
+
+    private void move(float x, float y) {
+        this.xcoord += x;
+        this.ycoord += y;
+
+        this.setPosition(this.xcoord, this.ycoord);
+    }
+
 }

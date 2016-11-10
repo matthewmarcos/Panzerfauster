@@ -6,14 +6,15 @@ package com.panzerfauster;
 public class Tank extends Entity {
 
     public Tank(
-        String image_path, // Location of image
-        boolean isEnemy, // Will it be hostile?
-        String name,
-        int xcoordinate, //xLocation on screen
-        int ycoordinate,  //yLocation on screen
-        float angle
+            String image_path, // Location of image
+            boolean isEnemy, // Will it be hostile?
+            String name,
+            int xcoordinate, //xLocation on screen
+            int ycoordinate,  //yLocation on screen
+            int speed,
+            float angle
     ) {
-        super(image_path, isEnemy, name, xcoordinate, ycoordinate);
+        super(image_path, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
 
     }
 }
