@@ -14,16 +14,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Panzerfauster extends ApplicationAdapter implements InputProcessor {
     private int winWidth, winHeight;
-	private SpriteBatch batch;
-	private BitmapFont font;
+    private SpriteBatch batch;
+    private BitmapFont font;
     private Texture temp;
-	private Sprite player;
-	private float xPos, yPos, speed, angle;
+    private Sprite player;
+    private float xPos, yPos, speed, angle;
 
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		temp = new Texture(Gdx.files.internal("sprites/Tank.png"));
+    @Override
+    public void create () {
+        batch = new SpriteBatch();
+        temp = new Texture(Gdx.files.internal("sprites/Tank.png"));
         player = new Sprite(temp);
         font = new BitmapFont();
         font.setColor(Color.RED);
@@ -41,8 +41,8 @@ public class Panzerfauster extends ApplicationAdapter implements InputProcessor 
         Gdx.input.setInputProcessor(this);
     }
 
-	@Override
-	public void render () {
+    @Override
+    public void render () {
 
 
 //      Have to poll keyboard for input so it will get input continuously
@@ -60,7 +60,7 @@ public class Panzerfauster extends ApplicationAdapter implements InputProcessor 
         }
 
         Gdx.gl.glClearColor(0.1f, 1, 0.1f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         player.setPosition(xPos, yPos);
 
@@ -68,13 +68,13 @@ public class Panzerfauster extends ApplicationAdapter implements InputProcessor 
         player.draw(batch);
         batch.end();
     }
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
+
+    @Override
+    public void dispose () {
+        batch.dispose();
         font.dispose();
         temp.dispose();
-	}
+    }
 
     @Override
     public boolean keyDown(int keycode) {
