@@ -16,13 +16,13 @@ public class Projectile extends Entity {
         this.isAlive = true;
         this.owner = owner;
 
-        //       Shrink the size of the projectile
+        // Shrink the size of the projectile
         this.sprite.setScale(0.2f);
     }
 
 
     public void update() {
-        //        Updates the bullet location and sprite
+        // Updates the bullet location and sprite
         int deltaX = (int)(Math.cos(this.angle) * this.speed);
         int deltaY = (int)(Math.sin(this.angle) * this.speed);
 
@@ -32,7 +32,7 @@ public class Projectile extends Entity {
         }
 
         this.setPosition(this.xcoord + deltaX, this.ycoord + deltaY);
-        //  this.setPosition((int)(this.xcoord + this.speed), this.ycoord);
+        // this.setPosition((int)(this.xcoord + this.speed), this.ycoord);
     }
 
 

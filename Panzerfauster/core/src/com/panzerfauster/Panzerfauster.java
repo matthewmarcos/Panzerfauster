@@ -33,6 +33,8 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         mapSprite.setPosition(-mapSprite.getWidth() / 2, -mapSprite.getHeight() / 2);
         player = new Tank("sprites/Tank.png", false, "Tank", 0, 0, 5, 0);
 
+        GameState.addTank(player);
+
         Gdx.input.setInputProcessor(this);
     }
 
@@ -76,7 +78,6 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         for(Projectile s : GameState.getProjectiles()) {
             s.getSprite().draw(batch);
         }
-        player.getSprite().draw(batch);
         batch.end();
     }
 

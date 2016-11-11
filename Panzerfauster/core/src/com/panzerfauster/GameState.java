@@ -22,11 +22,8 @@ public class GameState implements Runnable {
     private GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
-
-        this.tanks.add(new Tank("sprites/Tank.png", false, "Tank", 0, 10, 5, 0));
-        this.tanks.add(new Tank("sprites/Tank.png", false, "Tank", 300, 10, 5, 90));
-        this.tanks.add(new Tank("sprites/Tank.png", false, "Tank", -100, 2000, 5, 0));
         Thread t = new Thread(this);
+
         t.start();
     }
 
@@ -34,12 +31,7 @@ public class GameState implements Runnable {
     public void run() {
         while (true) {
             for(Projectile p : projectiles) {
-                try {
-                    p.update();
-                }
-                catch(Exception e) {
-                    break;
-                }
+                p.update();
             }
 
             // Remove projectiles that die
