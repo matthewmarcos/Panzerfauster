@@ -5,17 +5,20 @@ import java.util.ArrayList;
 /**
  * Created by matt on 11/11/16.
  *
+ * SINGLETON!!!!
+ *
  * This object sends the ArrayLists of tanks and projectiles to the server
  * (Thread)
  *
- * This object can print the
+ * `This object can print the
  */
 public class GameState {
 
-    private ArrayList<Tank> tanks;
-    private ArrayList<Projectile> projectiles;
+    private static ArrayList<Tank> tanks;
+    private static ArrayList<Projectile> projectiles;
+    private static GameState state = new GameState();
 
-    public GameState() {
+    private GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
 
@@ -24,12 +27,23 @@ public class GameState {
         this.tanks.add(new Tank("sprites/Tank.png", false, "Tank", -100, 2000, 5, 0));
     }
 
-    public ArrayList<Tank> getTanks() {
-        return this.tanks;
+    public static GameState getState () {
+        return state;
     }
 
-    public ArrayList<Projectile> getProjectiles() {
-        return this.projectiles;
+    public static ArrayList<Tank> getTanks() {
+        return tanks;
     }
 
+    public static ArrayList<Projectile> getProjectiles() {
+        return projectiles;
+    }
+
+    public static void addTank(Tank t) {
+        tanks.add(t);
+    }
+
+    public void addProjectile(Projectile p) {
+        projectiles.add(p);
+    }
 }

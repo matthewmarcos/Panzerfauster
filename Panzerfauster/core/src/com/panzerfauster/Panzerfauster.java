@@ -24,7 +24,6 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
 
     @Override
     public void create () {
-        gamestate = new GameState();
         batch = new SpriteBatch();
         camera = new OrthographicCamera(1000, 600);
         mapTexture = new Texture(Gdx.files.internal("tiles/map.jpg"));
@@ -66,7 +65,7 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         mapSprite.draw(batch);
-        for(Tank s : gamestate.getTanks()) {
+        for(Tank s : GameState.getTanks()) {
             s.getSprite().draw(batch);
         }
         player.getSprite().draw(batch);
@@ -78,7 +77,7 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         player.getTexture().dispose();
         batch.dispose();
         mapTexture.dispose();
-        for(Tank s : gamestate.getTanks()) {
+        for(Tank s : GameState.getTanks()) {
             s.getTexture().dispose();
         }
     }

@@ -15,4 +15,20 @@ public class Projectile extends Entity{
     ) {
         super(image_path, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
     }
+
+    public void update() {
+//        Updates the bullet location and sprite
+        int deltaX = (int)Math.acos(this.angle);
+        int deltaY = (int)Math.asin(this.angle);
+
+        if (angle < 0) {
+            deltaX *= -1;
+        }
+
+        if (angle > 90 || angle < -90) {
+            deltaY *= -1;
+        }
+
+        this.setPosition(this.xcoord + deltaX, this.ycoord + deltaY);
+    }
 }
