@@ -19,9 +19,12 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
     private Tank player;
     private float xPos, yPos;
     private OrthographicCamera camera;
+    private GameState gamestate;
+
 
     @Override
     public void create () {
+        gamestate = new GameState();
         batch = new SpriteBatch();
         camera = new OrthographicCamera(1000, 600);
         mapTexture = new Texture(Gdx.files.internal("tiles/map.jpg"));
@@ -29,11 +32,11 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         mapSprite.setOrigin(0f, 0f);
         mapSprite.setPosition(-mapSprite.getWidth()/2, -mapSprite.getHeight()/2);
         player = new Tank("sprites/Tank.png", false, "Tank", 0, 0, 5, 0);
-//        player = new Tank("sprites/Tank.png", false, "Tank", (int)mapSprite.getWidth()/2, (int)mapSprite.getHeight()/2, 5, 0);
     }
 
     @Override
     public void render () {
+
 //      Have to poll keyboard for input so it will get input continuously
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.moveLeft();
@@ -55,12 +58,17 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         player.lookAt(Gdx.input.getX(), Gdx.input.getY());
         camera.update();
 
-        Gdx.gl.glClearColor(0.1f, 1, 0.1f, 1);
+//        player.printLocation();
+
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         mapSprite.draw(batch);
+        for(Tank s : gamestate.getTanks()) {
+            s.getSprite().draw(batch);
+        }
         player.getSprite().draw(batch);
         batch.end();
     }
@@ -70,5 +78,8 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         player.getTexture().dispose();
         batch.dispose();
         mapTexture.dispose();
+        for(Tank s : gamestate.getTanks()) {
+            s.getTexture().dispose();
+        }
     }
 }

@@ -101,7 +101,8 @@ public class Entity {
     }
 
     public void printLocation() {
-        System.out.print("Tank: X: " + xcoord + " Y: " + ycoord);
+        System.out.println("Tank: X: " + xcoord + " Y: " + ycoord
+        + " Sprite: X: " + this.sprite.getX() + " Y: " + this.sprite.getY());
     }
 
     public Sprite getSprite() {
