@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Panzerfauster extends ApplicationAdapter implements ApplicationListener {
     private SpriteBatch batch;
     private BitmapFont font;
+    private Texture mapTexture;
+    private Sprite mapSprite;
     private Texture temp;
     private Tank player;
     private float xPos, yPos;
@@ -21,8 +23,13 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
     @Override
     public void create () {
         batch = new SpriteBatch();
-        player = new Tank("sprites/Tank.png", false, "Tank", 500, 300, 5, 0);
-        camera = new OrthographicCamera();
+        camera = new OrthographicCamera(1000, 600);
+        mapTexture = new Texture(Gdx.files.internal("tiles/map.jpg"));
+        mapSprite = new Sprite(mapTexture);
+        mapSprite.setOrigin(0f, 0f);
+        mapSprite.setPosition(-mapSprite.getWidth()/2, -mapSprite.getHeight()/2);
+        player = new Tank("sprites/Tank.png", false, "Tank", 0, 0, 5, 0);
+//        player = new Tank("sprites/Tank.png", false, "Tank", (int)mapSprite.getWidth()/2, (int)mapSprite.getHeight()/2, 5, 0);
     }
 
     @Override
@@ -30,30 +37,39 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
 //      Have to poll keyboard for input so it will get input continuously
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.moveLeft();
+            camera.translate(-5, 0);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.moveRight();
+            camera.translate(5, 0);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.S)) {
             player.moveDown();
+            camera.translate(0, -5);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.moveUp();
+            camera.translate(0, 5);
         }
 
         player.lookAt(Gdx.input.getX(), Gdx.input.getY());
+        player.printLocation();
+        camera.update();
 
         Gdx.gl.glClearColor(0.1f, 1, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        mapSprite.draw(batch);
         player.getSprite().draw(batch);
         batch.end();
     }
 
     @Override
     public void dispose () {
-//        player.getTexture().dispose();
+        player.getTexture().dispose();
         batch.dispose();
+        mapTexture.dispose();
     }
 }
