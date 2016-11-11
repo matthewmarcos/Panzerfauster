@@ -53,7 +53,6 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         }
 
         player.lookAt(Gdx.input.getX(), Gdx.input.getY());
-        player.printLocation();
         camera.update();
 
         Gdx.gl.glClearColor(0.1f, 1, 0.1f, 1);
