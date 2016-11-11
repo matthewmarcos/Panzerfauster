@@ -58,9 +58,11 @@ public class Entity {
 //    Rotates the sprite of this entity to look at the mouse
         float mousex, mousey, realx, realy;
         mousex = x - this.width/2;
-        realx = this.xcoord - this.width/2;
+//        realx = this.xcoord - this.width/2;
+        realx = 0;
         mousey = -y + this.height/2;
-        realy = this.ycoord - this.height/2;
+//        realy = this.ycoord - this.height/2;
+        realy = 0;
 
         this.angle = (float)Math.toDegrees(Math.atan2(mousey - realy, mousex - realx));
         this.sprite.setRotation(this.angle);
@@ -96,6 +98,10 @@ public class Entity {
             0,
             -this.speed
         );
+    }
+
+    public void printLocation() {
+        System.out.print("Tank: X: " + xcoord + " Y: " + ycoord);
     }
 
     public Sprite getSprite() {
