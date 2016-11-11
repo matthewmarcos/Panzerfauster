@@ -20,7 +20,7 @@ public class GameState {
         this.projectiles = new ArrayList<Projectile>();
 
         this.tanks.add(new Tank("sprites/Tank.png", false, "Tank", 0, 10, 5, 0));
-        this.tanks.add(new Tank("sprites/Tank.png", false, "Tank", 300, 10, 5, 0));
+        this.tanks.add(new Tank("sprites/Tank.png", false, "Tank", 300, 10, 5, 90));
         this.tanks.add(new Tank("sprites/Tank.png", false, "Tank", -100, 2000, 5, 0));
     }
 

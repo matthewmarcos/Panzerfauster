@@ -34,13 +34,15 @@ public class Entity {
         }
 
         this.sprite.setOriginCenter();
-        this.width = 1000;
-        this.height = 600;
+
+//        Refers to the game screen
+        this.width = Gdx.graphics.getWidth();
+        this.height = Gdx.graphics.getHeight();
 
         this.setPosition(xcoordinate, ycoordinate);
         this.speed = speed;
-
-        System.out.println("Created: " + name);
+        this.angle = angle;
+        this.sprite.setRotation(this.angle);
     }
 
     public void setPosition(int x, int y) {
