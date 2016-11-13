@@ -35,6 +35,7 @@ public class GameState implements Runnable {
             }
 
             // Remove projectiles that die
+
             try {
                 Thread.sleep(50);
             }

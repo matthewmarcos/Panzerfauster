@@ -102,6 +102,13 @@ public class Entity {
         return this.sprite;
     }
 
+    public int getX() {
+        return this.xcoord;
+    }
+
+    public int getY() {
+        return this.ycoord;
+    }
 
     public Texture getTexture() {
         return this.texture;

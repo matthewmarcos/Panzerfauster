@@ -45,22 +45,23 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         // Have to poll keyboard for input so it will get input continuously
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.moveLeft();
-            camera.translate(-5, 0);
         }
+
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
             player.moveRight();
-            camera.translate(5, 0);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.S)) {
             player.moveDown();
-            camera.translate(0, -5);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.moveUp();
-            camera.translate(0, 5);
         }
 
+        // Make player look at the mouse
         player.lookAt(Gdx.input.getX(), Gdx.input.getY());
+
+        //Move and update camera to location of player Tank
+        camera.position.set(player.getX(), player.getY(), 0);
         camera.update();
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -70,11 +71,10 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
 
         //  Start rendering
         batch.begin();
-        mapSprite.draw(batch);
+        mapSprite.draw(batch); // draw the map
         for(Tank s : GameState.getTanks()) {
             s.getSprite().draw(batch);
         }
-
         for(Projectile s : GameState.getProjectiles()) {
             s.getSprite().draw(batch);
         }
@@ -113,7 +113,8 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("Fire!");
+        // This function fires when the user clicks on the screen.
+        // The player fires a projectule in the direction it is facing
         player.fire();
         return false;
     }
