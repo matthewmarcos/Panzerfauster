@@ -21,7 +21,12 @@ public class Tank extends Entity {
         //        Start at (this.xcoord, this.ycoord)
         //        Set target at (range * arccos(this.angle), range * arcsin(this.angle));
 
+        int DeltaX, DeltaY;
+
+        DeltaX = (int)(this.sprite.getHeight()/2 * Math.cos(Math.toRadians(this.angle)));
+        DeltaY = (int)(this.sprite.getHeight()/2 * Math.sin(Math.toRadians(this.angle)));
+
         GameState.addProjectile(
-            new Projectile("sprites/Projectile.png", false, null, this.xcoord, this.ycoord, 15, this.angle, this));
+            new Projectile("sprites/Projectile.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 15, this.angle, this));
     }
 }
