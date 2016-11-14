@@ -23,8 +23,8 @@ public class Projectile extends Entity {
 
     public void update() {
         // Updates the bullet location and sprite
-        int deltaX = (int)(Math.cos(this.angle) * this.speed);
-        int deltaY = (int)(Math.sin(this.angle) * this.speed);
+        int deltaX = (int)(Math.cos(Math.toRadians(this.angle)) * this.speed);
+        int deltaY = (int)(Math.sin(Math.toRadians(this.angle)) * this.speed);
 
         if(--life < 0) {
             this.isAlive = false;
