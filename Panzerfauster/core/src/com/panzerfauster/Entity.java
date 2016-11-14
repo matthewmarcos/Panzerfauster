@@ -3,13 +3,14 @@ package com.panzerfauster;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 
 /**
  * Created by matt on 11/10/16.
  * Entities are objects that move along the screen. They may be bullets,
  * tanks, or enemies, or enemy bullets, etc.
  */
-public class Entity {
+public class Entity extends BodyDef {
 
     protected Texture texture;
     protected Sprite  sprite;
@@ -19,6 +20,9 @@ public class Entity {
 
     protected Entity(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
                      float angle) {
+
+        super();
+
         try {
             this.texture = new Texture(Gdx.files.internal(image_path));
             this.sprite = new Sprite(texture);
@@ -102,20 +106,41 @@ public class Entity {
         return this.sprite;
     }
 
+
     public int getX() {
+
         return this.xcoord;
     }
 
+
     public int getY() {
+
         return this.ycoord;
     }
 
+
     public Texture getTexture() {
+
         return this.texture;
     }
 
 
     private void move(float x, float y) {
+
+        //Check if xcoord and ycoord are within map bounds
+        if(this.xcoord + x < -1 * Panzerfauster.getMapWidth() / 2) {
+            return;
+        }
+        if(this.xcoord + x > Panzerfauster.getMapWidth() / 2) {
+            return;
+        }
+        if(this.ycoord + y < -1 * Panzerfauster.getMapHeight() / 2) {
+            return;
+        }
+        if(this.ycoord + y > Panzerfauster.getMapHeight() / 2) {
+            return;
+        }
+
         this.xcoord += x;
         this.ycoord += y;
 

@@ -9,19 +9,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.*;
 
 public class Panzerfauster extends ApplicationAdapter implements ApplicationListener, InputProcessor {
 
     private SpriteBatch batch;
     private BitmapFont  font;
     private Texture     mapTexture;
-    private Sprite      mapSprite;
+    private static Sprite      mapSprite;
     private Texture     temp;
     private Tank        player;
     private float       xPos, yPos;
     private OrthographicCamera camera;
     private GameState          gamestate;
-
 
     @Override
     public void create() {
@@ -64,7 +64,7 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         camera.position.set(player.getX(), player.getY(), 0);
         camera.update();
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camera.combined);
@@ -72,10 +72,10 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         //  Start rendering
         batch.begin();
         mapSprite.draw(batch); // draw the map
-        for(Tank s : GameState.getTanks()) {
+        for(Projectile s : GameState.getProjectiles()) {
             s.getSprite().draw(batch);
         }
-        for(Projectile s : GameState.getProjectiles()) {
+        for(Tank s : GameState.getTanks()) {
             s.getSprite().draw(batch);
         }
         batch.end();
@@ -90,6 +90,16 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         for(Tank s : GameState.getTanks()) {
             s.getTexture().dispose();
         }
+    }
+
+
+    public static int getMapWidth() {
+        return (int)mapSprite.getWidth();
+    }
+
+
+    public static int getMapHeight() {
+        return (int)mapSprite.getHeight();
     }
 
 
@@ -142,4 +152,5 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
     public boolean scrolled(int amount) {
         return false;
     }
+
 }

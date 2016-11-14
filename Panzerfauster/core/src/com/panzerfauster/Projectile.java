@@ -17,7 +17,9 @@ public class Projectile extends Entity {
         this.owner = owner;
 
         // Shrink the size of the projectile
+        this.sprite.setSize(64, 64);
         this.sprite.setScale(0.2f);
+
     }
 
 

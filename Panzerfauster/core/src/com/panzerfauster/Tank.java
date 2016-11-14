@@ -11,7 +11,7 @@ public class Tank extends Entity {
                 int ycoordinate,  //yLocation on screen
                 int speed, float angle) {
         super(image_path, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
-
+        this.sprite.setSize(128, 128);
     }
 
 

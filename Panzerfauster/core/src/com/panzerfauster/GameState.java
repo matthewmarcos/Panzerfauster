@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * <p>
  * `This object can print the
  */
+
 public class GameState implements Runnable {
 
     private static ArrayList<Tank>       tanks;
@@ -35,6 +36,16 @@ public class GameState implements Runnable {
             }
 
             // Remove projectiles that die
+            // projectiles = projectiles.stream().filter(p -> p.isAlive()).collect(Collectors.toList());
+            ArrayList<Projectile> temp = new ArrayList<Projectile>();
+
+            for(Projectile p : projectiles) {
+                if(p.isAlive()) {
+                    temp.add(p);
+                }
+            }
+
+            projectiles = temp;
 
             try {
                 Thread.sleep(50);
