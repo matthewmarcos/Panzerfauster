@@ -19,7 +19,9 @@ public class Projectile extends Entity {
         // Shrink the size of the projectile
         this.sprite.setSize(64, 64);
         this.sprite.setScale(0.2f);
-
+        this.sprite.setOriginCenter();
+        this.sprite.setRotation(this.angle);
+        this.setPosition(xcoordinate, ycoordinate);
     }
 
 
