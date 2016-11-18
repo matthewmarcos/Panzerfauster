@@ -31,16 +31,12 @@ public class Entity extends BodyDef {
             e.printStackTrace();
         }
 
-        this.sprite.setOriginCenter();
-
         // Refers to the game screen
         this.width = Gdx.graphics.getWidth();
         this.height = Gdx.graphics.getHeight();
 
-        this.setPosition(xcoordinate, ycoordinate);
         this.speed = speed;
         this.angle = angle;
-        this.sprite.setRotation(this.angle);
     }
 
 

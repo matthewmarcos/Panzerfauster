@@ -12,6 +12,9 @@ public class Tank extends Entity {
                 int speed, float angle) {
         super(image_path, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
         this.sprite.setSize(128, 128);
+        this.sprite.setOriginCenter();
+        this.setPosition(xcoordinate, ycoordinate);
+        this.sprite.setRotation(this.angle);
     }
 
 
@@ -27,6 +30,6 @@ public class Tank extends Entity {
         DeltaY = (int)(this.sprite.getHeight()/2 * Math.sin(Math.toRadians(this.angle)));
 
         GameState.addProjectile(
-            new Projectile("sprites/Projectile.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 15, this.angle, this));
+            new Projectile("sprites/bomb3.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 30, this.angle, this));
     }
 }
