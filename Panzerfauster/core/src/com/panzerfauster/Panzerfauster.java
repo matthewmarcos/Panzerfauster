@@ -32,7 +32,7 @@ public class Panzerfauster extends ApplicationAdapter {
         mapSprite = new Sprite(mapTexture);
         mapSprite.setOrigin(0f, 0f);
         mapSprite.setPosition(-mapSprite.getWidth() / 2, -mapSprite.getHeight() / 2);
-        player = new Tank("sprites/tank1.png", false, "Player", 0, 0, 5, 0);
+        player = new Tank("sprites/tank1.png", false, "Player", 0, 0, 5, 500f, 0);
 
         GameState.getState().setPlayer(player);
         GameState.addTank(player);

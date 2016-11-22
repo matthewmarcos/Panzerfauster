@@ -5,13 +5,13 @@ package com.panzerfauster;
  */
 public class Projectile extends Entity {
 
-    protected Tank    owner;
+    protected Tank owner;
 
-    protected int life = 100;
+    protected int lifeRemaining = 100;
 
 
     public Projectile(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
-                      float angle, Tank owner) {
+                      int lifespan, float angle, Tank owner) {
         super(image_path, "PROJECTILE", isEnemy, name, xcoordinate, ycoordinate, speed, angle);
         this.isAlive = true;
         this.owner = owner;
@@ -22,25 +22,24 @@ public class Projectile extends Entity {
         this.sprite.setOriginCenter();
         this.sprite.setRotation(this.angle);
         this.setPosition(xcoordinate, ycoordinate);
+
+        //Set bullet statistics
+        this.lifeRemaining = lifespan;
     }
 
 
     public void update() {
-        // Updates the bullet location and sprite
+        // Updates the bullet location and sprite orientation
         int deltaX = (int)(Math.cos(Math.toRadians(this.angle)) * this.speed);
         int deltaY = (int)(Math.sin(Math.toRadians(this.angle)) * this.speed);
 
-        if(--life < 0) {
+        if(--lifeRemaining < 0) {
             this.isAlive = false;
             return;
         }
 
         this.setPosition(this.xcoord + deltaX, this.ycoord + deltaY);
-        // this.setPosition((int)(this.xcoord + this.speed), this.ycoord);
     }
-
-
-
 
 
     public void printMe() {
