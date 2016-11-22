@@ -13,15 +13,16 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public class Panzerfauster extends ApplicationAdapter {
 
-    private SpriteBatch batch;
-    private BitmapFont  font;
-    private Texture     mapTexture;
+    private        SpriteBatch batch;
+    private        BitmapFont  font;
+    private        Texture     mapTexture;
     private static Sprite      mapSprite;
-    private Texture     temp;
-    private Tank        player;
-    private float       xPos, yPos;
+    private        Texture     temp;
+    private        Tank        player;
+    private        float       xPos, yPos;
     private OrthographicCamera camera;
     private GameState          gamestate;
+
 
     @Override
     public void create() {
@@ -102,6 +103,5 @@ public class Panzerfauster extends ApplicationAdapter {
     public static int getMapHeight() {
         return (int)mapSprite.getHeight();
     }
-
 
 }

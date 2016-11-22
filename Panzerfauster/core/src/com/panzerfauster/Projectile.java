@@ -12,7 +12,7 @@ public class Projectile extends Entity {
 
     public Projectile(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
                       float angle, Tank owner) {
-        super(image_path, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
+        super(image_path, "PROJECTILE", isEnemy, name, xcoordinate, ycoordinate, speed, angle);
         this.isAlive = true;
         this.owner = owner;
 

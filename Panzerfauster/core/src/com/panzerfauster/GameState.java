@@ -19,7 +19,7 @@ public class GameState implements Runnable, InputProcessor {
 
     private static ArrayList<Tank>       tanks;
     private static ArrayList<Projectile> projectiles;
-    private Tank player;
+    private        Tank                  player;
 
     private static GameState state = new GameState();
 
@@ -37,10 +37,12 @@ public class GameState implements Runnable, InputProcessor {
         this.player = player;
     }
 
+
     public void run() {
         while (true) {
             for(Projectile p : projectiles) {
                 p.update();
+
             }
 
             // Remove projectiles that die
@@ -83,6 +85,7 @@ public class GameState implements Runnable, InputProcessor {
     public static void addTank(Tank t) {
         tanks.add(t);
     }
+
 
     @Override
     public boolean keyDown(int keycode) {
@@ -134,7 +137,6 @@ public class GameState implements Runnable, InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
-
 
 
     public static void addProjectile(Projectile p) {
