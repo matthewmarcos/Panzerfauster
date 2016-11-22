@@ -58,6 +58,9 @@ public class Panzerfauster extends ApplicationAdapter {
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.moveUp();
         }
+        if(Gdx.input.isTouched()){
+            player.fire();
+        }
 
         // Make player look at the mouse
         player.lookAt(Gdx.input.getX(), Gdx.input.getY());

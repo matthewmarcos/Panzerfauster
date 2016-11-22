@@ -1,5 +1,6 @@
 package com.panzerfauster;
 
+
 /**
  * Created by matt on 11/22/16.
  */
@@ -10,10 +11,10 @@ public class EntityPacket {
     private float speed, angle;
     private int    id;
     private String entityType;
+
     public static final String PROJECTILE = "PROJECTILE";
     public static final String TANK       = "TANK";
     public static final String ENEMY      = "ENEMY";
-
 
     public EntityPacket(String entityType, int xcoord, int ycoord, float speed, float angle) {
         //Check if all values exist.
@@ -24,16 +25,8 @@ public class EntityPacket {
         this.entityType = entityType;
 
     }
-
-
     public String getType() {
         return this.entityType;
-    }
-
-
-    public void update() {
-        //    For projectiles
-
     }
 
 

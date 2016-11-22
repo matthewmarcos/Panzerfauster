@@ -6,7 +6,7 @@ package com.panzerfauster;
 public class Projectile extends Entity {
 
     protected Tank    owner;
-    protected boolean isAlive;
+
     protected int life = 100;
 
 
@@ -40,9 +40,7 @@ public class Projectile extends Entity {
     }
 
 
-    public boolean isAlive() {
-        return this.isAlive;
-    }
+
 
 
     public void printMe() {

@@ -29,7 +29,8 @@ public class Tank extends Entity {
         DeltaX = (int)(this.sprite.getHeight()/2 * Math.cos(Math.toRadians(this.angle)));
         DeltaY = (int)(this.sprite.getHeight()/2 * Math.sin(Math.toRadians(this.angle)));
 
-        GameState.addProjectile(
-            new Projectile("sprites/bomb3.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 30, this.angle, this));
+
+            GameState.addProjectile(
+                new Projectile("sprites/bomb3.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 30, this.angle, this));
     }
 }

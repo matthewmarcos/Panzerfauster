@@ -109,7 +109,7 @@ public class GameState implements Runnable, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         // This function fires when the user clicks on the screen.
         // The player fires a projectule in the direction it is facing
-        this.player.fire();
+            this.player.fire();
         // System.out.println("FEEGGIT");
         return false;
     }
