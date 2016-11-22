@@ -19,9 +19,8 @@ public class GameState implements Runnable, InputProcessor {
 
     private static ArrayList<Tank>       tanks;
     private static ArrayList<Projectile> projectiles;
-    private        Tank                  player;
-
     private static GameState state = new GameState();
+    private        Tank                  player;
 
 
     private GameState() {
@@ -30,40 +29,6 @@ public class GameState implements Runnable, InputProcessor {
         Thread t = new Thread(this);
 
         t.start();
-    }
-
-
-    public void setPlayer(Tank player) {
-        this.player = player;
-    }
-
-
-    public void run() {
-        while (true) {
-            for(Projectile p : projectiles) {
-                p.update();
-
-            }
-
-            // Remove projectiles that die
-            // projectiles = projectiles.stream().filter(p -> p.isAlive()).collect(Collectors.toList());
-            ArrayList<Projectile> temp = new ArrayList<Projectile>();
-
-            for(Projectile p : projectiles) {
-                if(p.isAlive()) {
-                    temp.add(p);
-                }
-            }
-
-            projectiles = temp;
-
-            try {
-                Thread.sleep(50);
-            }
-            catch(Exception e) {
-
-            }
-        }
     }
 
 
@@ -84,6 +49,71 @@ public class GameState implements Runnable, InputProcessor {
 
     public static void addTank(Tank t) {
         tanks.add(t);
+    }
+
+
+    public static void addProjectile(Projectile p) {
+        projectiles.add(p);
+    }
+
+
+    public void setPlayer(Tank player) {
+        this.player = player;
+    }
+
+
+    public void run() {
+        Thread playerSender = new Thread() {
+            public void run() {
+
+            }
+        };
+
+        Thread playerListener = new Thread() {
+            public void run() {
+
+            }
+        };
+
+        Thread projectileSender = new Thread() {
+            public void run() {
+                while(true) {
+                    //Listen for server for updates. Update the necessary arraylists
+                    for(Projectile p : projectiles) {
+                        p.update();
+
+                    }
+                    ArrayList<Projectile> temp = new ArrayList<Projectile>();
+
+                    for(Projectile p : projectiles) {
+                        if(p.isAlive()) {
+                            temp.add(p);
+                        }
+                    }
+
+                    projectiles = temp;
+
+                    try {
+                        Thread.sleep(50);
+                    }
+                    catch(Exception e) {
+
+                    }
+                }
+            }
+        };
+
+        Thread projectileListener = new Thread() {
+            public void run() {
+
+            }
+        };
+
+        playerSender.start();
+        playerListener.start();
+        projectileSender.start();
+        projectileListener.start();
+
     }
 
 
@@ -109,7 +139,7 @@ public class GameState implements Runnable, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         // This function fires when the user clicks on the screen.
         // The player fires a projectule in the direction it is facing
-            this.player.fire();
+        this.player.fire();
         return false;
     }
 
@@ -135,11 +165,6 @@ public class GameState implements Runnable, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
-    }
-
-
-    public static void addProjectile(Projectile p) {
-        projectiles.add(p);
     }
 
 }
