@@ -11,17 +11,18 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 
-public class Panzerfauster extends ApplicationAdapter implements ApplicationListener, InputProcessor {
+public class Panzerfauster extends ApplicationAdapter {
 
-    private SpriteBatch batch;
-    private BitmapFont  font;
-    private Texture     mapTexture;
+    private        SpriteBatch batch;
+    private        BitmapFont  font;
+    private        Texture     mapTexture;
     private static Sprite      mapSprite;
-    private Texture     temp;
-    private Tank        player;
-    private float       xPos, yPos;
+    private        Texture     temp;
+    private        Tank        player;
+    private        float       xPos, yPos;
     private OrthographicCamera camera;
     private GameState          gamestate;
+
 
     @Override
     public void create() {
@@ -33,9 +34,10 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
         mapSprite.setPosition(-mapSprite.getWidth() / 2, -mapSprite.getHeight() / 2);
         player = new Tank("sprites/tank1.png", false, "Player", 0, 0, 5, 0);
 
+        GameState.getState().setPlayer(player);
         GameState.addTank(player);
 
-        Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor(GameState.getState());
     }
 
 
@@ -100,57 +102,6 @@ public class Panzerfauster extends ApplicationAdapter implements ApplicationList
 
     public static int getMapHeight() {
         return (int)mapSprite.getHeight();
-    }
-
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // This function fires when the user clicks on the screen.
-        // The player fires a projectule in the direction it is facing
-        player.fire();
-        return false;
-    }
-
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 
 }

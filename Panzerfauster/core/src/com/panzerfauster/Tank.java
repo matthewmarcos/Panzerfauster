@@ -10,7 +10,7 @@ public class Tank extends Entity {
                 String name, int xcoordinate, //xLocation on screen
                 int ycoordinate,  //yLocation on screen
                 int speed, float angle) {
-        super(image_path, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
+        super(image_path, "TANK", isEnemy, name, xcoordinate, ycoordinate, speed, angle);
         this.sprite.setSize(128, 128);
         this.sprite.setOriginCenter();
         this.setPosition(xcoordinate, ycoordinate);
