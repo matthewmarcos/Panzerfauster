@@ -6,9 +6,11 @@ import java.util.ArrayList;
  * Created by matt on 11/10/16.
  */
 public class Tank extends Entity {
+
+    private static ArrayList<Tank> tanks = new ArrayList<Tank>();
     private float cooldown, fireSpeed;
     private double lastFired;
-    private static ArrayList<Tank> tanks = new ArrayList<Tank>();
+
 
     public Tank(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
                 float cooldown, float angle) {
@@ -28,6 +30,7 @@ public class Tank extends Entity {
         this.id = tanks.size();
 
     }
+
 
     public void fire() {
         //        Get power of this tank

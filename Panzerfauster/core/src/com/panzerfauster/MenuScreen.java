@@ -1,6 +1,10 @@
 package com.panzerfauster;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 /**
  * Created by matt on 11/23/16.
@@ -8,16 +12,29 @@ import com.badlogic.gdx.Screen;
 public class MenuScreen implements Screen {
 
     private static MenuScreen screen = new MenuScreen();
+    private TextButton      tempButton;
+    private TextButtonStyle textButtonStyle;
+    private TextureAtlas    atlas;
 
 
     private MenuScreen() {
+        try {
+            atlas = new TextureAtlas("icons/play.jpg");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+
+    public static MenuScreen getScreen() {
+        return screen;
     }
 
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
 
@@ -54,9 +71,5 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-    public static MenuScreen getScreen() {
-        return screen;
     }
 }

@@ -20,7 +20,7 @@ public class GameState implements Runnable, InputProcessor {
     private static ArrayList<Tank>       tanks;
     private static ArrayList<Projectile> projectiles;
     private static GameState state = new GameState();
-    private        Tank                  player;
+    private Tank player;
 
 
     private GameState() {
@@ -77,10 +77,15 @@ public class GameState implements Runnable, InputProcessor {
 
         Thread projectileSender = new Thread() {
             public void run() {
-                while(true) {
+                while (true) {
                     //Listen for server for updates. Update the necessary arraylists
                     for(Projectile p : projectiles) {
-                        p.update();
+                        try {
+                            p.update();
+                        }
+                        catch(Exception e) {
+                            //    Concurrent update
+                        }
 
                     }
                     ArrayList<Projectile> temp = new ArrayList<Projectile>();
@@ -140,7 +145,6 @@ public class GameState implements Runnable, InputProcessor {
         // This function fires when the user clicks on the screen.
         // The player fires a projectule in the direction it is facing
         this.player.fire();
-        System.out.println("aha");
         return false;
     }
 

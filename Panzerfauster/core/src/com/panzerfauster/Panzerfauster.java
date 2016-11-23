@@ -23,7 +23,8 @@ public class Panzerfauster extends Game {
         batch = new SpriteBatch();
         gameScreen = GameScreen.getScreen();
         menuScreen = MenuScreen.getScreen();
-        this.setScreen(menuScreen);
+        // this.setScreen(menuScreen);
+        this.setScreen(gameScreen);
     }
 
 

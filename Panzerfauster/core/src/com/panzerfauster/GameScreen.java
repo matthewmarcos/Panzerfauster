@@ -1,6 +1,8 @@
 package com.panzerfauster;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,22 +12,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen implements Screen {
 
+    private static Sprite      mapSprite;
+    private static GameScreen screen = new GameScreen();
     // private Screen gameScreen, menuScreen;
     private        SpriteBatch batch;
     private        BitmapFont  font;
     private        Texture     mapTexture;
-    private static Sprite      mapSprite;
     private        Texture     temp;
     private        Tank        player;
     private        float       xPos, yPos;
     private OrthographicCamera camera;
     private GameState          gamestate;
 
-    private static GameScreen screen = new GameScreen();
-
-    public static GameScreen getScreen () {
-        return screen;
-    }
 
     private GameScreen() {
         batch = new SpriteBatch();
@@ -38,14 +36,28 @@ public class GameScreen implements Screen {
 
         GameState.getState().setPlayer(player);
         GameState.addTank(player);
+    }
 
-        Gdx.input.setInputProcessor(GameState.getState());
+
+    public static GameScreen getScreen() {
+        return screen;
+    }
+
+
+    public static int getMapWidth() {
+        return (int)mapSprite.getWidth();
+    }
+
+
+    public static int getMapHeight() {
+        return (int)mapSprite.getHeight();
     }
 
 
     @Override
     public void show() {
-
+        // Use different listener when this becomes the state
+        Gdx.input.setInputProcessor(GameState.getState());
     }
 
 
@@ -66,7 +78,7 @@ public class GameScreen implements Screen {
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             player.moveUp();
         }
-        if(Gdx.input.isTouched()){
+        if(Gdx.input.isTouched()) {
             player.fire();
         }
 
@@ -127,16 +139,6 @@ public class GameScreen implements Screen {
         for(Tank s : GameState.getTanks()) {
             s.getTexture().dispose();
         }
-    }
-
-
-    public static int getMapWidth() {
-        return (int)mapSprite.getWidth();
-    }
-
-
-    public static int getMapHeight() {
-        return (int)mapSprite.getHeight();
     }
 
 }
