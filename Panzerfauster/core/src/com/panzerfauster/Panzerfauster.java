@@ -14,13 +14,16 @@ import com.badlogic.gdx.physics.box2d.*;
 public class Panzerfauster extends Game {
 
     protected SpriteBatch batch;
+
     private GameScreen gameScreen;
+    private MenuScreen menuScreen;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         gameScreen = GameScreen.getScreen();
-        this.setScreen(gameScreen);
+        menuScreen = MenuScreen.getScreen();
+        this.setScreen(menuScreen);
     }
 
 

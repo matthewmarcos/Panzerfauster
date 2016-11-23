@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
 
 
     @Override
-    public void render(float alpha) {
+    public void render(float delta) {
 
         // Have to poll keyboard for input so it will get input continuously
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
