@@ -133,16 +133,16 @@ public class Entity extends BodyDef {
     private void move(float x, float y) {
 
         //Check if xcoord and ycoord are within map bounds
-        if(this.xcoord + x < -1 * Panzerfauster.getMapWidth() / 2) {
+        if(this.xcoord + x < -1 * GameScreen.getMapWidth() / 2) {
             return;
         }
-        if(this.xcoord + x > Panzerfauster.getMapWidth() / 2) {
+        if(this.xcoord + x > GameScreen.getMapWidth() / 2) {
             return;
         }
-        if(this.ycoord + y < -1 * Panzerfauster.getMapHeight() / 2) {
+        if(this.ycoord + y < -1 * GameScreen.getMapHeight() / 2) {
             return;
         }
-        if(this.ycoord + y > Panzerfauster.getMapHeight() / 2) {
+        if(this.ycoord + y > GameScreen.getMapHeight() / 2) {
             return;
         }
 

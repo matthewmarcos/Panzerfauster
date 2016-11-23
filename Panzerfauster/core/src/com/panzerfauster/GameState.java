@@ -20,7 +20,7 @@ public class GameState implements Runnable, InputProcessor {
     private static ArrayList<Tank>       tanks;
     private static ArrayList<Projectile> projectiles;
     private static GameState state = new GameState();
-    private        Tank                  player;
+    private Tank player;
 
 
     private GameState() {
@@ -77,10 +77,15 @@ public class GameState implements Runnable, InputProcessor {
 
         Thread projectileSender = new Thread() {
             public void run() {
-                while(true) {
+                while (true) {
                     //Listen for server for updates. Update the necessary arraylists
                     for(Projectile p : projectiles) {
-                        p.update();
+                        try {
+                            p.update();
+                        }
+                        catch(Exception e) {
+                            //    Concurrent update
+                        }
 
                     }
                     ArrayList<Projectile> temp = new ArrayList<Projectile>();
