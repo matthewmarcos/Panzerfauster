@@ -14,9 +14,11 @@ public class Entity extends BodyDef {
 
     protected Texture texture;
     protected Sprite  sprite;
-    protected int     xcoord, ycoord, width, height;
+    protected int     hp, xcoord, ycoord, width, height, id;
     protected float speed, angle;
-    private String type;
+    protected String type;
+
+    protected boolean isAlive;
 
 
     protected Entity(String image_path, String type, boolean isEnemy, String name, int xcoordinate, int ycoordinate,
@@ -38,7 +40,6 @@ public class Entity extends BodyDef {
 
         this.speed = speed;
         this.angle = angle;
-
         this.type = type;
     }
 
@@ -52,6 +53,11 @@ public class Entity extends BodyDef {
         int printY = (int)(this.ycoord - this.sprite.getHeight() / 2);
 
         this.sprite.setPosition(printX, printY);
+    }
+
+
+    protected int getId() {
+        return this.id;
     }
 
 
@@ -152,11 +158,15 @@ public class Entity extends BodyDef {
         this.ycoord = p.getY();
         this.speed = p.getSpeed();
         this.angle = p.getAngle();
-
     }
 
 
     public EntityPacket getPacket() {
         return new EntityPacket(this.type, this.xcoord, this.ycoord, this.speed, this.angle);
+    }
+
+
+    public boolean isAlive() {
+        return this.isAlive;
     }
 }

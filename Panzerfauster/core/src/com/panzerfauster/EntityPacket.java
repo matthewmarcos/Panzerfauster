@@ -7,9 +7,12 @@ package com.panzerfauster;
 public class EntityPacket {
 
     private int xcoord, ycoord;
-    private float speed, angle;
-    private int    id;
+    private int id, hp, damage;
+    private float lastFired;
+    private float speed, angle, cooldown;
+
     private String entityType;
+
     public static final String PROJECTILE = "PROJECTILE";
     public static final String TANK       = "TANK";
     public static final String ENEMY      = "ENEMY";
@@ -28,12 +31,6 @@ public class EntityPacket {
 
     public String getType() {
         return this.entityType;
-    }
-
-
-    public void update() {
-        //    For projectiles
-
     }
 
 

@@ -14,13 +14,8 @@ public class DesktopLauncher {
         //		config.fullscreen = true;
         config.width = 1000;
         config.height = 600;
+        config.resizable = false;
 
-        //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        //        double width2 = screenSize.getWidth();
-        //        double height2 = screenSize.getHeight();
-
-        //        config.width = (int)width2;
-        //        config.height = (int)height2;
         new LwjglApplication(new Panzerfauster(), config);
     }
 }
