@@ -15,7 +15,7 @@ public class Tank extends Entity {
     public Tank(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
                 float cooldown, float angle) {
 
-        super(image_path, EntityPacket.TANK, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
+        super(image_path, EntityData.TANK, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
         this.sprite.setSize(128, 128);
         this.sprite.setOriginCenter();
         this.setPosition(xcoordinate, ycoordinate);
@@ -29,6 +29,16 @@ public class Tank extends Entity {
         tanks.add(this);
         this.id = tanks.size();
 
+    }
+
+
+    public float getCooldown() {
+        return cooldown;
+    }
+
+
+    public float getFireSpeed() {
+        return fireSpeed;
     }
 
 
@@ -51,7 +61,7 @@ public class Tank extends Entity {
         DeltaY = (int)(this.sprite.getHeight() / 2 * Math.sin(Math.toRadians(this.angle)));
 
         GameState.addProjectile(
-            new Projectile("sprites/bomb3.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 30, 100,
+            new Projectile("sprites/bomb3.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 15, 100,
                 this.angle, this));
     }
 }

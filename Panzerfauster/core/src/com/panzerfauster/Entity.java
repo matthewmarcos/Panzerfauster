@@ -65,10 +65,8 @@ public class Entity extends BodyDef {
         //    Rotates the sprite of this entity to look at the mouse
         float mousex, mousey, realx, realy;
         mousex = x - this.width / 2;
-        //        realx = this.xcoord - this.width/2;
         realx = 0;
         mousey = -y + this.height / 2;
-        //        realy = this.ycoord - this.height/2;
         realy = 0;
 
         this.angle = (float)Math.toDegrees(Math.atan2(mousey - realy, mousex - realx));
@@ -97,12 +95,6 @@ public class Entity extends BodyDef {
     public void moveDown() {
         //        move down by speed
         this.move(0, -this.speed);
-    }
-
-
-    public void printLocation() {
-        System.out.println(
-            "Tank: X: " + xcoord + " Y: " + ycoord + " Sprite: X: " + this.sprite.getX() + " Y: " + this.sprite.getY());
     }
 
 
@@ -153,20 +145,49 @@ public class Entity extends BodyDef {
     }
 
 
-    public void updateStatus(EntityPacket p) {
-        this.xcoord = p.getX();
-        this.ycoord = p.getY();
-        this.speed = p.getSpeed();
-        this.angle = p.getAngle();
+    public int getHp() {
+        return hp;
     }
 
 
-    public EntityPacket getPacket() {
-        return new EntityPacket(this.type, this.xcoord, this.ycoord, this.speed, this.angle);
+    public int getXcoord() {
+        return xcoord;
+    }
+
+
+    public int getYcoord() {
+        return ycoord;
+    }
+
+
+    public int getWidth() {
+        return width;
+    }
+
+
+    public int getHeight() {
+        return height;
+    }
+
+
+    public float getSpeed() {
+        return speed;
+    }
+
+
+    public float getAngle() {
+        return angle;
+    }
+
+
+    public String getType() {
+        return type;
     }
 
 
     public boolean isAlive() {
         return this.isAlive;
     }
+
+
 }

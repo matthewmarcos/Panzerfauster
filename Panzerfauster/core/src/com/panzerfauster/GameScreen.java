@@ -25,18 +25,7 @@ public class GameScreen implements Screen {
     private GameState          gamestate;
 
 
-    private GameScreen() {
-        batch = new SpriteBatch();
-        camera = new OrthographicCamera(1000, 600);
-        mapTexture = new Texture(Gdx.files.internal("tiles/map.jpg"));
-        mapSprite = new Sprite(mapTexture);
-        mapSprite.setOrigin(0f, 0f);
-        mapSprite.setPosition(-mapSprite.getWidth() / 2, -mapSprite.getHeight() / 2);
-        player = new Tank("sprites/tank1.png", false, "Player", 0, 0, 5, 500f, 0);
-
-        GameState.getState().setPlayer(player);
-        GameState.addTank(player);
-    }
+    private GameScreen() {}
 
 
     public static GameScreen getScreen() {
@@ -56,6 +45,16 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        batch = new SpriteBatch();
+        camera = new OrthographicCamera(1000, 600);
+        mapTexture = new Texture(Gdx.files.internal("tiles/map.jpg"));
+        mapSprite = new Sprite(mapTexture);
+        mapSprite.setOrigin(0f, 0f);
+        mapSprite.setPosition(-mapSprite.getWidth() / 2, -mapSprite.getHeight() / 2);
+        player = new Tank("sprites/tank1.png", false, "Player", 0, 0, 5, 250f, 0);
+
+        GameState.getState().setPlayer(player);
+        GameState.addTank(player);
         // Use different listener when this becomes the state
         Gdx.input.setInputProcessor(GameState.getState());
     }

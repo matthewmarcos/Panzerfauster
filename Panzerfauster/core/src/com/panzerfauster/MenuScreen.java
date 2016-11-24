@@ -19,7 +19,7 @@ public class MenuScreen implements Screen {
 
     private MenuScreen() {
         try {
-            atlas = new TextureAtlas("icons/play.jpg");
+            // atlas = new TextureAtlas(Gdx.files.internal("icons/play.jpg"));
         }
         catch(Exception e) {
             e.printStackTrace();

@@ -99,7 +99,7 @@ public class GameState implements Runnable, InputProcessor {
                     projectiles = temp;
 
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(25);
                     }
                     catch(Exception e) {
 
