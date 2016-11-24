@@ -47,7 +47,8 @@ public class GameScreen implements Screen {
     public void show() {
         batch = new SpriteBatch();
         camera = new OrthographicCamera(1000, 600);
-        mapTexture = new Texture(Gdx.files.internal("tiles/map.jpg"));
+        // mapTexture = new Texture(Gdx.files.internal("tiles/map.jpg"));
+        mapTexture = new Texture(Gdx.files.internal("tiles/game_map.jpg"));
         mapSprite = new Sprite(mapTexture);
         mapSprite.setOrigin(0f, 0f);
         mapSprite.setPosition(-mapSprite.getWidth() / 2, -mapSprite.getHeight() / 2);

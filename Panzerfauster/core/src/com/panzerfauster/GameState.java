@@ -6,13 +6,8 @@ import java.util.ArrayList;
 
 /**
  * Created by matt on 11/11/16.
- * <p>
  * SINGLETON!!!!
- * <p>
- * This object sends the ArrayLists of tanks and projectiles to the server
- * (Thread)
- * <p>
- * `This object can print the
+ * This object sends the ArrayLists of tanks and projectiles data to the server
  */
 
 public class GameState implements Runnable, InputProcessor {

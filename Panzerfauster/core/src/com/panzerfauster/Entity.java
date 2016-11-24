@@ -16,8 +16,7 @@ public class Entity extends BodyDef {
     protected Sprite  sprite;
     protected int     hp, xcoord, ycoord, width, height, id;
     protected float speed, angle;
-    protected String type;
-
+    protected String  type;
     protected boolean isAlive;
 
 
@@ -63,13 +62,13 @@ public class Entity extends BodyDef {
 
     public void lookAt(float x, float y) {
         //    Rotates the sprite of this entity to look at the mouse
-        float mousex, mousey, realx, realy;
-        mousex = x - this.width / 2;
-        realx = 0;
-        mousey = -y + this.height / 2;
-        realy = 0;
+        float mouseX, mouseY, realX, realY;
+        mouseX = x - this.width / 2;
+        realX = 0;
+        mouseY = -y + this.height / 2;
+        realY = 0;
 
-        this.angle = (float)Math.toDegrees(Math.atan2(mousey - realy, mousex - realx));
+        this.angle = (float)Math.toDegrees(Math.atan2(mouseY - realY, mouseX - realX));
         this.sprite.setRotation(this.angle);
     }
 
@@ -188,6 +187,5 @@ public class Entity extends BodyDef {
     public boolean isAlive() {
         return this.isAlive;
     }
-
 
 }

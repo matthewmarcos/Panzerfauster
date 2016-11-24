@@ -15,7 +15,7 @@ public class Tank extends Entity {
     public Tank(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
                 float cooldown, float angle) {
 
-        super(image_path, EntityData.TANK, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
+        super(image_path, "TANK", isEnemy, name, xcoordinate, ycoordinate, speed, angle);
         this.sprite.setSize(128, 128);
         this.sprite.setOriginCenter();
         this.setPosition(xcoordinate, ycoordinate);
@@ -23,7 +23,7 @@ public class Tank extends Entity {
 
         // Setup things about Tank
         this.cooldown = cooldown;
-        lastFired = 0;
+        this.lastFired = 0d;
         this.hp = 100;
 
         tanks.add(this);
