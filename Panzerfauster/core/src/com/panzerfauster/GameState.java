@@ -16,13 +16,17 @@ public class GameState implements Runnable, InputProcessor {
     private static ArrayList<Projectile> projectiles;
     private static GameState state = new GameState();
     private Tank player;
+    private String username;
+    private boolean GAME_RUNNING; // RUNNING or NOT
 
 
     private GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
-        Thread t = new Thread(this);
+    }
 
+    public void startGame() {
+        Thread t = new Thread(this);
         t.start();
     }
 
