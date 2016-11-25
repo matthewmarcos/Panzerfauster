@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Panzerfauster extends Game {
 
-    private SpriteBatch batch      = new SpriteBatch();
+    private SpriteBatch batch;
     private GameScreen  gameScreen = GameScreen.getScreen();
     private MenuScreen  menuScreen = MenuScreen.getScreen();
     private static Panzerfauster instance;
@@ -15,7 +15,12 @@ public class Panzerfauster extends Game {
     public void create() {
         // Initially set this to menuScreen
         instance = this;
+        batch = new SpriteBatch();
         this.setScreen(menuScreen);
+    }
+
+    public void setGameScreen() {
+        this.setScreen(gameScreen);
     }
 
 
