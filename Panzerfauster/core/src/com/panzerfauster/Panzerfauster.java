@@ -24,7 +24,7 @@ public class Panzerfauster extends Game {
         gameScreen = GameScreen.getScreen();
         menuScreen = MenuScreen.getScreen();
         // this.setScreen(menuScreen);
-        this.setScreen(gameScreen);
+        this.setScreen(menuScreen);
     }
 
 
