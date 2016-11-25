@@ -12,20 +12,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameScreen implements Screen {
 
-    private static Sprite      mapSprite;
+    private static Sprite mapSprite;
     private static GameScreen screen = new GameScreen();
     // private Screen gameScreen, menuScreen;
-    private        SpriteBatch batch;
-    private        BitmapFont  font;
-    private        Texture     mapTexture;
-    private        Texture     temp;
-    private        Tank        player;
-    private        float       xPos, yPos;
+    private SpriteBatch batch;
+    private BitmapFont  font;
+    private Texture     mapTexture;
+    private Texture     temp;
+    private Tank        player;
+    private float       xPos, yPos;
     private OrthographicCamera camera;
     private GameState          gamestate;
 
 
-    private GameScreen() {}
+    private GameScreen() {
+    }
 
 
     public static GameScreen getScreen() {
@@ -56,6 +57,8 @@ public class GameScreen implements Screen {
 
         GameState.getState().setPlayer(player);
         GameState.addTank(player);
+        GameState.getState().startGame();
+
         // Use different listener when this becomes the state
         Gdx.input.setInputProcessor(GameState.getState());
     }

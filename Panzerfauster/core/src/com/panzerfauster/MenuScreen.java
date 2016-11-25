@@ -2,7 +2,10 @@ package com.panzerfauster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
@@ -11,19 +14,66 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
  */
 public class MenuScreen implements Screen {
 
-    private static MenuScreen screen = new MenuScreen();
-    private TextButton      tempButton;
-    private TextButtonStyle textButtonStyle;
+    private Stage           stage;
+    private TextButton      playButton, enterButton, startButton;
+    private TextButtonStyle playTextButtonStyle, enterTextButtonStyle, startTextButtonStyle;
+    private BitmapFont      font;
+    private Skin            skin;
     private TextureAtlas    atlas;
+
+    private static MenuScreen screen = new MenuScreen();
 
 
     private MenuScreen() {
-        try {
-            // atlas = new TextureAtlas(Gdx.files.internal("icons/play.jpg"));
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+
+    }
+
+
+    @Override
+    public void show() {
+        stage = new Stage();
+        font = new BitmapFont();
+        skin = new Skin();
+        atlas = new TextureAtlas(Gdx.files.internal("icons/buttons/buttons.pack.atlas"));
+        skin.addRegions(atlas);
+
+        initPlayButton();
+        initStartButton();
+        initEnterButton();
+        Gdx.input.setInputProcessor(stage);
+    }
+
+
+    private void initEnterButton() {
+        enterTextButtonStyle = new TextButtonStyle();
+        enterTextButtonStyle.font = font;
+        enterTextButtonStyle.up = skin.getDrawable("enter");
+        enterTextButtonStyle.down = skin.getDrawable("enter");
+        enterTextButtonStyle.checked = skin.getDrawable("enter");
+        enterButton = new TextButton("", enterTextButtonStyle);
+        stage.addActor(enterButton);
+    }
+
+
+    private void initStartButton() {
+        startTextButtonStyle = new TextButtonStyle();
+        startTextButtonStyle.font = font;
+        startTextButtonStyle.up = skin.getDrawable("start");
+        startTextButtonStyle.down = skin.getDrawable("start");
+        startTextButtonStyle.checked = skin.getDrawable("start");
+        startButton = new TextButton("", startTextButtonStyle);
+        stage.addActor(startButton);
+    }
+
+
+    private void initPlayButton() {
+        playTextButtonStyle = new TextButtonStyle();
+        playTextButtonStyle.font = font;
+        playTextButtonStyle.up = skin.getDrawable("play");
+        playTextButtonStyle.down = skin.getDrawable("play");
+        playTextButtonStyle.checked = skin.getDrawable("play");
+        playButton = new TextButton("", playTextButtonStyle);
+        stage.addActor(playButton);
     }
 
 
@@ -33,14 +83,8 @@ public class MenuScreen implements Screen {
 
 
     @Override
-    public void show() {
-        Gdx.input.setInputProcessor(null);
-    }
-
-
-    @Override
     public void render(float delta) {
-
+        stage.draw();
     }
 
 
@@ -72,4 +116,5 @@ public class MenuScreen implements Screen {
     public void dispose() {
 
     }
+
 }
