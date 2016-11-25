@@ -25,15 +25,15 @@ public class Main extends JFrame {
                 Thread t = new Thread(server);
                 t.start();
 
-                JLabel info = new JLabel(portNumber+ " Running...");
+                startButton.hide();
+
+                JLabel info = new JLabel("Running...");
                 panel.add(info);
 
-                JTextField connectionField = new JTextField(2);
+                JTextArea connectionField = new JTextArea(50, 100);
+                connectionField.setEditable(false);
                 connections=getConnected();
-                connectionField.setText("may nakaconnect");
-                /*for (Connection c : connections){
-                    connectionField.setText(c.getSocket().getRemoteSocketAddress().toString());
-                }*/
+                connectionField.append("may nakaconnect\n");
                 
                 panel.add(connectionField);
 
