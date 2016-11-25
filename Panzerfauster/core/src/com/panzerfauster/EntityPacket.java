@@ -19,6 +19,21 @@ public class EntityPacket {
     }
 
 
+    public ArrayList<TankData> getTankData() {
+        return tankData;
+    }
+
+
+    public ArrayList<ProjectileData> getProjectileData() {
+        return projectileData;
+    }
+
+
+    public String getUsername() {
+        return username;
+    }
+
+
     private EntityPacket() {
     }
 }

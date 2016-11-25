@@ -64,4 +64,64 @@ public class Tank extends Entity {
             new Projectile("sprites/bomb3.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 15, 100,
                 this.angle, this));
     }
+
+
+    private void move(float x, float y) {
+
+        //Check if xcoord and ycoord are within map bounds
+        if(this.xcoord + x < -1 * GameScreen.getMapWidth() / 2) {
+            return;
+        }
+        if(this.xcoord + x > GameScreen.getMapWidth() / 2) {
+            return;
+        }
+        if(this.ycoord + y < -1 * GameScreen.getMapHeight() / 2) {
+            return;
+        }
+        if(this.ycoord + y > GameScreen.getMapHeight() / 2) {
+            return;
+        }
+
+        this.xcoord += x;
+        this.ycoord += y;
+
+        this.setPosition(this.xcoord, this.ycoord);
+    }
+
+
+    public void lookAt(float x, float y) {
+        //    Rotates the sprite of this entity to look at the mouse
+        float mouseX, mouseY, realX, realY;
+        mouseX = x - this.width / 2;
+        realX = 0;
+        mouseY = -y + this.height / 2;
+        realY = 0;
+
+        this.angle = (float)Math.toDegrees(Math.atan2(mouseY - realY, mouseX - realX));
+        this.sprite.setRotation(this.angle);
+    }
+
+
+    public void moveLeft() {
+        //        Move left by speed
+        this.move(-this.speed, 0);
+    }
+
+
+    public void moveRight() {
+        //        Move right by speed
+        this.move(this.speed, 0);
+    }
+
+
+    public void moveUp() {
+        //        move up by speed
+        this.move(0, this.speed);
+    }
+
+
+    public void moveDown() {
+        //        move down by speed
+        this.move(0, -this.speed);
+    }
 }
