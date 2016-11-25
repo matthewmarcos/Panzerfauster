@@ -7,12 +7,12 @@ public class Projectile extends Entity {
 
     protected Tank owner;
 
-    protected int lifeRemaining = 100;
+    protected int distanceRemaining = 100;
 
 
     public Projectile(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
-                      int lifespan, float angle, Tank owner) {
-        super(image_path, EntityPacket.PROJECTILE, isEnemy, name, xcoordinate, ycoordinate, speed, angle);
+                      int range, float angle, Tank owner) {
+        super(image_path, "PROJECTILE", isEnemy, name, xcoordinate, ycoordinate, speed, angle);
         this.isAlive = true;
         this.owner = owner;
 
@@ -24,7 +24,7 @@ public class Projectile extends Entity {
         this.setPosition(xcoordinate, ycoordinate);
 
         //Set bullet statistics
-        this.lifeRemaining = lifespan;
+        this.distanceRemaining = range;
     }
 
 
@@ -33,7 +33,7 @@ public class Projectile extends Entity {
         int deltaX = (int)(Math.cos(Math.toRadians(this.angle)) * this.speed);
         int deltaY = (int)(Math.sin(Math.toRadians(this.angle)) * this.speed);
 
-        if(--lifeRemaining < 0) {
+        if(--distanceRemaining < 0) {
             this.isAlive = false;
             return;
         }

@@ -1,54 +1,39 @@
 package com.panzerfauster;
 
-/**
- * Created by matt on 11/22/16.
- */
+import java.util.ArrayList;
 
+/**
+ * Created by matth on 11/25/2016.
+ */
 public class EntityPacket {
 
-    public static final String PROJECTILE = "PROJECTILE";
-    public static final String TANK       = "TANK";
-    public static final String ENEMY      = "ENEMY";
-    private int xcoord, ycoord;
-    private int id, hp, damage;
-    private float lastFired;
-    private float speed, angle, cooldown;
-    private String entityType;
+    protected ArrayList<TankData>       tankData;
+    protected ArrayList<ProjectileData> projectileData;
+    protected String                    username;
 
 
-    public EntityPacket(String entityType, int xcoord, int ycoord, float speed, float angle) {
-        //Check if all values exist.
-        this.xcoord = xcoord;
-        this.ycoord = ycoord;
-        this.speed = speed;
-        this.angle = angle;
-        this.entityType = entityType;
-
+    public EntityPacket(ArrayList<TankData> tankData, ArrayList<ProjectileData> projectileData, String username) {
+        this.tankData = tankData;
+        this.projectileData = projectileData;
+        this.username = username;
     }
 
 
-    public String getType() {
-        return this.entityType;
+    public ArrayList<TankData> getTankData() {
+        return tankData;
     }
 
 
-    public int getX() {
-        return this.xcoord;
+    public ArrayList<ProjectileData> getProjectileData() {
+        return projectileData;
     }
 
 
-    public int getY() {
-        return this.ycoord;
+    public String getUsername() {
+        return username;
     }
 
 
-    public float getSpeed() {
-        return this.speed;
+    private EntityPacket() {
     }
-
-
-    public float getAngle() {
-        return this.angle;
-    }
-
 }
