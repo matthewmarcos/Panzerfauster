@@ -15,8 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 public class MenuScreen implements Screen {
 
     private Stage           stage;
-    private TextButton      playButton;
-    private TextButtonStyle playTextButtonStyle;
+    private TextButton      playButton, enterButton, startButton;
+    private TextButtonStyle playTextButtonStyle, enterTextButtonStyle, startTextButtonStyle;
     private BitmapFont      font;
     private Skin            skin;
     private TextureAtlas    atlas;
@@ -37,12 +37,36 @@ public class MenuScreen implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("icons/buttons/buttons.pack.atlas"));
         skin.addRegions(atlas);
 
-        setPlayButton();
+        initPlayButton();
+        initStartButton();
+        initEnterButton();
         Gdx.input.setInputProcessor(stage);
     }
 
 
-    private void setPlayButton() {
+    private void initEnterButton() {
+        enterTextButtonStyle = new TextButtonStyle();
+        enterTextButtonStyle.font = font;
+        enterTextButtonStyle.up = skin.getDrawable("enter");
+        enterTextButtonStyle.down = skin.getDrawable("enter");
+        enterTextButtonStyle.checked = skin.getDrawable("enter");
+        enterButton = new TextButton("", enterTextButtonStyle);
+        stage.addActor(enterButton);
+    }
+
+
+    private void initStartButton() {
+        startTextButtonStyle = new TextButtonStyle();
+        startTextButtonStyle.font = font;
+        startTextButtonStyle.up = skin.getDrawable("start");
+        startTextButtonStyle.down = skin.getDrawable("start");
+        startTextButtonStyle.checked = skin.getDrawable("start");
+        startButton = new TextButton("", startTextButtonStyle);
+        stage.addActor(startButton);
+    }
+
+
+    private void initPlayButton() {
         playTextButtonStyle = new TextButtonStyle();
         playTextButtonStyle.font = font;
         playTextButtonStyle.up = skin.getDrawable("play");
