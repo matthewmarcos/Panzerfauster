@@ -78,4 +78,12 @@ public class Connection implements Runnable {
         }
     }
 
+    public static ArrayList<Connection> getConnections(){
+        return connections;
+    }
+
+    public Socket getSocket(){
+        return conn;
+    }
+
 }
