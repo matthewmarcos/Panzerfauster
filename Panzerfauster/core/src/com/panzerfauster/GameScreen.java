@@ -139,7 +139,12 @@ public class GameScreen implements Screen {
         player.getTexture().dispose();
         batch.dispose();
         mapTexture.dispose();
+
         for(Tank s : GameState.getTanks()) {
+            s.getTexture().dispose();
+        }
+
+        for(Projectile s : GameState.getProjectiles()) {
             s.getTexture().dispose();
         }
     }
