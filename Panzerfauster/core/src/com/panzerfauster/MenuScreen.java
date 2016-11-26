@@ -176,7 +176,9 @@ public class MenuScreen implements Screen {
         enterButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
-                System.out.println("Clicked Enter Button");
+                String ipAddress = ipTextField.getText();
+                String username = usernameTextField.getText();
+                System.out.println("Hello " + username + "! You are trying to connect to: " + ipAddress);
             }
         });
 
