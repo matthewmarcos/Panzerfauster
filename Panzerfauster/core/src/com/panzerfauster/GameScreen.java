@@ -30,6 +30,7 @@ public class GameScreen implements Screen {
 
 
     public static GameScreen getScreen() {
+
         return screen;
     }
 
@@ -41,6 +42,7 @@ public class GameScreen implements Screen {
 
 
     public static int getMapHeight() {
+
         return (int)mapSprite.getHeight();
     }
 
