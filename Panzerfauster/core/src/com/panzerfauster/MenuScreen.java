@@ -3,6 +3,7 @@ package com.panzerfauster;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 /**
  * Created by matt on 11/23/16.
@@ -22,7 +24,7 @@ public class MenuScreen implements Screen {
 
     private static MenuScreen screen = new MenuScreen();
     private Stage      stage;
-    private Table      buttonTable;
+    private Table      connectTable;
     private TextButton playButton, enterButton;
     private TextButtonStyle textButtonStyle;
     private TextField       usernameTextField, ipTextField;
@@ -50,7 +52,7 @@ public class MenuScreen implements Screen {
         buttonSkin = new Skin();
         textFieldSkin = new Skin();
 
-        buttonTable = new Table();
+        connectTable = new Table();
 
         buttonAtlas = new TextureAtlas(Gdx.files.internal("icons/buttons/buttons.pack.atlas"));
         buttonSkin.addRegions(buttonAtlas);
@@ -58,7 +60,7 @@ public class MenuScreen implements Screen {
         textFieldAtlas = new TextureAtlas(Gdx.files.internal("icons/textfield/textfield.atlas"));
         textFieldSkin.addRegions(textFieldAtlas);
 
-        stage.addActor(buttonTable);
+        stage.addActor(connectTable);
 
         initTextButtonStyle();
         initTextFieldStyle();
@@ -69,21 +71,24 @@ public class MenuScreen implements Screen {
         initUsernameTextField();
         initIpTextField();
 
-        buttonTable.setWidth(512f);
-        buttonTable.add(ipTextField).padBottom(10f).row();
-        buttonTable.add(usernameTextField).padBottom(10f).row();
-        buttonTable.add(enterButton).size(256, 54).padBottom(30f).row();
-        buttonTable.add(playButton).size(256, 54).padBottom(30f).row();
+        connectTable.setWidth(256f);
+        connectTable.add(ipTextField).padBottom(10f).size(256f, 30f).row();
+        connectTable.add(usernameTextField).padBottom(10f).size(256f, 30f).row();
+        connectTable.add(enterButton).size(120, 30f).padBottom(30f).row();
+        connectTable.add(playButton).size(120, 30f).padBottom(30f);
 
         // Place table at an arbitrary position
-        buttonTable.setPosition(500 - 272, 300);
+        // connectTable.setPosition(500 - 272, 300);
 
+        connectTable.setPosition(10f, 400f);
         Gdx.input.setInputProcessor(stage);
     }
 
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0.1f, 1, 0.4f, 0.05f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }
 
@@ -128,15 +133,14 @@ public class MenuScreen implements Screen {
 
     private void initIpTextField() {
         //Initialize the IP Address TextField
-        ipTextField = new TextField("", textFieldStyle);
-        ipTextField.setMessageText("test");
-        ipTextField.setPosition(0, 0);
-
+        ipTextField = new TextField("127.0.0.1", textFieldStyle);
+        ipTextField.setAlignment(Align.center);
     }
 
 
     private void initUsernameTextField() {
-        usernameTextField = new TextField("", textFieldStyle);
+        usernameTextField = new TextField("Noob Pwnzer 69", textFieldStyle);
+        usernameTextField.setAlignment(Align.center);
     }
 
 
