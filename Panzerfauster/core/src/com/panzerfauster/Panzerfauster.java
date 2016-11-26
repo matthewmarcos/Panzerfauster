@@ -20,6 +20,7 @@ public class Panzerfauster extends Game {
     }
 
     public void setGameScreen() {
+        // Set screen back to GameScreen
         this.setScreen(gameScreen);
     }
 
