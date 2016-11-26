@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
@@ -21,11 +23,13 @@ public class MenuScreen implements Screen {
     private static MenuScreen screen = new MenuScreen();
     private Stage      stage;
     private Table      buttonTable;
-    private TextButton playButton, enterButton, startButton;
+    private TextButton playButton, enterButton;
     private TextButtonStyle textButtonStyle;
-    private BitmapFont      font;
-    private Skin            skin;
-    private TextureAtlas    atlas;
+    private TextField       usernameTextField, ipTextField;
+    private TextField.TextFieldStyle textFieldStyle;
+    private BitmapFont               font;
+    private Skin                     buttonSkin, textFieldSkin;
+    private TextureAtlas buttonAtlas, textFieldAtlas;
 
 
     private MenuScreen() {
@@ -42,30 +46,37 @@ public class MenuScreen implements Screen {
     public void show() {
         stage = new Stage();
         font = new BitmapFont();
-        font.setColor(Color.BLACK);
-        skin = new Skin();
+
+        buttonSkin = new Skin();
+        textFieldSkin = new Skin();
+
         buttonTable = new Table();
-        atlas = new TextureAtlas(Gdx.files.internal("icons/buttons/buttons.pack.atlas"));
-        skin.addRegions(atlas);
+
+        buttonAtlas = new TextureAtlas(Gdx.files.internal("icons/buttons/buttons.pack.atlas"));
+        buttonSkin.addRegions(buttonAtlas);
+
+        textFieldAtlas = new TextureAtlas(Gdx.files.internal("icons/textfield/textfield.atlas"));
+        textFieldSkin.addRegions(textFieldAtlas);
 
         stage.addActor(buttonTable);
 
-        //Initialize the button skins
-        textButtonStyle = new TextButtonStyle();
-        textButtonStyle.font = font;
-        textButtonStyle.up = skin.getDrawable("unpressed");
-        textButtonStyle.down = skin.getDrawable("pressed");
-        textButtonStyle.checked = skin.getDrawable("unpressed");
+        initTextButtonStyle();
+        initTextFieldStyle();
 
         initPlayButton();
         initEnterButton();
 
-        buttonTable.setWidth(256f);
+        initUsernameTextField();
+        initIpTextField();
 
+        buttonTable.setWidth(512f);
+        buttonTable.add(ipTextField).padBottom(10f).row();
+        buttonTable.add(usernameTextField).padBottom(10f).row();
         buttonTable.add(enterButton).size(256, 54).padBottom(30f).row();
         buttonTable.add(playButton).size(256, 54).padBottom(30f).row();
 
-        buttonTable.setPosition(435, 300);
+        // Place table at an arbitrary position
+        buttonTable.setPosition(500 - 272, 300);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -104,6 +115,39 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+
+    private void initTextFieldStyle() {
+        textFieldStyle = new TextFieldStyle();
+        textFieldStyle.font = font;
+        textFieldStyle.fontColor = Color.BLACK;
+        textFieldStyle.background = textFieldSkin.getDrawable("textfield");
+    }
+
+
+    private void initIpTextField() {
+        //Initialize the IP Address TextField
+        ipTextField = new TextField("", textFieldStyle);
+        ipTextField.setMessageText("test");
+        ipTextField.setPosition(0, 0);
+
+    }
+
+
+    private void initUsernameTextField() {
+        usernameTextField = new TextField("", textFieldStyle);
+    }
+
+
+    private void initTextButtonStyle() {
+        //Initialize the button skins
+        textButtonStyle = new TextButtonStyle();
+        textButtonStyle.font = font;
+        textButtonStyle.fontColor = Color.BLACK;
+        textButtonStyle.up = buttonSkin.getDrawable("unpressed");
+        textButtonStyle.down = buttonSkin.getDrawable("pressed");
+        textButtonStyle.checked = buttonSkin.getDrawable("unpressed");
     }
 
 

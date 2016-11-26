@@ -15,19 +15,14 @@ public class GameState implements Runnable, InputProcessor {
     private static ArrayList<Tank>       tanks;
     private static ArrayList<Projectile> projectiles;
     private static GameState state = new GameState();
-    private Tank player;
-    private String username;
+    private Tank    player;
+    private String  username;
     private boolean GAME_RUNNING; // RUNNING or NOT
 
 
     private GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
-    }
-
-    public void startGame() {
-        Thread t = new Thread(this);
-        t.start();
     }
 
 
@@ -53,6 +48,12 @@ public class GameState implements Runnable, InputProcessor {
 
     public static void addProjectile(Projectile p) {
         projectiles.add(p);
+    }
+
+
+    public void startGame() {
+        Thread t = new Thread(this);
+        t.start();
     }
 
 
@@ -150,12 +151,14 @@ public class GameState implements Runnable, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
         return false;
     }
 
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+
         return false;
     }
 

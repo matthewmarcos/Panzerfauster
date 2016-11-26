@@ -35,6 +35,7 @@ public class GameScreen implements Screen {
 
 
     public static int getMapWidth() {
+
         return (int)mapSprite.getWidth();
     }
 
