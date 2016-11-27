@@ -14,12 +14,15 @@ public class Entity extends BodyDef {
 
     protected Texture texture;
     protected Sprite  sprite;
-    protected int     xcoord, ycoord, width, height;
+
+    protected int hp, xcoord, ycoord, width, height, id;
     protected float speed, angle;
+    protected String  type;
+    protected boolean isAlive;
 
 
-    protected Entity(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
-                     float angle) {
+    protected Entity(String image_path, String type, boolean isEnemy, String name, int xcoordinate, int ycoordinate,
+                     int speed, float angle) {
 
         super();
 
@@ -31,16 +34,13 @@ public class Entity extends BodyDef {
             e.printStackTrace();
         }
 
-        this.sprite.setOriginCenter();
-
         // Refers to the game screen
         this.width = Gdx.graphics.getWidth();
         this.height = Gdx.graphics.getHeight();
 
-        this.setPosition(xcoordinate, ycoordinate);
         this.speed = speed;
         this.angle = angle;
-        this.sprite.setRotation(this.angle);
+        this.type = type;
     }
 
 
@@ -56,48 +56,8 @@ public class Entity extends BodyDef {
     }
 
 
-    public void lookAt(float x, float y) {
-        //    Rotates the sprite of this entity to look at the mouse
-        float mousex, mousey, realx, realy;
-        mousex = x - this.width / 2;
-        //        realx = this.xcoord - this.width/2;
-        realx = 0;
-        mousey = -y + this.height / 2;
-        //        realy = this.ycoord - this.height/2;
-        realy = 0;
-
-        this.angle = (float)Math.toDegrees(Math.atan2(mousey - realy, mousex - realx));
-        this.sprite.setRotation(this.angle);
-    }
-
-
-    public void moveLeft() {
-        //        Move left by speed
-        this.move(-this.speed, 0);
-    }
-
-
-    public void moveRight() {
-        //        Move right by speed
-        this.move(this.speed, 0);
-    }
-
-
-    public void moveUp() {
-        //        move up by speed
-        this.move(0, this.speed);
-    }
-
-
-    public void moveDown() {
-        //        move down by speed
-        this.move(0, -this.speed);
-    }
-
-
-    public void printLocation() {
-        System.out.println(
-            "Tank: X: " + xcoord + " Y: " + ycoord + " Sprite: X: " + this.sprite.getX() + " Y: " + this.sprite.getY());
+    protected int getId() {
+        return this.id;
     }
 
 
@@ -125,26 +85,48 @@ public class Entity extends BodyDef {
     }
 
 
-    private void move(float x, float y) {
+    public int getHp() {
+        return hp;
+    }
 
-        //Check if xcoord and ycoord are within map bounds
-        if(this.xcoord + x < -1 * Panzerfauster.getMapWidth() / 2) {
-            return;
-        }
-        if(this.xcoord + x > Panzerfauster.getMapWidth() / 2) {
-            return;
-        }
-        if(this.ycoord + y < -1 * Panzerfauster.getMapHeight() / 2) {
-            return;
-        }
-        if(this.ycoord + y > Panzerfauster.getMapHeight() / 2) {
-            return;
-        }
 
-        this.xcoord += x;
-        this.ycoord += y;
+    public int getXcoord() {
+        return xcoord;
+    }
 
-        this.setPosition(this.xcoord, this.ycoord);
+
+    public int getYcoord() {
+        return ycoord;
+    }
+
+
+    public int getWidth() {
+        return width;
+    }
+
+
+    public int getHeight() {
+        return height;
+    }
+
+
+    public float getSpeed() {
+        return speed;
+    }
+
+
+    public float getAngle() {
+        return angle;
+    }
+
+
+    public String getType() {
+        return type;
+    }
+
+
+    public boolean isAlive() {
+        return this.isAlive;
     }
 
 }

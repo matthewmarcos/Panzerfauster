@@ -8,6 +8,7 @@ public class Client extends JFrame {
     private static Container cont;
     private String message;
     private Game currentGame;
+    private PanzerfausterPlayer player;
 
     public Client(String serverIP, int port, String name) {
         // Setting up GUI
@@ -17,6 +18,8 @@ public class Client extends JFrame {
 
         try {
             currentGame = new Game(serverIP, port, name);
+            player = new PanzerfausterPlayer(serverIP, name)
+
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -12,6 +12,14 @@ public class PazerfausterServer implements Runnable {
     private ArrayList<Thread> clients;
     private ArrayList<Connection> connections;
 
+    final int PORT = 4500;
+    DatagramSocket datagramSocket;
+    private static GameState curState;
+    private int numPLayers;
+
+    private int[] buf;
+    private String playerData;
+
 
     public PazerfausterServer(int port) {
 
@@ -21,6 +29,8 @@ public class PazerfausterServer implements Runnable {
         try {
             serverSocket = new ServerSocket(port);
             serverSocket.setSoTimeout(0);
+
+            datagramSocket = new DatagramSocket(PORT);
         }
         catch (Exception e) {}
 
@@ -29,11 +39,43 @@ public class PazerfausterServer implements Runnable {
     public void run() {
         System.out.println("Listening to port: " + port);
         while(true) {
+
+            byte[] buf = new byte[256];
+
+             DatagramPacket packet = new DatagramPacket(buf, buf.length);
+            try{
+                datagramSocket.receive(packet);
+            }catch(Exception ioe){}
+
+            playerData=new String(buf);
+            playerData = playerData.trim();
+
+            String[] playerInfo = playerData.split(" ");
+            String pname =playerInfo[1];
+            int x = Integer.parseInt(playerInfo[2].trim());
+            int y = Integer.parseInt(playerInfo[3].trim());
+            //Get the player from the game state
+            NetPlayer player=(NetPlayer)game.getPlayers().get(pname);
+            player.setX(x);
+            player.setY(y);
+            //Update the game state
+            game.update(pname, player);
+            //Send to all the updated game state
+            broadcastGame(curState.toString());
+
             try {
                 // Listen for connections
                 Socket server = serverSocket.accept();
                 server.setSoTimeout(0);
                 System.out.println("A client has connected!");
+
+                DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                try{
+                    datagramSocket.receive(packet);
+                }catch(Exception ioe){}
+
+                playerData=new String(buf);
+                playerData = playerData.trim();
 
                 // Getting input and output streams of client
                 out = new DataOutputStream(
@@ -62,5 +104,21 @@ public class PazerfausterServer implements Runnable {
          }catch(Exception e){
             e.printStackTrace();
          }
+    }
+
+    public broadcastGame(Gamestate curState){
+        for(Iterator i = )
+            datagramSocket.sendGame(player, msg);
+    }
+
+    public sendGame(Player player, String msg){
+        DatagramPacket packet;
+        byte buf[] = msg.getBytes();
+        packet = new DatagramPacket(buf, buf.length, player.getAddress(),player.getPort());
+        try{
+            serverSocket.send(packet);
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+        }
     }
 }
