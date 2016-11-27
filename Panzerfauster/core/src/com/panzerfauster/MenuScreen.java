@@ -1,12 +1,14 @@
 package com.panzerfauster;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -23,7 +25,7 @@ public class MenuScreen implements Screen {
     private static MenuScreen screen = new MenuScreen();
     private Stage stage;
     private Table connectTable, chatTable;
-    private TextButton playButton, enterButton, sendButton;
+    private TextButton playButton, enterButton;
     private TextButtonStyle textButtonStyle;
     private TextField       usernameTextField, ipTextField, chatBarTextField;
     private TextArea                 chatBoxTextArea;
@@ -79,16 +81,28 @@ public class MenuScreen implements Screen {
         connectTable.setPosition(10f, 400f);
 
         // For the chat
-        initSendButton();
         initChatBarTextField();
         initChatBoxTextArea();
 
         chatTable.setWidth(512f);
         chatTable.add(chatBoxTextArea).padBottom(10f).size(512f, 256f).row();
-        chatTable.add(chatBarTextField).size(412f, 30f);
-        chatTable.add(sendButton).size(92f, 30f).row();
+        chatTable.add(chatBarTextField).size(512f, 30f).row();
         chatTable.setPosition(400f, 400f);
 
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                // return super.keyDown(event, keycode);
+                if(stage.getKeyboardFocus() == chatBarTextField && event.getKeyCode() == Input.Keys.ENTER) {
+                    String content = chatBarTextField.getText();
+                    chatBarTextField.setText("");
+                    System.out.println(content);
+
+
+                }
+                return true;
+            }
+        });
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -134,7 +148,7 @@ public class MenuScreen implements Screen {
 
     private void initChatBarTextField() {
         chatBarTextField = new TextField("Say Something I'm giving up on you", textFieldStyle);
-        chatBarTextField.setAlignment(Align.center);
+        chatBarTextField.setAlignment(Align.left);
     }
 
 
@@ -152,18 +166,6 @@ public class MenuScreen implements Screen {
         chatBoxTextArea.setDisabled(true);
         chatBoxTextArea.setAlignment(Align.center);
 
-    }
-
-
-    private void initSendButton() {
-        sendButton = new TextButton("Send", textButtonStyle);
-
-        sendButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent ev, float x, float y) {
-                System.out.println("Clicked the send button");
-            }
-        });
     }
 
 
