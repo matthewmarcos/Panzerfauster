@@ -1,5 +1,6 @@
 package com.panzerfauster;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -16,6 +17,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.net.ServerSocket;
+import com.badlogic.gdx.net.ServerSocketHints;
+import com.badlogic.gdx.Net.Protocol;
+import com.badlogic.gdx.net.Socket;
+import com.badlogic.gdx.net.SocketHints;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.*;
 
 /**
  * Created by matt on 11/23/16.
@@ -82,7 +92,7 @@ public class MenuScreen implements Screen {
 
         // For the chat
         initChatBarTextField();
-        initChatBoxTextArea();
+        //initChatBoxTextArea(" ");
 
         chatTable.setWidth(512f);
         chatTable.add(chatBoxTextArea).padBottom(10f).size(512f, 256f).row();
@@ -147,12 +157,26 @@ public class MenuScreen implements Screen {
 
 
     private void initChatBarTextField() {
+
+
         chatBarTextField = new TextField("Say Something I'm giving up on you", textFieldStyle);
+        String message = chatBarTextField.getMessageText();
+        initChatBoxTextArea(message);
+
+        Socket conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
+
+        try {
+            conn.getOutputStream().write(message.getBytes());
+            String response = new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
+        } catch (Exception e) {
+
+        }
+
         chatBarTextField.setAlignment(Align.left);
     }
 
 
-    private void initChatBoxTextArea() {
+    private void initChatBoxTextArea(String message) {
 
         Drawable cursor = textFieldSkin.newDrawable("textfield", Color.WHITE);
         cursor.setMinWidth(2f);
@@ -161,11 +185,10 @@ public class MenuScreen implements Screen {
 
         f.fontColor = Color.BLACK;
 
-        chatBoxTextArea = new TextArea("I'm a bird! I'm a plane! I'm a birdplane!", f);
+        chatBoxTextArea = new TextArea(message, f);
         chatBoxTextArea.setPrefRows(10f);
         chatBoxTextArea.setDisabled(true);
         chatBoxTextArea.setAlignment(Align.center);
-
     }
 
 
@@ -227,6 +250,9 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent ev, float x, float y) {
                 String ipAddress = ipTextField.getText();
                 String username = usernameTextField.getText();
+
+
+
                 ipTextField.setDisabled(true);
                 usernameTextField.setDisabled(true);
                 enterButton.setDisabled(true);
