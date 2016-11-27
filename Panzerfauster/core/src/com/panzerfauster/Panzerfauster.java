@@ -24,6 +24,11 @@ public class Panzerfauster extends Game {
         this.setScreen(gameScreen);
     }
 
+    public void setMainMenuScreen() {
+        // Set screen back to MenuScreen
+        this.setScreen(menuScreen);
+    }
+
 
     public static Panzerfauster getInstance() {
         return instance;
