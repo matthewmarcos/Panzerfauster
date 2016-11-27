@@ -32,10 +32,10 @@ public class Connection implements Runnable {
             System.out.println("Running!");
             try {
                 msg = in.readUTF();
-                System.out.println("MERON");
+                System.out.println(msg);
                 
                 if(msg == null) {
-                  System.out.println("WALA!!!");
+                  //System.out.println("WALA!!!");
                     //continue;
                 }
                 
@@ -46,7 +46,7 @@ public class Connection implements Runnable {
             }
 
             this.broadcast(msg);
-             System.out.println("Continue");
+             //System.out.println("Continue");
         }
 
         System.out.println("Escaped main loop");

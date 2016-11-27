@@ -20,11 +20,11 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.Net.Protocol;
-import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.DataOutputStream;
+import java.io.DataInputStream;
 import java.net.*;
 
 /**
@@ -44,6 +44,8 @@ public class MenuScreen implements Screen {
     private Skin                     buttonSkin, textFieldSkin;
     private TextureAtlas buttonAtlas, textFieldAtlas;
     private Socket conn;
+    private DataOutputStream out;
+    private DataInputStream in;
 
 
     private MenuScreen() {
@@ -109,14 +111,24 @@ public class MenuScreen implements Screen {
                     String content = chatBarTextField.getText();
                     chatBarTextField.setText("");
 
-                    //System.out.println(content);
+                    System.out.println("From you: "+content);
 
                     try {
-                        conn.getOutputStream().write(content.getBytes());
-                        System.out.println(content);
-                     //   String response = new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
-                    } catch (Exception e) {
-                        System.out.println("wala eh");
+                        out = new DataOutputStream(
+                                conn.getOutputStream()
+                        );
+                        out.writeUTF(content);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    try{
+                       String message = in.readUTF(); //gets the message from server
+                        initChatBoxTextArea(message);
+                        System.out.println("From someone: "+message);
+                    }catch(Exception e){
+                        e.printStackTrace();
                     }
 
 
@@ -174,6 +186,7 @@ public class MenuScreen implements Screen {
 
                 String message = chatBarTextField.getText();
                 initChatBoxTextArea(message);
+
 
         chatBarTextField.setAlignment(Align.left);
     }
@@ -255,7 +268,10 @@ public class MenuScreen implements Screen {
                 String ipAddress = ipTextField.getText();
                 String username = usernameTextField.getText();
 
-                conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
+               // conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
+                try {
+                    conn = new Socket(ipTextField.getText(), 8000);
+                }catch(Exception e){}
 
                 ipTextField.setDisabled(true);
                 usernameTextField.setDisabled(true);
