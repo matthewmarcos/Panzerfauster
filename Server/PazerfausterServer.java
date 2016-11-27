@@ -1,5 +1,3 @@
-package com.panzerfauster;
-
 
 import java.net.*;
 import java.io.*;
@@ -44,7 +42,10 @@ public class PazerfausterServer implements Runnable {
                 );
                 in = new DataInputStream(
                     server.getInputStream()
+
                 );
+
+                System.out.println(out);
 
                 Connection newConn = new Connection(server, out, in, this);
                 Thread temp = new Thread(newConn);

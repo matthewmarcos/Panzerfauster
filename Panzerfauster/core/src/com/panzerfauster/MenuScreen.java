@@ -43,6 +43,7 @@ public class MenuScreen implements Screen {
     private BitmapFont               font;
     private Skin                     buttonSkin, textFieldSkin;
     private TextureAtlas buttonAtlas, textFieldAtlas;
+    private Socket conn;
 
 
     private MenuScreen() {
@@ -92,6 +93,7 @@ public class MenuScreen implements Screen {
 
         // For the chat
         initChatBarTextField();
+
         //initChatBoxTextArea(" ");
 
         chatTable.setWidth(512f);
@@ -106,7 +108,16 @@ public class MenuScreen implements Screen {
                 if(stage.getKeyboardFocus() == chatBarTextField && event.getKeyCode() == Input.Keys.ENTER) {
                     String content = chatBarTextField.getText();
                     chatBarTextField.setText("");
-                    System.out.println(content);
+
+                    //System.out.println(content);
+
+                    try {
+                        conn.getOutputStream().write(content.getBytes());
+                        System.out.println(content);
+                     //   String response = new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
+                    } catch (Exception e) {
+                        System.out.println("wala eh");
+                    }
 
 
                 }
@@ -160,17 +171,9 @@ public class MenuScreen implements Screen {
 
 
         chatBarTextField = new TextField("Say Something I'm giving up on you", textFieldStyle);
-        String message = chatBarTextField.getMessageText();
-        initChatBoxTextArea(message);
 
-        Socket conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
-
-        try {
-            conn.getOutputStream().write(message.getBytes());
-            String response = new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
-        } catch (Exception e) {
-
-        }
+                String message = chatBarTextField.getText();
+                initChatBoxTextArea(message);
 
         chatBarTextField.setAlignment(Align.left);
     }
@@ -186,6 +189,7 @@ public class MenuScreen implements Screen {
         f.fontColor = Color.BLACK;
 
         chatBoxTextArea = new TextArea(message, f);
+        System.out.println("From Chat: "+message);
         chatBoxTextArea.setPrefRows(10f);
         chatBoxTextArea.setDisabled(true);
         chatBoxTextArea.setAlignment(Align.center);
@@ -251,7 +255,7 @@ public class MenuScreen implements Screen {
                 String ipAddress = ipTextField.getText();
                 String username = usernameTextField.getText();
 
-
+                conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
 
                 ipTextField.setDisabled(true);
                 usernameTextField.setDisabled(true);
@@ -259,6 +263,7 @@ public class MenuScreen implements Screen {
                 System.out.println("Hello " + username + "! You are trying to connect to: " + ipAddress);
             }
         });
+
 
     }
 
