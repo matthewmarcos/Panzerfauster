@@ -10,6 +10,7 @@ public class Tank extends Entity {
     private static ArrayList<Tank> tanks = new ArrayList<Tank>();
     private float cooldown, fireSpeed;
     private double lastFired;
+    private int    bulletDamage, kills;
 
 
     public Tank(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
@@ -25,9 +26,11 @@ public class Tank extends Entity {
         this.cooldown = cooldown;
         this.lastFired = 0d;
         this.hp = 100;
+        this.maxHp = 100;
+        this.bulletDamage = 25;
 
         tanks.add(this);
-        this.id = tanks.size();
+        this.id = "tank-" + GameState.getState().getUsername();
 
     }
 
@@ -124,4 +127,11 @@ public class Tank extends Entity {
         //        move down by speed
         this.move(0, -this.speed);
     }
+
+
+    public TankData getTankData() {
+        return new TankData(this.id, this.hp, this.maxHp, this.bulletDamage, this.xcoord, this.ycoord, this.kills,
+            this.lastFired, this.speed, this.angle, this.cooldown);
+    }
+
 }

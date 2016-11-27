@@ -15,9 +15,9 @@ public class Entity extends BodyDef {
     protected Texture texture;
     protected Sprite  sprite;
 
-    protected int hp, xcoord, ycoord, width, height, id;
+    protected int hp, maxHp,  xcoord, ycoord, width, height;
     protected float speed, angle;
-    protected String  type;
+    protected String type, id;
     protected boolean isAlive;
 
 
@@ -56,7 +56,7 @@ public class Entity extends BodyDef {
     }
 
 
-    protected int getId() {
+    protected String getId() {
         return this.id;
     }
 

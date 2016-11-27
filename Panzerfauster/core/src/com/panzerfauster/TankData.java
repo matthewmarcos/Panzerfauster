@@ -8,12 +8,12 @@ public class TankData {
 
     private String id;
     private int    hp, maxHp, projectileDamage, xcoord, ycoord, kills;
-    private float lastFired;
+    private double lastFired;
     private float speed, angle, cooldown;
 
 
     public TankData(String id, int hp, int maxHp, int projectileDamage, int xcoord, int ycoord, int kills,
-                    float lastFired, float speed, float angle, float cooldown) {
+                    double lastFired, float speed, float angle, float cooldown) {
         this.id = id;
         this.hp = hp;
         this.maxHp = maxHp;
@@ -63,7 +63,7 @@ public class TankData {
     }
 
 
-    public float getLastFired() {
+    public double getLastFired() {
         return lastFired;
     }
 
