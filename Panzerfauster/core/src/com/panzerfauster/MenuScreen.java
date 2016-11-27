@@ -8,11 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -24,11 +21,12 @@ import com.badlogic.gdx.utils.Align;
 public class MenuScreen implements Screen {
 
     private static MenuScreen screen = new MenuScreen();
-    private Stage      stage;
-    private Table      connectTable;
-    private TextButton playButton, enterButton;
+    private Stage stage;
+    private Table connectTable, chatTable;
+    private TextButton playButton, enterButton, sendButton;
     private TextButtonStyle textButtonStyle;
-    private TextField       usernameTextField, ipTextField;
+    private TextField       usernameTextField, ipTextField, chatBarTextField;
+    private TextArea                 chatBoxTextArea;
     private TextField.TextFieldStyle textFieldStyle;
     private BitmapFont               font;
     private Skin                     buttonSkin, textFieldSkin;
@@ -54,6 +52,7 @@ public class MenuScreen implements Screen {
         textFieldSkin = new Skin();
 
         connectTable = new Table();
+        chatTable = new Table();
 
         buttonAtlas = new TextureAtlas(Gdx.files.internal("icons/buttons/buttons.pack.atlas"));
         buttonSkin.addRegions(buttonAtlas);
@@ -62,26 +61,35 @@ public class MenuScreen implements Screen {
         textFieldSkin.addRegions(textFieldAtlas);
 
         stage.addActor(connectTable);
+        stage.addActor(chatTable);
 
         initTextButtonStyle();
         initTextFieldStyle();
 
+        // For the Connect
         initPlayButton();
         initEnterButton();
-
         initUsernameTextField();
         initIpTextField();
-
         connectTable.setWidth(256f);
         connectTable.add(ipTextField).padBottom(10f).size(256f, 30f).row();
         connectTable.add(usernameTextField).padBottom(10f).size(256f, 30f).row();
         connectTable.add(enterButton).size(120, 30f).padBottom(30f).row();
         connectTable.add(playButton).size(120, 30f).padBottom(30f);
-
-        // Place table at an arbitrary position
-        // connectTable.setPosition(500 - 272, 300);
-
         connectTable.setPosition(10f, 400f);
+
+        // For the chat
+        initSendButton();
+        initChatBarTextField();
+        initChatBoxTextArea();
+
+        chatTable.setWidth(512f);
+        chatTable.add(chatBoxTextArea).padBottom(10f).size(512f, 256f).row();
+        chatTable.add(chatBarTextField).size(412f, 30f);
+        chatTable.add(sendButton).size(92f, 30f).row();
+        chatTable.setPosition(400f, 400f);
+
+
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -121,6 +129,41 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+
+    private void initChatBarTextField() {
+        chatBarTextField = new TextField("Say Something I'm giving up on you", textFieldStyle);
+        chatBarTextField.setAlignment(Align.center);
+    }
+
+
+    private void initChatBoxTextArea() {
+
+        Drawable cursor = textFieldSkin.newDrawable("textfield", Color.WHITE);
+        cursor.setMinWidth(2f);
+        TextFieldStyle f = new TextFieldStyle(font, Color.WHITE, cursor,
+            textFieldSkin.newDrawable("textfield", Color.TEAL), textFieldSkin.getDrawable("textfield"));
+
+        f.fontColor = Color.BLACK;
+
+        chatBoxTextArea = new TextArea("I'm a bird! I'm a plane! I'm a birdplane!", f);
+        chatBoxTextArea.setPrefRows(10f);
+        chatBoxTextArea.setDisabled(true);
+        chatBoxTextArea.setAlignment(Align.center);
+
+    }
+
+
+    private void initSendButton() {
+        sendButton = new TextButton("Send", textButtonStyle);
+
+        sendButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent ev, float x, float y) {
+                System.out.println("Clicked the send button");
+            }
+        });
     }
 
 

@@ -85,6 +85,8 @@ public class GameState implements Runnable, InputProcessor {
 
 
     public void run() {
+        //Create threads that talk to the server.
+
         Thread playerSender = new Thread() {
             public void run() {
 
