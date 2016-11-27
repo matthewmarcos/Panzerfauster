@@ -3,19 +3,19 @@ package com.panzerfauster;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Created by matt on 11/10/16.
  * Entities are objects that move along the screen. They may be bullets,
  * tanks, or enemies, or enemy bullets, etc.
  */
-public class Entity extends BodyDef {
+public class Entity extends Actor {
 
     protected Texture texture;
     protected Sprite  sprite;
 
-    protected int hp, maxHp,  xcoord, ycoord, width, height;
+    protected int hp, maxHp, xcoord, ycoord, width, height;
     protected float speed, angle;
     protected String type, id;
     protected boolean isAlive;
@@ -67,18 +67,6 @@ public class Entity extends BodyDef {
     }
 
 
-    public int getX() {
-
-        return this.xcoord;
-    }
-
-
-    public int getY() {
-
-        return this.ycoord;
-    }
-
-
     public Texture getTexture() {
 
         return this.texture;
@@ -97,16 +85,6 @@ public class Entity extends BodyDef {
 
     public int getYcoord() {
         return ycoord;
-    }
-
-
-    public int getWidth() {
-        return width;
-    }
-
-
-    public int getHeight() {
-        return height;
     }
 
 

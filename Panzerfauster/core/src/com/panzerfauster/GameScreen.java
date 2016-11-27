@@ -95,7 +95,7 @@ public class GameScreen implements Screen {
         player.lookAt(Gdx.input.getX(), Gdx.input.getY());
 
         //Move and update camera to location of player Tank
-        camera.position.set(player.getX(), player.getY(), 0);
+        camera.position.set(player.getXcoord(), player.getYcoord(), 0);
         camera.update();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
