@@ -9,6 +9,7 @@ public class Game extends JPanel implements Runnable{
     private Chatbar chatbar;
     private String serverIP;
     private int port;
+    private String name;
 
     private DataOutputStream out;
     private DataInputStream in;
@@ -16,7 +17,13 @@ public class Game extends JPanel implements Runnable{
 
     private String message;
 
+    private PanzerfausterPlayer player;
+    private DatagramSocket datagramSocket = new DatagramSocket();
+
     private void initialize() {
+
+        player = new PanzerfausterPlayer(serverIP, name)
+        
         try {
             System.out.println(serverIP);
             System.out.println(port);
@@ -48,6 +55,7 @@ public class Game extends JPanel implements Runnable{
 
         this.serverIP = serverIP;
         this.port = port;
+        this.name = name;
 
         initialize();
     }
@@ -55,6 +63,18 @@ public class Game extends JPanel implements Runnable{
     public void run() {
         // Update chatbox from server here
         while(conn.isConnected()) {
+
+            //UDP
+            byte[] buf = new byte[256];
+            DatagramPacket packet = new DatagramPacket(buf, buf.length);
+            try{
+                socket.receive(packet);
+            }catch(Exception ioe){/*lazy exception handling :)*/}
+            
+            serverData=new String(buf);
+            serverData=serverData.trim();
+
+            //TCP
             try{
               message = in.readUTF(); //gets the message from server
               chatbox.add(message);
@@ -62,10 +82,15 @@ public class Game extends JPanel implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
 
-      //  try {
-            //conn.close();
-        //}
-        //catch (Exception e) {}
+    public void send(String msg){
+        try{
+            byte[] buf = msg.getBytes();
+            InetAddress address = InetAddress.getByName(server);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, PORT);
+            socket.send(packet);
+        }catch(Exception e){}
+        
     }
 }
