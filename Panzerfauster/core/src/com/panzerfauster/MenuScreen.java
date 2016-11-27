@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 
 /**
@@ -124,10 +125,11 @@ public class MenuScreen implements Screen {
 
 
     private void initTextFieldStyle() {
-        textFieldStyle = new TextFieldStyle();
-        textFieldStyle.font = font;
+        Drawable cursor = textFieldSkin.newDrawable("textfield", Color.BLACK);
+        cursor.setMinWidth(2f);
+        textFieldStyle = new TextFieldStyle(font, Color.WHITE, cursor,
+            textFieldSkin.newDrawable("textfield", Color.TEAL), textFieldSkin.getDrawable("textfield"));
         textFieldStyle.fontColor = Color.BLACK;
-        textFieldStyle.background = textFieldSkin.getDrawable("textfield");
     }
 
 
@@ -162,6 +164,8 @@ public class MenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
+                playButton.setDisabled(true);
+
                 Panzerfauster.getInstance().setGameScreen();
             }
         });
@@ -178,6 +182,9 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent ev, float x, float y) {
                 String ipAddress = ipTextField.getText();
                 String username = usernameTextField.getText();
+                ipTextField.setDisabled(true);
+                usernameTextField.setDisabled(true);
+                enterButton.setDisabled(true);
                 System.out.println("Hello " + username + "! You are trying to connect to: " + ipAddress);
             }
         });

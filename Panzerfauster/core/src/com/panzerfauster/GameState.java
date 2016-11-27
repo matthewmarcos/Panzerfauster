@@ -1,5 +1,6 @@
 package com.panzerfauster;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 import java.util.ArrayList;
@@ -20,9 +21,30 @@ public class GameState implements Runnable, InputProcessor {
     private boolean GAME_RUNNING; // RUNNING or NOT
 
 
+    public Tank getPlayer() {
+        return player;
+    }
+
+
+    public String getUsername() {
+        return username;
+    }
+
+
+    public boolean isGAME_RUNNING() {
+        return GAME_RUNNING;
+    }
+
+
+    public void setGAME_RUNNING(boolean b) {
+        this.GAME_RUNNING = b;
+    }
+
+
     private GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
+        this.GAME_RUNNING = false;
     }
 
 
@@ -124,7 +146,10 @@ public class GameState implements Runnable, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if (keycode == Input.Keys.ESCAPE) {
+            Panzerfauster.getInstance().setMainMenuScreen();
+        }
+        return true;
     }
 
 
