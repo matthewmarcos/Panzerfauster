@@ -3,6 +3,9 @@ package com.panzerfauster;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +22,13 @@ public class GameState implements Runnable, InputProcessor {
     private Tank    player;
     private String  username;
     private boolean GAME_RUNNING; // RUNNING or NOT
+    private DatagramSocket socket;
+    private DatagramPacket packet;
+    private static ArrayList<TankData> tankData;
+    private static ArrayList<ProjectileData> projectileData;
+    private InetAddress address;
+
+
 
 
     public Tank getPlayer() {
@@ -89,7 +99,17 @@ public class GameState implements Runnable, InputProcessor {
 
         Thread playerSender = new Thread() {
             public void run() {
+                EntityPacket entity = new EntityPacket(tankData, projectileData, username);
 
+                tankData = entity.getTankData();
+                String msg = tankData.toString();
+
+                byte[] buf = msg.getBytes();
+               // InetAddress address = InetAddress.getByName(server);
+                try {
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4438);
+                    socket.send(packet);
+                }catch(Exception e){}
             }
         };
 
