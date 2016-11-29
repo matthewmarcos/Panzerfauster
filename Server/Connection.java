@@ -33,12 +33,12 @@ public class Connection implements Runnable {
             try {
                 msg = in.readUTF();
                 System.out.println(msg);
-                
+
                 if(msg == null) {
                   //System.out.println("WALA!!!");
                     //continue;
                 }
-                
+
             }
             catch (Exception e) {
                 System.out.println("Error reading");
