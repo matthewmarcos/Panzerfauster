@@ -27,14 +27,18 @@ public class Connection implements Runnable {
     public void run() {
         // Main listening for inputs
         String msg = null;
-        System.out.println("running");
+      //  System.out.println("running");
         while(conn.isConnected()) {
             System.out.println("Running!");
             try {
                 msg = in.readUTF();
+                System.out.println(msg);
+                
                 if(msg == null) {
-                    continue;
+                  //System.out.println("WALA!!!");
+                    //continue;
                 }
+                
             }
             catch (Exception e) {
                 System.out.println("Error reading");
@@ -42,6 +46,7 @@ public class Connection implements Runnable {
             }
 
             this.broadcast(msg);
+             //System.out.println("Continue");
         }
 
         System.out.println("Escaped main loop");

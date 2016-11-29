@@ -1,12 +1,15 @@
 package com.panzerfauster;
 
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -14,6 +17,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.net.ServerSocket;
+import com.badlogic.gdx.net.ServerSocketHints;
+import com.badlogic.gdx.Net.Protocol;
+import com.badlogic.gdx.net.SocketHints;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.DataInputStream;
+import java.net.*;
 
 /**
  * Created by matt on 11/23/16.
@@ -23,7 +35,7 @@ public class MenuScreen implements Screen {
     private static MenuScreen screen = new MenuScreen();
     private Stage stage;
     private Table connectTable, chatTable;
-    private TextButton playButton, enterButton, sendButton;
+    private TextButton playButton, enterButton;
     private TextButtonStyle textButtonStyle;
     private TextField       usernameTextField, ipTextField, chatBarTextField;
     private TextArea                 chatBoxTextArea;
@@ -31,6 +43,9 @@ public class MenuScreen implements Screen {
     private BitmapFont               font;
     private Skin                     buttonSkin, textFieldSkin;
     private TextureAtlas buttonAtlas, textFieldAtlas;
+    private Socket conn;
+    private DataOutputStream out;
+    private DataInputStream in;
 
 
     private MenuScreen() {
@@ -79,16 +94,48 @@ public class MenuScreen implements Screen {
         connectTable.setPosition(10f, 400f);
 
         // For the chat
-        initSendButton();
         initChatBarTextField();
-        initChatBoxTextArea();
+
+        //initChatBoxTextArea(" ");
 
         chatTable.setWidth(512f);
         chatTable.add(chatBoxTextArea).padBottom(10f).size(512f, 256f).row();
-        chatTable.add(chatBarTextField).size(412f, 30f);
-        chatTable.add(sendButton).size(92f, 30f).row();
+        chatTable.add(chatBarTextField).size(512f, 30f).row();
         chatTable.setPosition(400f, 400f);
 
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                // return super.keyDown(event, keycode);
+                if(stage.getKeyboardFocus() == chatBarTextField && event.getKeyCode() == Input.Keys.ENTER) {
+                    String content = chatBarTextField.getText();
+                    chatBarTextField.setText("");
+
+                    System.out.println("From you: "+content);
+
+                    try {
+                        out = new DataOutputStream(
+                                conn.getOutputStream()
+                        );
+                        out.writeUTF(content);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    try{
+                       String message = in.readUTF(); //gets the message from server
+                        initChatBoxTextArea(message);
+                        System.out.println("From someone: "+message);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+
+
+                }
+                return true;
+            }
+        });
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -133,12 +180,19 @@ public class MenuScreen implements Screen {
 
 
     private void initChatBarTextField() {
+
+
         chatBarTextField = new TextField("Say Something I'm giving up on you", textFieldStyle);
-        chatBarTextField.setAlignment(Align.center);
+
+                String message = chatBarTextField.getText();
+                initChatBoxTextArea(message);
+
+
+        chatBarTextField.setAlignment(Align.left);
     }
 
 
-    private void initChatBoxTextArea() {
+    private void initChatBoxTextArea(String message) {
 
         Drawable cursor = textFieldSkin.newDrawable("textfield", Color.WHITE);
         cursor.setMinWidth(2f);
@@ -147,23 +201,11 @@ public class MenuScreen implements Screen {
 
         f.fontColor = Color.BLACK;
 
-        chatBoxTextArea = new TextArea("I'm a bird! I'm a plane! I'm a birdplane!", f);
+        chatBoxTextArea = new TextArea(message, f);
+        System.out.println("From Chat: "+message);
         chatBoxTextArea.setPrefRows(10f);
         chatBoxTextArea.setDisabled(true);
         chatBoxTextArea.setAlignment(Align.center);
-
-    }
-
-
-    private void initSendButton() {
-        sendButton = new TextButton("Send", textButtonStyle);
-
-        sendButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent ev, float x, float y) {
-                System.out.println("Clicked the send button");
-            }
-        });
     }
 
 
@@ -225,12 +267,19 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent ev, float x, float y) {
                 String ipAddress = ipTextField.getText();
                 String username = usernameTextField.getText();
+
+               // conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
+                try {
+                    conn = new Socket(ipTextField.getText(), 8000);
+                }catch(Exception e){}
+
                 ipTextField.setDisabled(true);
                 usernameTextField.setDisabled(true);
                 enterButton.setDisabled(true);
                 System.out.println("Hello " + username + "! You are trying to connect to: " + ipAddress);
             }
         });
+
 
     }
 
