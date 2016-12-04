@@ -17,6 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 
+<<<<<<< HEAD
+import java.io.DataOutputStream;
+=======
+>>>>>>> aefb918cfd394b7f20dc1ca02b982d28d65556fc
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
@@ -115,7 +119,11 @@ public class MenuScreen implements Screen {
                         e.printStackTrace();
                     }
 
+<<<<<<< HEAD
+                    try{
+=======
                     try {
+>>>>>>> aefb918cfd394b7f20dc1ca02b982d28d65556fc
                         String message = in.readUTF(); //gets the message from server
                         initChatBoxTextArea(message);
                         System.out.println("From someone: " + message);
@@ -260,9 +268,14 @@ public class MenuScreen implements Screen {
 
                 // conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
                 try {
+<<<<<<< HEAD
+                    conn = new Socket(ipAddress, 8000);
+                } catch (Exception e) {
+=======
                     conn = new Socket(ipTextField.getText(), 8000);
                 }
                 catch(Exception e) {
+>>>>>>> aefb918cfd394b7f20dc1ca02b982d28d65556fc
                 }
 
                 ipTextField.setDisabled(true);
