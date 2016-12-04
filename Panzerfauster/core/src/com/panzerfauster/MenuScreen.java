@@ -22,7 +22,6 @@ import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.Net.Protocol;
 import com.badlogic.gdx.net.SocketHints;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.DataInputStream;
 import java.net.*;

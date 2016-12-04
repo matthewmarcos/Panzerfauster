@@ -214,7 +214,7 @@ public class GameState implements Runnable, InputProcessor {
         // This function fires when the user clicks on the screen.
         // The player fires a projectule in the direction it is facing
         this.player.fire();
-        
+
         return false;
     }
 
