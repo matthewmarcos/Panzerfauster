@@ -22,14 +22,12 @@ public class Connection implements Runnable {
         this.in = in;
         this.server = server;
         connections.add(this);
-    }
+    }c
 
     public void run() {
         // Main listening for inputs
         String msg = null;
-      //  System.out.println("running");
         while(conn.isConnected()) {
-            System.out.println("Running!");
             try {
                 msg = in.readUTF();
                 System.out.println(msg);

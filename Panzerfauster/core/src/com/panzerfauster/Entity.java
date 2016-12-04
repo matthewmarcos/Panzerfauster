@@ -52,6 +52,7 @@ public class Entity extends Actor {
         int printX = (int)(this.xcoord - this.sprite.getHeight() / 2);
         int printY = (int)(this.ycoord - this.sprite.getHeight() / 2);
 
+        // GameScreen.getControlsSprite().setPosition(printX, printY);
         this.sprite.setPosition(printX, printY);
     }
 
