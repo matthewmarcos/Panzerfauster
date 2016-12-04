@@ -1,18 +1,24 @@
+import java.net.*;
+
 public class PanzerfausterPlayer{
 	
-	String address;
+	InetAddress address;
 	String name;
 
-	public PanzerfausterPlayer(String address, String name){
+	public PanzerfausterPlayer(InetAddress address, String name){
 		this.address = address;
 		this.name = name;
 	}
 
-	public String address(){
+	public InetAddress address(){
 		return this.address;
 	}
 
 	public String name(){
 		return this.name;
 	}
+
+	
+
+
 }

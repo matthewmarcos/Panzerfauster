@@ -124,7 +124,7 @@ public class MenuScreen implements Screen {
                     }
 
                     try{
-                       String message = in.readUTF(); //gets the message from server
+                        String message = in.readUTF(); //gets the message from server
                         initChatBoxTextArea(message);
                         System.out.println("From someone: "+message);
                     }catch(Exception e){
@@ -268,10 +268,11 @@ public class MenuScreen implements Screen {
                 String ipAddress = ipTextField.getText();
                 String username = usernameTextField.getText();
 
-               // conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
+                // conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
                 try {
-                    conn = new Socket(ipTextField.getText(), 8000);
-                }catch(Exception e){}
+                    conn = new Socket(ipAddress, 8000);
+                } catch (Exception e) {
+                }
 
                 ipTextField.setDisabled(true);
                 usernameTextField.setDisabled(true);
@@ -279,7 +280,6 @@ public class MenuScreen implements Screen {
                 System.out.println("Hello " + username + "! You are trying to connect to: " + ipAddress);
             }
         });
-
 
     }
 
