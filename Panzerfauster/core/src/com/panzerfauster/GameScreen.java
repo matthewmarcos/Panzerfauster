@@ -16,18 +16,20 @@ public class GameScreen implements Screen {
 
     private static Sprite mapSprite;
     private static GameScreen screen = new GameScreen();
+    private static Sprite             controlsSprite;
     // private Screen gameScreen, menuScreen;
     private SpriteBatch batch;
     private BitmapFont  font;
-    private Texture     mapTexture;
-    private Texture     temp;
-    private Tank        player;
-    private float       xPos, yPos;
-    private OrthographicCamera camera;
-    private GameState          gamestate;
+    private Texture     mapTexture, controlsTexture;
+    private Texture temp;
+    private Tank    player;
+    private float   xPos, yPos;
+    private        OrthographicCamera camera;
+    private        GameState          gamestate;
 
 
     private GameScreen() {
+
     }
 
 
@@ -49,6 +51,11 @@ public class GameScreen implements Screen {
     }
 
 
+    public static Sprite getControlsSprite() {
+        return controlsSprite;
+    }
+
+
     @Override
     public void show() {
         if(!GameState.getState().isGAME_RUNNING()) {
@@ -60,6 +67,12 @@ public class GameScreen implements Screen {
             mapSprite.setOrigin(0f, 0f);
             mapSprite.setPosition(-mapSprite.getWidth() / 2, -mapSprite.getHeight() / 2);
             player = new Tank("sprites/tank1.png", false, "Player", 0, 0, 5, 250f, 0);
+
+            controlsTexture = new Texture(Gdx.files.internal("controls.png"));
+            controlsSprite = new Sprite(controlsTexture);
+            // float controlsX = (GameScreen.getMapWidth() / 2) - controlsSprite.getWidth();
+            // float controlsY = -((GameScreen.getMapHeight() / 2) - controlsSprite.getHeight());
+            controlsSprite.setPosition(300, -292);
 
             GameState.getState().setPlayer(player);
             GameState.addTank(player);
@@ -100,6 +113,11 @@ public class GameScreen implements Screen {
         camera.position.set(player.getXcoord(), player.getYcoord(), 0);
         camera.update();
 
+        // Update instructions position
+        controlsSprite.setPosition(player.getXcoord() + 300, player.getYcoord()-292);
+        // float controlsX = (GameScreen.getMapWidth() / 2) - controlsSprite.getWidth();
+        // float controlsY = -((GameScreen.getMapHeight() / 2) - controlsSprite.getHeight());
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -114,6 +132,8 @@ public class GameScreen implements Screen {
         for(Tank s : GameState.getTanks()) {
             s.getSprite().draw(batch);
         }
+
+        controlsSprite.draw(batch);
         batch.end();
     }
 

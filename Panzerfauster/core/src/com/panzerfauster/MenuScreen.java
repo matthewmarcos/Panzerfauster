@@ -1,6 +1,5 @@
 package com.panzerfauster;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -17,14 +16,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.net.ServerSocket;
-import com.badlogic.gdx.net.ServerSocketHints;
-import com.badlogic.gdx.Net.Protocol;
-import com.badlogic.gdx.net.SocketHints;
 
+<<<<<<< HEAD
 import java.io.DataOutputStream;
+=======
+>>>>>>> aefb918cfd394b7f20dc1ca02b982d28d65556fc
 import java.io.DataInputStream;
-import java.net.*;
+import java.io.DataOutputStream;
+import java.net.Socket;
 
 /**
  * Created by matt on 11/23/16.
@@ -42,9 +41,9 @@ public class MenuScreen implements Screen {
     private BitmapFont               font;
     private Skin                     buttonSkin, textFieldSkin;
     private TextureAtlas buttonAtlas, textFieldAtlas;
-    private Socket conn;
+    private Socket           conn;
     private DataOutputStream out;
-    private DataInputStream in;
+    private DataInputStream  in;
 
 
     private MenuScreen() {
@@ -110,26 +109,28 @@ public class MenuScreen implements Screen {
                     String content = chatBarTextField.getText();
                     chatBarTextField.setText("");
 
-                    System.out.println("From you: "+content);
+                    System.out.println("From you: " + content);
 
                     try {
-                        out = new DataOutputStream(
-                                conn.getOutputStream()
-                        );
+                        out = new DataOutputStream(conn.getOutputStream());
                         out.writeUTF(content);
                     }
-                    catch (Exception e) {
+                    catch(Exception e) {
                         e.printStackTrace();
                     }
 
+<<<<<<< HEAD
                     try{
+=======
+                    try {
+>>>>>>> aefb918cfd394b7f20dc1ca02b982d28d65556fc
                         String message = in.readUTF(); //gets the message from server
                         initChatBoxTextArea(message);
-                        System.out.println("From someone: "+message);
-                    }catch(Exception e){
+                        System.out.println("From someone: " + message);
+                    }
+                    catch(Exception e) {
                         e.printStackTrace();
                     }
-
 
                 }
                 return true;
@@ -180,12 +181,10 @@ public class MenuScreen implements Screen {
 
     private void initChatBarTextField() {
 
-
         chatBarTextField = new TextField("Say Something I'm giving up on you", textFieldStyle);
 
-                String message = chatBarTextField.getText();
-                initChatBoxTextArea(message);
-
+        String message = chatBarTextField.getText();
+        initChatBoxTextArea(message);
 
         chatBarTextField.setAlignment(Align.left);
     }
@@ -201,7 +200,7 @@ public class MenuScreen implements Screen {
         f.fontColor = Color.BLACK;
 
         chatBoxTextArea = new TextArea(message, f);
-        System.out.println("From Chat: "+message);
+        System.out.println("From Chat: " + message);
         chatBoxTextArea.setPrefRows(10f);
         chatBoxTextArea.setDisabled(true);
         chatBoxTextArea.setAlignment(Align.center);
@@ -269,8 +268,14 @@ public class MenuScreen implements Screen {
 
                 // conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
                 try {
+<<<<<<< HEAD
                     conn = new Socket(ipAddress, 8000);
                 } catch (Exception e) {
+=======
+                    conn = new Socket(ipTextField.getText(), 8000);
+                }
+                catch(Exception e) {
+>>>>>>> aefb918cfd394b7f20dc1ca02b982d28d65556fc
                 }
 
                 ipTextField.setDisabled(true);

@@ -9,7 +9,7 @@ public class TankData {
     private String id;
     private int    hp, maxHp, projectileDamage, xcoord, ycoord, kills;
     private double lastFired;
-    private float speed, angle, cooldown;
+    private float  speed, angle, cooldown;
 
 
     public TankData(String id, int hp, int maxHp, int projectileDamage, int xcoord, int ycoord, int kills,

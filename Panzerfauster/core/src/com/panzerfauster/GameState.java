@@ -32,26 +32,6 @@ public class GameState implements Runnable, InputProcessor {
 
 
 
-    public Tank getPlayer() {
-        return player;
-    }
-
-
-    public String getUsername() {
-        return username;
-    }
-
-
-    public boolean isGAME_RUNNING() {
-        return GAME_RUNNING;
-    }
-
-
-    public void setGAME_RUNNING(boolean b) {
-        this.GAME_RUNNING = b;
-    }
-
-
     private GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
@@ -84,14 +64,34 @@ public class GameState implements Runnable, InputProcessor {
     }
 
 
-    public void startGame() {
-        Thread t = new Thread(this);
-        t.start();
+    public Tank getPlayer() {
+        return player;
     }
 
 
     public void setPlayer(Tank player) {
         this.player = player;
+    }
+
+
+    public String getUsername() {
+        return username;
+    }
+
+
+    public boolean isGAME_RUNNING() {
+        return GAME_RUNNING;
+    }
+
+
+    public void setGAME_RUNNING(boolean b) {
+        this.GAME_RUNNING = b;
+    }
+
+
+    public void startGame() {
+        Thread t = new Thread(this);
+        t.start();
     }
 
 
@@ -190,7 +190,7 @@ public class GameState implements Runnable, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE) {
+        if(keycode == Input.Keys.ESCAPE) {
             Panzerfauster.getInstance().setMainMenuScreen();
         }
         return true;
