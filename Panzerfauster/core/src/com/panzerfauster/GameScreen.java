@@ -111,6 +111,11 @@ public class GameScreen implements Screen {
         camera.position.set(player.getXcoord(), player.getYcoord(), 0);
         camera.update();
 
+        // Update instructions position
+        controlsSprite.setPosition(player.getXcoord() + 300, player.getYcoord()-292);
+        // float controlsX = (GameScreen.getMapWidth() / 2) - controlsSprite.getWidth();
+        // float controlsY = -((GameScreen.getMapHeight() / 2) - controlsSprite.getHeight());
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
