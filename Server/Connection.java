@@ -60,6 +60,7 @@ public class Connection implements Runnable {
 
 
         // At this point,
+        this.broadcast(this.username + " has connected.\n");
         connections.add(this); //Eligible to receive broadcasts
         Connection.printConnectedUsers();
 
@@ -79,11 +80,12 @@ public class Connection implements Runnable {
                 // Error in connection
                 System.out.println(this.username + " has disconnected");
                 Connection.removeConnection(this);
+                this.broadcast(this.username + " has disconnected.\n");
                 Connection.printConnectedUsers();
                 break;
             }
 
-            this.broadcast(msg);
+            this.broadcast(this.username + ": " + msg + "\n");
         }
 
     }

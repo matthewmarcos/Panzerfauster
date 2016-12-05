@@ -234,6 +234,7 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent ev, float x, float y) {
                 playButton.setDisabled(true);
 
+
                 Panzerfauster.getInstance().setGameScreen();
             }
         });
@@ -269,13 +270,13 @@ public class MenuScreen implements Screen {
                     System.out.println("Failed to create a socket");
                 }
 
-                System.out.println("Hello " + username + "! You are trying to connect to: " + ipAddress);
+                System.out.println("Hello " + username + "! You are trying to connect to: " + ipAddress + "\n");
 
                 // Anonymous thread listener
                 new Thread(new Runnable() {
                     public void run() {
 
-                        chatBoxTextArea.appendText("\nTrying to connect");
+                        chatBoxTextArea.appendText("\nTrying to connect\n");
 
                         String s;
 
@@ -300,7 +301,7 @@ public class MenuScreen implements Screen {
                         //if !success, enable everything and append "pick a different username"
                         if(!s.equals("?success")) {
                             System.out.println("Sent: " + s);
-                            chatBoxTextArea.appendText("\nUsername already is taken. Try again");
+                            chatBoxTextArea.appendText("\nUsername already is taken. Try again\n");
                             ipTextField.setDisabled(false);
                             usernameTextField.setDisabled(false);
                             enterButton.setDisabled(false);
@@ -314,7 +315,7 @@ public class MenuScreen implements Screen {
 
                         // Success
 
-                        chatBoxTextArea.appendText("\nConnected to " + ipAddress);
+                        chatBoxTextArea.appendText("\nConnected to " + ipAddress + "\n");
 
                         //Main chat loop
                         while (true) {
