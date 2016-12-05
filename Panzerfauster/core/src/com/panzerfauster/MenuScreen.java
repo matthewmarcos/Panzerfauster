@@ -21,6 +21,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by matt on 11/23/16.
@@ -43,6 +44,7 @@ public class MenuScreen implements Screen {
     private DataInputStream  chatIn;
     private boolean isInitiated = false;
     private String username;
+    private ArrayList<String> chatString = new ArrayList<String>();
 
 
     private MenuScreen() {
@@ -111,6 +113,11 @@ public class MenuScreen implements Screen {
 
                         try {
                             chatOut.writeUTF(content);
+                            chatString.add(content);
+
+                            if(chatString.size() == 10){
+                                adjustChatString();
+                            }
                         }
                         catch(Exception e) {
                             e.printStackTrace();
@@ -340,4 +347,8 @@ public class MenuScreen implements Screen {
 
     }
 
+    private void adjustChatString(){
+        chatString.remove(0);
+
+    }
 }
