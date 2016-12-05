@@ -25,17 +25,43 @@ public class Connection implements Runnable {
         this.out = out;
         this.in = in;
         this.server = server;
-        connections.add(this);
     }
 
     public void run() {
 
-        // Kuha ng name
-        try {
-            out.writeUTF("SDASDASDSD");
+        try{
+            // Getting username from client
+            this.username = in.readUTF();
+        }catch(IOException e){
+            // Handle connection issue
+            return;
         }
-        catch(Exception e) {}
-        // If existing na ang name, sibakin.
+        catch(Exception e) {
+
+        }
+
+        // Getting username from client
+        System.out.println(username + " has connected");
+
+        // Check if username exists in the server
+        for(Connection c : connections) {
+            if(this.username.equals(c.getUsername())) {
+                try{
+                    out.writeUTF("?fail");
+                } catch(Exception e) {}
+                return;
+            }
+        }
+
+        // Username does not exist in server
+        try{
+            out.writeUTF("?success");
+        } catch(Exception e) {}
+
+
+        // At this point,
+        connections.add(this); //Eligible to receive broadcasts
+        Connection.printConnectedUsers();
 
         // Main listening for inputs
         String msg = null;
@@ -43,14 +69,18 @@ public class Connection implements Runnable {
             try {
                 msg = in.readUTF();
             }
-            catch (IOException e) {
-                // Connection closed
-                e.printStackTrace();
-                // Delete this connection
-                break;
-            }
+            // catch (IOException e) {
+            //     // Connection closed
+            //     e.printStackTrace();
+            //     // Delete this connection
+            //     break;
+            // }
             catch(Exception e) {
-                continue;
+                // Error in connection
+                System.out.println(this.username + " has disconnected");
+                Connection.removeConnection(this);
+                Connection.printConnectedUsers();
+                break;
             }
 
             this.broadcast(msg);
@@ -85,8 +115,28 @@ public class Connection implements Runnable {
         return connections;
     }
 
+    public static int getNumOfConnections(){
+        return connections.size();
+    }
     public Socket getSocket(){
         return conn;
     }
 
+    private String getUsername(){
+        return this.username;
+    }
+
+    public static void removeConnection(Connection c){
+        connections.remove(c);
+    }
+
+    public static void printConnectedUsers() {
+        int i = 1;
+
+        System.out.println("Connected users: " + connections.size());
+
+        for(Connection c : connections) {
+            System.out.println((i++) +") " + c.getUsername());
+        }
+    }
 }

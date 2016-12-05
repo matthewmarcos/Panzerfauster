@@ -40,8 +40,6 @@ public class Main extends JFrame {
 
                 panel.add(connectionField);
 
-                System.out.println("clicked");
-
               }
         });
 

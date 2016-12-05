@@ -40,6 +40,7 @@ public class PazerfausterServer implements Runnable {
         while(true) {
             try {
                 // Listen for connections
+
                 System.out.println("Listening to port: " + port);
                 Socket server = serverSocket.accept();
                 server.setSoTimeout(0);
@@ -53,13 +54,12 @@ public class PazerfausterServer implements Runnable {
                     server.getInputStream()
                 );
 
-                out.writeUTF("You are connected to");
-
                 // New Connection object
                 Connection newConn = new Connection(server, out, in, this);
                 Thread temp = new Thread(newConn);
                 temp.start();
                 clients.add(temp);
+
 
             }
             catch (Exception e) {}

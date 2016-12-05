@@ -42,6 +42,7 @@ public class MenuScreen implements Screen {
     private DataOutputStream chatOut;
     private DataInputStream  chatIn;
     private boolean isInitiated = false;
+    private String username;
 
 
     private MenuScreen() {
@@ -247,8 +248,8 @@ public class MenuScreen implements Screen {
         enterButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
-                String ipAddress = ipTextField.getText();
-                String username = usernameTextField.getText();
+                final String ipAddress = ipTextField.getText();
+                username = usernameTextField.getText();
 
                 if(enterButton.isDisabled()) {
                     return;
@@ -273,25 +274,66 @@ public class MenuScreen implements Screen {
                 // Anonymous thread listener
                 new Thread(new Runnable() {
                     public void run() {
-                        chatBoxTextArea.appendText("Trying to connect");
 
-                        while(true) {
+                        chatBoxTextArea.appendText("\nTrying to connect");
+
+                        String s;
+
+                        //send username
+                        try {
+                            chatOut.writeUTF(username);
+                        }
+                        catch(IOException e) {
+                            return;
+                        }
+                        catch(Exception e) {
+                            return;
+                        }
+
+                        //Listen for success
+                        try {
+                            s = chatIn.readUTF();
+                        }
+                        catch(Exception e) {
+                            return;
+                        }
+                        //if !success, enable everything and append "pick a different username"
+                        if(!s.equals("?success")) {
+                            System.out.println("Sent: " + s);
+                            chatBoxTextArea.appendText("\nUsername already is taken. Try again");
+                            ipTextField.setDisabled(false);
+                            usernameTextField.setDisabled(false);
+                            enterButton.setDisabled(false);
+
+                            try{
+                                conn.close();
+                            } catch(Exception e) {}
+
+                            return;
+                        }
+
+                        // Success
+
+                        chatBoxTextArea.appendText("\nConnected to " + ipAddress);
+
+                        //Main chat loop
+                        while (true) {
                             try {
-                                String s = chatIn.readUTF();
+                                s = chatIn.readUTF();
                                 chatBoxTextArea.appendText(s);
-                                chatBoxTextArea.appendText("aaa");
                             }
-                            catch (IOException e) {
+                            catch(IOException e) {
                                 // Disconnected
                                 return;
                             }
-                            catch (Exception e) {
+                            catch(Exception e) {
                                 continue;
                             }
 
                         }
                     }
-                }){}.start();
+                }) {
+                }.start();
             }
         });
 
