@@ -45,7 +45,7 @@ public class Connection implements Runnable {
 
         // Check if username exists in the server
         for(Connection c : connections) {
-            if(this.username.equals(c.getUsername())) {
+            if(this.username.equals(c.getUsername()) || this.username.equals("")) {
                 try{
                     out.writeUTF("?fail");
                 } catch(Exception e) {}
