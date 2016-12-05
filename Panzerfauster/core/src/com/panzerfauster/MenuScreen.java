@@ -249,13 +249,26 @@ public class MenuScreen implements Screen {
                 //insert UDP here
                 try{
                     byte[] buf = new byte[256];
-                    send("?connect " + username + " " + ipAddress );
+                    send("?connect " + usernameTextField.getText() + " " + ipTextField.getText() );
                     System.out.println();
+                    chatBoxTextArea.appendText("Game Loading... Waiting for connections");
 
                 }catch(Exception e){}
 
-                //begin game
-                Panzerfauster.getInstance().setGameScreen();
+                byte[] buf = new byte[256];
+                DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                try{
+                    socket.receive(packet);
+                }catch(Exception ioe){/*lazy exception handling :)*/}
+
+                String serverData=new String(buf);
+                serverData=serverData.trim();
+
+                if(serverData.startsWith("?start")) {
+                    //begin game
+                    Panzerfauster.getInstance().setGameScreen();
+                }
+
             }
         });
 
@@ -369,9 +382,10 @@ public class MenuScreen implements Screen {
     public void send(String msg){
         try{
             byte[] buf = msg.getBytes();
-            byte[] address = ipAddress.getBytes();
+
+            System.out.println(ipAddress);
             //InetAddress address = InetAddress.getByName(server);
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByAddress(address),4444);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(ipTextField.getText()),4444);
             socket.send(packet);
         }catch(Exception e){
             e.printStackTrace();
