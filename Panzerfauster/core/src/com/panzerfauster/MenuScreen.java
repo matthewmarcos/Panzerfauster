@@ -20,6 +20,9 @@ import com.badlogic.gdx.utils.Align;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -44,6 +47,8 @@ public class MenuScreen implements Screen {
     private DataInputStream  chatIn;
     private boolean isInitiated = false;
     private String username;
+    private String ipAddress;
+    private DatagramSocket socket;
     private ArrayList<String> chatString = new ArrayList<String>();
 
 
@@ -241,7 +246,15 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent ev, float x, float y) {
                 playButton.setDisabled(true);
 
+                //insert UDP here
+                try{
+                    byte[] buf = new byte[256];
+                    send("?connect " + username + " " + ipAddress );
+                    System.out.println();
 
+                }catch(Exception e){}
+
+                //begin game
                 Panzerfauster.getInstance().setGameScreen();
             }
         });
@@ -256,8 +269,9 @@ public class MenuScreen implements Screen {
         enterButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
-                final String ipAddress = ipTextField.getText();
+                ipAddress = ipTextField.getText();
                 username = usernameTextField.getText();
+
 
                 if(enterButton.isDisabled()) {
                     return;
@@ -349,6 +363,19 @@ public class MenuScreen implements Screen {
 
     private void adjustChatString(){
         chatString.remove(0);
+
+    }
+
+    public void send(String msg){
+        try{
+            byte[] buf = msg.getBytes();
+            byte[] address = ipAddress.getBytes();
+            //InetAddress address = InetAddress.getByName(server);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByAddress(address),4444);
+            socket.send(packet);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
     }
 }

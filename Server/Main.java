@@ -25,7 +25,7 @@ public class Main extends JFrame {
         startButton.addActionListener( new ActionListener(){
             public void actionPerformed(ActionEvent e) {
 
-                Thread t = new Thread(new PazerfausterServer(chatPort));
+                Thread t = new Thread(new PazerfausterServer());
                 t.start();
 
                 startButton.hide();
