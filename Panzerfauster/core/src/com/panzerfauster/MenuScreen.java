@@ -256,11 +256,16 @@ public class MenuScreen implements Screen {
 
                 try {
                     conn = new Socket(ipAddress, 8000);
+
+                    chatIn = new DataInputStream(conn.getInputStream());
+                    chatOut = new DataOutputStream(conn.getOutputStream());
+
                     ipTextField.setDisabled(true);
                     usernameTextField.setDisabled(true);
                     enterButton.setDisabled(true);
                 }
                 catch(Exception e) {
+                    System.out.println("Failed to create a socket");
                 }
 
                 System.out.println("Hello " + username + "! You are trying to connect to: " + ipAddress);
