@@ -5,6 +5,7 @@ import java.util.*;
 
 public class PazerfausterServer implements Runnable {
 
+
     private ServerSocket serverSocket;
 
     private DataOutputStream out;
@@ -12,6 +13,12 @@ public class PazerfausterServer implements Runnable {
     private int port;
     private ArrayList<Thread> clients;
     private ArrayList<Connection> connections;
+
+    private final int PORT = 4444;
+    private DatagramSocket socket;
+    private String playerData;
+    private int playerCount = 0;
+
 
 
     public PazerfausterServer(int port) {
@@ -28,29 +35,31 @@ public class PazerfausterServer implements Runnable {
     }
 
     public void run() {
-        System.out.println("Listening to port: " + port);
+
+        // @TODO: CHANGE LOOP CONDITION
         while(true) {
             try {
                 // Listen for connections
+
+                System.out.println("Listening to port: " + port);
                 Socket server = serverSocket.accept();
                 server.setSoTimeout(0);
-                System.out.println("A client has connected!");
 
                 // Getting input and output streams of client
                 out = new DataOutputStream(
                     server.getOutputStream()
                 );
+
                 in = new DataInputStream(
                     server.getInputStream()
-
                 );
 
-                System.out.println(out);
-
+                // New Connection object
                 Connection newConn = new Connection(server, out, in, this);
                 Thread temp = new Thread(newConn);
                 temp.start();
                 clients.add(temp);
+
 
             }
             catch (Exception e) {}
@@ -60,7 +69,6 @@ public class PazerfausterServer implements Runnable {
     public void broadcastText(String f) {
         try{
             for(Connection c : this.connections) {
-            // for(Connection c = connections.next() ; connections.hasNext) {
                 c.write(f);
             }
          }catch(Exception e){

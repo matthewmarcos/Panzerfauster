@@ -9,24 +9,23 @@ public class Main extends JFrame {
     public static ArrayList<Connection> connections = new ArrayList<Connection>();
 
     public static void main(String[] args) {
-        int portNumber = 8000;
+
+        int chatPort = 8000;
         int gamePortNumber = 4438;
 
         JFrame frame = new JFrame("Panzerfauster Server");
-        frame.setSize(500, 300);
         JPanel panel = new JPanel();
-
-        JLabel port = new JLabel("Port: " +portNumber);
+        JLabel port = new JLabel("Port: " + chatPort);
         JButton startButton = new JButton("Start");
 
-        JLabel gamePort = new JLabel("Port: "+gamePortNumber);
-        JButton startGame = new JButton("Start");
+        frame.setSize(500, 300);
+        // JLabel gamePort = new JLabel("Port: "+gamePortNumber);
+        // JButton startGame = new JButton("Start");
 
         startButton.addActionListener( new ActionListener(){
-            public void actionPerformed(ActionEvent e) { 
+            public void actionPerformed(ActionEvent e) {
 
-                PazerfausterServer server = new PazerfausterServer(portNumber);
-                Thread t = new Thread(server);
+                Thread t = new Thread(new PazerfausterServer(chatPort));
                 t.start();
 
                 startButton.hide();
@@ -38,43 +37,41 @@ public class Main extends JFrame {
                 connectionField.setEditable(false);
                 connections=getConnected();
                 connectionField.append("may nakaconnect\n");
-                
+
                 panel.add(connectionField);
 
-                System.out.println("clicked");
-
-              } 
+              }
         });
 
-        startGame.addActionListener( new ActionListener(){
-            public void actionPerformed(ActionEvent e) { 
+        // startGame.addActionListener(new ActionListener() {
+        //     public void actionPerformed(ActionEvent e) {
 
-                PanzerfausterGameServer server = new PanzerfausterGameServer(gamePortNumber);
-                Thread t = new Thread(server);
-                t.start();
+        //         PanzerfausterGameServer server = new PanzerfausterGameServer(gamePortNumber);
+        //         Thread t = new Thread(server);
+        //         t.start();
 
-                startGame.hide();
+        //         startGame.hide();
 
-                JLabel info = new JLabel("Running...");
-                panel.add(info);
+        //         JLabel info = new JLabel("Running...");
+        //         panel.add(info);
 
-                JTextArea connectionField = new JTextArea(50, 100);
-                connectionField.setEditable(false);
-                connections=getConnected();
-                connectionField.append("may nakaconnect\n");
-                
-                panel.add(connectionField);
+        //         JTextArea connectionField = new JTextArea(50, 100);
+        //         connectionField.setEditable(false);
+        //         connections=getConnected();
+        //         connectionField.append("may nakaconnect\n");
 
-                System.out.println("clicked");
+        //         panel.add(connectionField);
 
-              } 
-        });
-        
+        //         System.out.println("clicked");
+
+        //       }
+        // });
+
         panel.add(port);
         panel.add(startButton);
 
-        panel.add(gamePort);
-        panel.add(startGame);
+        // panel.add(gamePort);
+        // panel.add(startGame);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(panel, BorderLayout.CENTER);

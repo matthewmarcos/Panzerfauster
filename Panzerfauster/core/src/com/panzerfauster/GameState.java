@@ -2,11 +2,11 @@ package com.panzerfauster;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.util.ArrayList;
 
 /**
@@ -20,16 +20,14 @@ public class GameState implements Runnable, InputProcessor {
     private static ArrayList<Tank>       tanks;
     private static ArrayList<Projectile> projectiles;
     private static GameState state = new GameState();
-    private Tank    player;
-    private String  username;
-    private boolean GAME_RUNNING; // RUNNING or NOT
-    private DatagramSocket socket;
-    private DatagramPacket packet;
-    private static ArrayList<TankData> tankData;
-    private static ArrayList<ProjectileData> projectileData;
-    private InetAddress address;
 
-
+    private        Tank                      player;
+    private        String                    username;
+    private        boolean                   GAME_RUNNING; // RUNNING or NOT
+    private        DatagramSocket            socket;
+    private        DatagramPacket            packet;
+    private        InetAddress               address;
+    private        TextArea                  chatBoxTextArea;
 
 
     private GameState() {
@@ -100,37 +98,34 @@ public class GameState implements Runnable, InputProcessor {
 
         Thread playerSender = new Thread() {
             public void run() {
-                EntityPacket entity = new EntityPacket(tankData, projectileData, username);
-
-                tankData = entity.getTankData();
-                String msg = tankData.toString();
-
-                try{
-
-                    MulticastSocket socket = new MulticastSocket(4446);
-                    InetAddress group = InetAddress.getByName("200.0.0.1");
-                    socket.joinGroup(group);
-
-                    byte[] buf = new byte[256];
-
-                    for (int i = 0; i < 5; i++) {
-                        DatagramPacket packet = new DatagramPacket(buf, buf.length, group, 4438);
-                        socket.send(packet);
-                        // get response
-                        packet = new DatagramPacket(buf, buf.length);
-                        socket.receive(packet);
-
-                        // display response
-                        String received = new String(packet.getData());
-                        System.out.println(received);
-                    }
-
-                }catch(Exception e){}
-
-
-
-
-
+                // EntityPacket entity = new EntityPacket(tankData, projectileData, username);
+                //
+                // tankData = entity.getTankData();
+                // String msg = tankData.toString();
+                //
+                // try {
+                //
+                //     MulticastSocket socket = new MulticastSocket(4446);
+                //     InetAddress group = InetAddress.getByName("200.0.0.1");
+                //     socket.joinGroup(group);
+                //
+                //     byte[] buf = new byte[256];
+                //
+                //     for(int i = 0; i < 5; i++) {
+                //         DatagramPacket packet = new DatagramPacket(buf, buf.length, group, 4438);
+                //         socket.send(packet);
+                //         // get response
+                //         packet = new DatagramPacket(buf, buf.length);
+                //         socket.receive(packet);
+                //
+                //         // display response
+                //         String received = new String(packet.getData());
+                //         System.out.println(received);
+                //     }
+                //
+                // }
+                // catch(Exception e) {
+                // }
 
             }
         };
