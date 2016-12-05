@@ -47,7 +47,6 @@ public class MenuScreen implements Screen {
     private DataInputStream  chatIn;
     private boolean isInitiated = false;
     private String username;
-    private String ipAddress;
     private DatagramSocket socket;
     private ArrayList<String> chatString = new ArrayList<String>();
 
@@ -282,7 +281,7 @@ public class MenuScreen implements Screen {
         enterButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
-                ipAddress = ipTextField.getText();
+               final String ipAddress = ipTextField.getText();
                 username = usernameTextField.getText();
 
 
@@ -383,7 +382,6 @@ public class MenuScreen implements Screen {
         try{
             byte[] buf = msg.getBytes();
 
-            System.out.println(ipAddress);
             //InetAddress address = InetAddress.getByName(server);
             DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(ipTextField.getText()),4444);
             socket.send(packet);
