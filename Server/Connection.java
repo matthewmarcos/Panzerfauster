@@ -63,7 +63,7 @@ public class Connection implements Runnable {
 
           //thread for chat(TCP)
             new Thread(new Runnable(){
-                    Connection connect;
+                    Connection connect = new Connection(conn, out, in, server);
                     public void run(){
                     try{
                         // Getting username from client
@@ -124,7 +124,7 @@ public class Connection implements Runnable {
 
          //for UDP
             new Thread(new Runnable(){
-                Connection udpConn;
+                Connection udpConn = new Connection(socket, packet, server);
                 public void run(){
                     byte[] buf = new byte[256];
                      String playerData=new String(buf);
@@ -141,8 +141,9 @@ public class Connection implements Runnable {
                                         System.out.println("Player connected: "+tokens[1]);
                                         byte[] ipAddress = tokens[2].getBytes();
                                         //game.update(tokens[1].trim(),player);
-                                        broadcast("CONNECTED "+tokens[1]);
+                                        broadcast("?connected "+tokens[1]);
                                         playerCount++;
+                                        System.out.println(playerCount);
                                         try{
 
                                         udpConn.addPlayer(tokens[1], new PanzerfausterPlayer(InetAddress.getByAddress(ipAddress), tokens[1]));
