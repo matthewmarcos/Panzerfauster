@@ -17,12 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 
-<<<<<<< HEAD
-import java.io.DataOutputStream;
-=======
->>>>>>> aefb918cfd394b7f20dc1ca02b982d28d65556fc
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 /**
@@ -42,8 +39,9 @@ public class MenuScreen implements Screen {
     private Skin                     buttonSkin, textFieldSkin;
     private TextureAtlas buttonAtlas, textFieldAtlas;
     private Socket           conn;
-    private DataOutputStream out;
-    private DataInputStream  in;
+    private DataOutputStream chatOut;
+    private DataInputStream  chatIn;
+    private boolean isInitiated = false;
 
 
     private MenuScreen() {
@@ -58,84 +56,71 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        stage = new Stage();
-        font = new BitmapFont();
+        if(!isInitiated) {
+            stage = new Stage();
+            font = new BitmapFont();
 
-        buttonSkin = new Skin();
-        textFieldSkin = new Skin();
+            buttonSkin = new Skin();
+            textFieldSkin = new Skin();
 
-        connectTable = new Table();
-        chatTable = new Table();
+            connectTable = new Table();
+            chatTable = new Table();
 
-        buttonAtlas = new TextureAtlas(Gdx.files.internal("icons/buttons/buttons.pack.atlas"));
-        buttonSkin.addRegions(buttonAtlas);
+            buttonAtlas = new TextureAtlas(Gdx.files.internal("icons/buttons/buttons.pack.atlas"));
+            buttonSkin.addRegions(buttonAtlas);
 
-        textFieldAtlas = new TextureAtlas(Gdx.files.internal("icons/textfield/textfield.atlas"));
-        textFieldSkin.addRegions(textFieldAtlas);
+            textFieldAtlas = new TextureAtlas(Gdx.files.internal("icons/textfield/textfield.atlas"));
+            textFieldSkin.addRegions(textFieldAtlas);
 
-        stage.addActor(connectTable);
-        stage.addActor(chatTable);
+            stage.addActor(connectTable);
+            stage.addActor(chatTable);
 
-        initTextButtonStyle();
-        initTextFieldStyle();
+            initTextButtonStyle();
+            initTextFieldStyle();
 
-        // For the Connect
-        initPlayButton();
-        initEnterButton();
-        initUsernameTextField();
-        initIpTextField();
-        connectTable.setWidth(256f);
-        connectTable.add(ipTextField).padBottom(10f).size(256f, 30f).row();
-        connectTable.add(usernameTextField).padBottom(10f).size(256f, 30f).row();
-        connectTable.add(enterButton).size(120, 30f).padBottom(30f).row();
-        connectTable.add(playButton).size(120, 30f).padBottom(30f);
-        connectTable.setPosition(10f, 400f);
+            // For the Connect
+            initPlayButton();
+            initEnterButton();
+            initUsernameTextField();
+            initIpTextField();
+            connectTable.setWidth(256f);
+            connectTable.add(ipTextField).padBottom(10f).size(256f, 30f).row();
+            connectTable.add(usernameTextField).padBottom(10f).size(256f, 30f).row();
+            connectTable.add(enterButton).size(120, 30f).padBottom(30f).row();
+            connectTable.add(playButton).size(120, 30f).padBottom(30f);
+            connectTable.setPosition(10f, 400f);
 
-        // For the chat
-        initChatBarTextField();
+            // For the chat
+            initChatBarTextField();
 
-        //initChatBoxTextArea(" ");
+            //initChatBoxTextArea(" ");
 
-        chatTable.setWidth(512f);
-        chatTable.add(chatBoxTextArea).padBottom(10f).size(512f, 256f).row();
-        chatTable.add(chatBarTextField).size(512f, 30f).row();
-        chatTable.setPosition(400f, 400f);
+            chatTable.setWidth(512f);
+            chatTable.add(chatBoxTextArea).padBottom(10f).size(512f, 256f).row();
+            chatTable.add(chatBarTextField).size(512f, 30f).row();
+            chatTable.setPosition(400f, 400f);
 
-        stage.addListener(new InputListener() {
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                // return super.keyDown(event, keycode);
-                if(stage.getKeyboardFocus() == chatBarTextField && event.getKeyCode() == Input.Keys.ENTER) {
-                    String content = chatBarTextField.getText();
-                    chatBarTextField.setText("");
+            stage.addListener(new InputListener() {
+                @Override
+                public boolean keyDown(InputEvent event, int keycode) {
+                    // If you hit enter, send something to the server
+                    if(stage.getKeyboardFocus() == chatBarTextField && event.getKeyCode() == Input.Keys.ENTER) {
+                        String content = chatBarTextField.getText();
+                        chatBarTextField.setText("");
 
-                    System.out.println("From you: " + content);
+                        try {
+                            chatOut.writeUTF(content);
+                        }
+                        catch(Exception e) {
+                            e.printStackTrace();
+                        }
 
-                    try {
-                        out = new DataOutputStream(conn.getOutputStream());
-                        out.writeUTF(content);
                     }
-                    catch(Exception e) {
-                        e.printStackTrace();
-                    }
-
-<<<<<<< HEAD
-                    try{
-=======
-                    try {
->>>>>>> aefb918cfd394b7f20dc1ca02b982d28d65556fc
-                        String message = in.readUTF(); //gets the message from server
-                        initChatBoxTextArea(message);
-                        System.out.println("From someone: " + message);
-                    }
-                    catch(Exception e) {
-                        e.printStackTrace();
-                    }
-
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+
+        }
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -181,7 +166,7 @@ public class MenuScreen implements Screen {
 
     private void initChatBarTextField() {
 
-        chatBarTextField = new TextField("Say Something I'm giving up on you", textFieldStyle);
+        chatBarTextField = new TextField("", textFieldStyle);
 
         String message = chatBarTextField.getText();
         initChatBoxTextArea(message);
@@ -200,7 +185,6 @@ public class MenuScreen implements Screen {
         f.fontColor = Color.BLACK;
 
         chatBoxTextArea = new TextArea(message, f);
-        System.out.println("From Chat: " + message);
         chatBoxTextArea.setPrefRows(10f);
         chatBoxTextArea.setDisabled(true);
         chatBoxTextArea.setAlignment(Align.center);
@@ -224,7 +208,7 @@ public class MenuScreen implements Screen {
 
 
     private void initUsernameTextField() {
-        usernameTextField = new TextField("Noob Pwnzer 69", textFieldStyle);
+        usernameTextField = new TextField("", textFieldStyle);
         usernameTextField.setAlignment(Align.center);
     }
 
@@ -266,22 +250,43 @@ public class MenuScreen implements Screen {
                 String ipAddress = ipTextField.getText();
                 String username = usernameTextField.getText();
 
-                // conn = Gdx.net.newClientSocket(Protocol.TCP, ipTextField.getText(), 8000, null);
-                try {
-<<<<<<< HEAD
-                    conn = new Socket(ipAddress, 8000);
-                } catch (Exception e) {
-=======
-                    conn = new Socket(ipTextField.getText(), 8000);
-                }
-                catch(Exception e) {
->>>>>>> aefb918cfd394b7f20dc1ca02b982d28d65556fc
+                if(enterButton.isDisabled()) {
+                    return;
                 }
 
-                ipTextField.setDisabled(true);
-                usernameTextField.setDisabled(true);
-                enterButton.setDisabled(true);
+                try {
+                    conn = new Socket(ipAddress, 8000);
+                    ipTextField.setDisabled(true);
+                    usernameTextField.setDisabled(true);
+                    enterButton.setDisabled(true);
+                }
+                catch(Exception e) {
+                }
+
                 System.out.println("Hello " + username + "! You are trying to connect to: " + ipAddress);
+
+                // Anonymous thread listener
+                new Thread(new Runnable() {
+                    public void run() {
+                        chatBoxTextArea.appendText("Trying to connect");
+
+                        while(true) {
+                            try {
+                                String s = chatIn.readUTF();
+                                chatBoxTextArea.appendText(s);
+                                chatBoxTextArea.appendText("aaa");
+                            }
+                            catch (IOException e) {
+                                // Disconnected
+                                return;
+                            }
+                            catch (Exception e) {
+                                continue;
+                            }
+
+                        }
+                    }
+                }){}.start();
             }
         });
 

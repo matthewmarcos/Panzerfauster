@@ -4,11 +4,15 @@ import java.util.*;
 
 public class Connection implements Runnable {
 
+    private static ArrayList<Connection> connections = new ArrayList<Connection>();
+
     private Socket conn;
     private DataOutputStream out;
     private DataInputStream in;
     private PazerfausterServer server;
-    private static ArrayList<Connection> connections = new ArrayList<Connection>();
+    private String username;
+    private String ipAddress;
+    private int port;
 
     public Connection (
             Socket conn,
@@ -22,39 +26,36 @@ public class Connection implements Runnable {
         this.in = in;
         this.server = server;
         connections.add(this);
-    }c
+    }
 
     public void run() {
+
+        // Kuha ng name
+        try {
+            out.writeUTF("SDASDASDSD");
+        }
+        catch(Exception e) {}
+        // If existing na ang name, sibakin.
+
         // Main listening for inputs
         String msg = null;
         while(conn.isConnected()) {
             try {
                 msg = in.readUTF();
-                System.out.println(msg);
-
-                if(msg == null) {
-                  //System.out.println("WALA!!!");
-                    //continue;
-                }
-
             }
-            catch (Exception e) {
-                System.out.println("Error reading");
+            catch (IOException e) {
+                // Connection closed
                 e.printStackTrace();
+                // Delete this connection
+                break;
+            }
+            catch(Exception e) {
+                continue;
             }
 
             this.broadcast(msg);
-             //System.out.println("Continue");
         }
 
-        System.out.println("Escaped main loop");
-
-        if(conn.isConnected()) {
-            System.out.println("Still connected");
-        }
-        else {
-            System.out.println("Not connected!");
-        }
     }
 
     public void write(String message) {
@@ -62,7 +63,6 @@ public class Connection implements Runnable {
             out.writeUTF(message);
         }
         catch (Exception e) {
-            System.out.println("error in writing");
             e.printStackTrace();
         }
     }
