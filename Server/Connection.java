@@ -158,7 +158,7 @@ public class Connection implements Runnable {
                                   broadcast("START");
                                   gameStage=IN_PROGRESS;
                                   break;
-                              /*case IN_PROGRESS:
+                              case IN_PROGRESS:
                                   //System.out.println("Game State: IN_PROGRESS");
                                   
                                   //Player data was received!
@@ -170,15 +170,15 @@ public class Connection implements Runnable {
                                       int x = Integer.parseInt(playerInfo[2].trim());
                                       int y = Integer.parseInt(playerInfo[3].trim());
                                       //Get the player from the game state
-                                      NetPlayer player=(NetPlayer)game.getPlayers().get(pname);                   
+                                      PanzerfausterPlayer player=(PanzerfausterPlayer)udpConn.getPlayers().get(pname);                   
                                       player.setX(x);
                                       player.setY(y);
                                       //Update the game state
-                                      game.update(pname, player);
+                                    playerMap.put(pname, player);
                                       //Send to all the updated game state
-                                      broadcast(game.toString());
+                                      broadcast(udpConn.toString());
                                   }
-                                  break;*/
+                                  break;
                         }                 
                 }
 
@@ -249,5 +249,15 @@ public class Connection implements Runnable {
         for(Connection c : connections) {
             System.out.println((i++) +") " + c.getUsername());
         }
+    }
+
+    public String toString(){
+        String retval="";
+        for(Iterator ite=playerMap.keySet().iterator();ite.hasNext();){
+            String name=(String)ite.next();
+            PanzerfausterPlayer player=(PanzerfausterPlayer)playerMap.get(name);
+            retval+=player.toString()+":";
+        }
+        return retval;
     }
 }

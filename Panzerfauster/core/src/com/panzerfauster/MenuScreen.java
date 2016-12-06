@@ -247,10 +247,9 @@ public class MenuScreen implements Screen {
 
                 //insert UDP here
                 try{
-                    byte[] buf = new byte[256];
                     send("?connect " + usernameTextField.getText() + " " + ipTextField.getText() );
                     System.out.println();
-                    chatBoxTextArea.appendText("Game Loading... Waiting for connections");
+                    chatBoxTextArea.appendText("Game Loading... Waiting for connections\n");
 
                 }catch(Exception e){}
 
@@ -266,6 +265,11 @@ public class MenuScreen implements Screen {
                 if(serverData.startsWith("?start")) {
                     //begin game
                     Panzerfauster.getInstance().setGameScreen();
+                    try{
+                        GameState newGame = new GameState();
+                                newGame.setAddress(InetAddress.getByName(ipTextField.getText()));
+                    }catch(Exception e){}
+
                 }
 
             }
