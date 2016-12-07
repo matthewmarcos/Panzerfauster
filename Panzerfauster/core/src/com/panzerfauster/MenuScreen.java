@@ -369,6 +369,7 @@ public class MenuScreen implements Screen {
                             }
 
                             if(s.equals("?start")) {
+                                GameState.getState().setGameStarted(true);
                                 System.out.println("Pwede na magstart");
                                 continue;
                             }

@@ -33,6 +33,14 @@ public class GameState implements Runnable, InputProcessor {
     private double lastUpdatedServer;
 
 
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
+
+    private boolean gameStarted;
+
+
     private GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
@@ -229,6 +237,8 @@ public class GameState implements Runnable, InputProcessor {
 
 
     public void updateServer() {
+
+        if(!gameStarted) return;
 
         double timeSinceLastUpdate = System.currentTimeMillis() - lastUpdatedServer;
         if(timeSinceLastUpdate < 15) {
