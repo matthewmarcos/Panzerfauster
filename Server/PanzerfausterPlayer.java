@@ -7,12 +7,12 @@ public class PanzerfausterPlayer{
     int x, y;
     float angle;
 
-    public PanzerfausterPlayer(InetAddress address, String username){
+    public PanzerfausterPlayer(InetAddress address, String username, int x, int y, float angle){
         this.address = address;
         this.username = username;
-        this.x = 0;
-        this.y = 0;
-        this.angle = 0;
+        this.x = x;
+        this.y = y;
+        this.angle = angle;
     }
 
     public void update(int x, int y, float angle) {

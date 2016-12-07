@@ -59,7 +59,8 @@ public class GameState {
                     //remove excess bytes
                     playerData = playerData.trim();
                     if(!playerData.equals("")) {
-                        parsePlayerData(playerData);
+                        parsePlayerData(playerData, packet);
+                        broadcastUDP();
                     }
 
                 }
@@ -67,16 +68,45 @@ public class GameState {
         }){}.start();
     }
 
-    public static void parsePlayerData(String playerData) {
-        System.out.println(playerData);
+    private static void parsePlayerData(String playerDataIn, DatagramPacket packet) {
+        // System.out.println(playerDataIn);
+        String[] data = playerDataIn.split(" ");
+        if(data.length == 6) {
+            // Fired
+        }
+        String username = data[1];
+        int x = Integer.parseInt(data[2]);
+        int y = Integer.parseInt(data[3]);
+        float angle = Float.parseFloat(data[4]);
+
+        PanzerfausterPlayer p = playerData.get(username);
+
+        p.update(x, y, angle);
+        // System.out.println(p.toString());
+
+        playerData.put(username, p);
+
     }
 
     public static void broadcastUDP() {
+        // Broadcast game updates
+        String msg = "";
+        ArrayList<PanzerfausterPlayer> players = new ArrayList<PanzerfausterPlayer>(playerData.values());
+        for(PanzerfausterPlayer p : players) {
+            msg += p.toString() + " | ";
+        }
+
+        // System.out.println(msg);
 
     }
 
     private GameState() {
         playerData = new HashMap<String, PanzerfausterPlayer>();
+
+        for(Iterator ite=Connection.getConnections().keySet().iterator();ite.hasNext();){
+            String name=(String)ite.next();
+            playerData.put(name, new PanzerfausterPlayer(null, name, 0, 0, 0f));
+        }
 
     }
 }
