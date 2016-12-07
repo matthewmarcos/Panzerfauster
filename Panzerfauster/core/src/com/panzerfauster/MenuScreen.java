@@ -43,6 +43,7 @@ public class MenuScreen implements Screen {
     private DataInputStream  chatIn;
     private boolean isInitiated = false;
     private String username;
+    private TextButton mechanicsButton;
 
 
     private MenuScreen() {
@@ -84,7 +85,9 @@ public class MenuScreen implements Screen {
             initEnterButton();
             initUsernameTextField();
             initIpTextField();
+            initMechanicsButton();
             connectTable.setWidth(256f);
+            connectTable.add(mechanicsButton).size(120, 30f).padBottom(30f).row();
             connectTable.add(ipTextField).padBottom(10f).size(256f, 30f).row();
             connectTable.add(usernameTextField).padBottom(10f).size(256f, 30f).row();
             connectTable.add(enterButton).size(120, 30f).padBottom(30f).row();
@@ -236,6 +239,19 @@ public class MenuScreen implements Screen {
 
 
                 Panzerfauster.getInstance().setGameScreen();
+            }
+        });
+
+    }
+
+    private void initMechanicsButton() {
+
+        mechanicsButton = new TextButton("Mechanics", textButtonStyle);
+
+        mechanicsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent ev, float x, float y) {
+                Panzerfauster.getInstance().setMechanicsScreen();
             }
         });
 

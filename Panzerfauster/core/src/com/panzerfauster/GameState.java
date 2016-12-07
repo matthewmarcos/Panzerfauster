@@ -98,7 +98,7 @@ public class GameState implements Runnable, InputProcessor {
 
         Thread playerSender = new Thread() {
             public void run() {
-            
+
 
             }
         };
