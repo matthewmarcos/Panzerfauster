@@ -42,7 +42,7 @@ public class MenuScreen implements Screen {
     private DataOutputStream chatOut;
     private DataInputStream  chatIn;
     private boolean isInitiated = false;
-    private String username;
+    private String     username;
     private TextButton mechanicsButton;
     private boolean connected, sentStart = false;
 
@@ -236,7 +236,9 @@ public class MenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
-                if(!connected) return;
+                if(!connected) {
+                    return;
+                }
                 if(connected && !sentStart) {
                     playButton.setDisabled(true);
                     try {
@@ -255,11 +257,11 @@ public class MenuScreen implements Screen {
 
                 Panzerfauster.getInstance().setGameScreen();
 
-
             }
         });
 
     }
+
 
     private void initMechanicsButton() {
 
@@ -339,9 +341,11 @@ public class MenuScreen implements Screen {
                             usernameTextField.setDisabled(false);
                             enterButton.setDisabled(false);
 
-                            try{
+                            try {
                                 conn.close();
-                            } catch(Exception e) {}
+                            }
+                            catch(Exception e) {
+                            }
 
                             return;
                         }
@@ -365,15 +369,14 @@ public class MenuScreen implements Screen {
                             }
 
                             if(s.equals("?start")) {
-                               System.out.println("Pwede na magstart");
+                                System.out.println("Pwede na magstart");
                                 continue;
                             }
                             chatBoxTextArea.appendText(s);
 
                         }
                     }
-                }) {
-                }.start();
+                }){}.start();
             }
         });
 
