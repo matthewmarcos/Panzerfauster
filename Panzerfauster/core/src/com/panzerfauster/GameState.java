@@ -100,6 +100,7 @@ public class GameState implements Runnable, InputProcessor {
 
         final Thread playerListener = new Thread() {
             public void run() {
+
                 while (true) {
 
                     byte[] buf = new byte[256];
@@ -116,6 +117,7 @@ public class GameState implements Runnable, InputProcessor {
                             int x = Integer.parseInt(playerInfo[2]);
                             int y = Integer.parseInt(playerInfo[3]);
                         }
+
 
                     }
                 }
