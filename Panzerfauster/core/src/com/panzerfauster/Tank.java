@@ -75,7 +75,7 @@ public class Tank extends Entity {
         DeltaY = (int)(this.sprite.getHeight() / 2 * Math.sin(Math.toRadians(this.angle)));
 
         this.fired = true;
-        GameState.addProjectile(
+        GameState.getState().addProjectile(
             new Projectile("sprites/bomb3.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 15, 100,
                 this.angle, this));
 
@@ -86,16 +86,16 @@ public class Tank extends Entity {
     private void move(float x, float y) {
 
         //Check if xcoord and ycoord are within map bounds
-        if(this.xcoord + x < -1 * GameScreen.getMapWidth() / 2) {
+        if(this.xcoord + x < -1 * GameScreen.getScreen().getMapWidth() / 2) {
             return;
         }
-        if(this.xcoord + x > GameScreen.getMapWidth() / 2) {
+        if(this.xcoord + x > GameScreen.getScreen().getMapWidth() / 2) {
             return;
         }
-        if(this.ycoord + y < -1 * GameScreen.getMapHeight() / 2) {
+        if(this.ycoord + y < -1 * GameScreen.getScreen().getMapHeight() / 2) {
             return;
         }
-        if(this.ycoord + y > GameScreen.getMapHeight() / 2) {
+        if(this.ycoord + y > GameScreen.getScreen().getMapHeight() / 2) {
             return;
         }
 

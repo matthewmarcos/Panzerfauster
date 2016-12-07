@@ -33,11 +33,11 @@ public class GameState implements Runnable, InputProcessor {
     private TextArea       chatBoxTextArea;
     private boolean        fired;
     private double lastUpdatedServer;
-    private static String username = "";
+    private String username = "";
 
 
-    public static void setUsername(String username) {
-        username = username;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 
@@ -84,13 +84,13 @@ public class GameState implements Runnable, InputProcessor {
     }
 
 
-    public static void addTank(String playerName, Tank t) {
+    public void addTank(String playerName, Tank t) {
         tanks.put(playerName + " tank "+ (idCounter++) + "", t);
     }
 
 
-    public static void addProjectile(Projectile p) {
-        projectiles.put(username + "projectile " +(idCounter++) + "", p);
+    public void addProjectile(Projectile p) {
+        projectiles.put(this.username + "projectile " +(idCounter++) + "", p);
     }
 
 

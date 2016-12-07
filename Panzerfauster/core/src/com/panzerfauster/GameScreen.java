@@ -14,9 +14,9 @@ import java.net.DatagramPacket;
 
 public class GameScreen implements Screen {
 
-    private static Sprite mapSprite;
+    private Sprite mapSprite;
     private static GameScreen screen = new GameScreen();
-    private static Sprite             controlsSprite;
+    private  Sprite             controlsSprite;
     // private Screen gameScreen, menuScreen;
     private SpriteBatch batch;
     private BitmapFont  font;
@@ -39,19 +39,19 @@ public class GameScreen implements Screen {
     }
 
 
-    public static int getMapWidth() {
+    public int getMapWidth() {
 
         return (int)mapSprite.getWidth();
     }
 
 
-    public static int getMapHeight() {
+    public int getMapHeight() {
 
         return (int)mapSprite.getHeight();
     }
 
 
-    public static Sprite getControlsSprite() {
+    public Sprite getControlsSprite() {
         return controlsSprite;
     }
 
@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
             controlsSprite.setPosition(300, -292);
 
             GameState.getState().setPlayer(player);
-            GameState.addTank("me", player);
+            GameState.getState().addTank("me", player);
             GameState.getState().startGame();
             GameState.getState().setGAME_RUNNING(true);
         }
