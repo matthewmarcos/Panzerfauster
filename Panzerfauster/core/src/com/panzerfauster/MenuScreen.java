@@ -236,8 +236,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
                 playButton.setDisabled(true);
-
-
+                GameScreen.getScreen().startGame();
                 Panzerfauster.getInstance().setGameScreen();
             }
         });

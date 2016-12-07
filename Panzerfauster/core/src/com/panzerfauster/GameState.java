@@ -21,13 +21,14 @@ public class GameState implements Runnable, InputProcessor {
     private static ArrayList<Projectile> projectiles;
     private static GameState state = new GameState();
 
-    private        Tank                      player;
-    private        String                    username;
-    private        boolean                   GAME_RUNNING; // RUNNING or NOT
-    private        DatagramSocket            socket;
-    private        DatagramPacket            packet;
-    private        InetAddress               address;
-    private        TextArea                  chatBoxTextArea;
+    private Tank           player;
+    private String         username;
+    private boolean        GAME_RUNNING; // RUNNING or NOT
+    private DatagramSocket socket;
+    private DatagramPacket packet;
+    private InetAddress    address;
+    private TextArea       chatBoxTextArea;
+    private boolean        fired;
 
 
     private GameState() {
@@ -96,9 +97,9 @@ public class GameState implements Runnable, InputProcessor {
     public void run() {
         //Create threads that talk to the server.
 
-        Thread playerSender = new Thread() {
-            public void run() {
+        final Thread playerSender = new Thread() {
 
+            public void run() {
 
             }
         };
@@ -212,4 +213,26 @@ public class GameState implements Runnable, InputProcessor {
         return false;
     }
 
+
+    public void updateServer() {
+        String msg;
+        int x, y, angle;
+        x = player.getXcoord();
+        y = player.getYcoord();
+
+        msg = "Player " + username;
+        msg += " " + x + " " + y;
+        if(player.isFired()) {
+            msg += " fired";
+            player.setFired(false);
+        }
+
+        System.out.println(msg);
+
+    }
+
+
+    public void fire() {
+        this.fired = true;
+    }
 }

@@ -70,7 +70,6 @@ public class MechanicsScreen implements Screen {
 
         batch.begin();
         controlsSprite.draw(batch);
-
         batch.end();
     }
 

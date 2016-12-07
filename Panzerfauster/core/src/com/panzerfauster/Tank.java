@@ -11,6 +11,17 @@ public class Tank extends Entity {
     private float cooldown, fireSpeed;
     private double lastFired;
     private int    bulletDamage, kills;
+    private boolean fired;
+
+
+    public boolean isFired() {
+        return fired;
+    }
+
+
+    public void setFired(boolean fired) {
+        this.fired = fired;
+    }
 
 
     public Tank(String image_path, boolean isEnemy, String name, int xcoordinate, int ycoordinate, int speed,
@@ -63,9 +74,12 @@ public class Tank extends Entity {
         DeltaX = (int)(this.sprite.getHeight() / 2 * Math.cos(Math.toRadians(this.angle)));
         DeltaY = (int)(this.sprite.getHeight() / 2 * Math.sin(Math.toRadians(this.angle)));
 
+        this.fired = true;
         GameState.addProjectile(
             new Projectile("sprites/bomb3.png", false, null, this.xcoord + DeltaX, this.ycoord + DeltaY, 15, 100,
                 this.angle, this));
+
+        GameState.getState().updateServer();
     }
 
 
@@ -89,6 +103,8 @@ public class Tank extends Entity {
         this.ycoord += y;
 
         this.setPosition(this.xcoord, this.ycoord);
+
+        GameState.getState().updateServer();
     }
 
 
