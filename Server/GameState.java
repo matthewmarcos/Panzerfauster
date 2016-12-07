@@ -1,7 +1,23 @@
+import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 public class GameState {
 
     private static GameState state = new GameState();
     private static boolean isRunning = false;
+    private static DatagramSocket serverSocket = null;
 
     public static GameState getState() {
         return state;
@@ -13,10 +29,37 @@ public class GameState {
             return;
         }
 
+        try{
+            serverSocket = new DatagramSocket(4444);
+        }
+        catch(Exception e) {
+            System.out.println("Error creating DatagramSocket");
+        }
+
+
         new Thread(new Runnable() {
             public void run() {
-                while(true) {
-                    System.out.println("AAAAAAAHH");
+
+                String playerData = "";
+
+                while(true){
+                    // Get the data from players
+                    byte[] buf = new byte[256];
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                    try{
+                        serverSocket.receive(packet);
+                    }catch(Exception ioe){}
+
+                    /**
+                    * Convert the array of bytes to string
+                    */
+                    playerData=new String(buf);
+
+                    //remove excess bytes
+                    playerData = playerData.trim();
+                    if (!playerData.equals("")){
+                        System.out.println(playerData);
+                    }
                 }
             }
         }){}.start();

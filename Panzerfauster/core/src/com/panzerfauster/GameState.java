@@ -137,32 +137,34 @@ public class GameState implements Runnable, InputProcessor {
 
         Thread playerListener = new Thread() {
             public void run() {
+                String serverData;
+                while(true){
+                    try{
+                        Thread.sleep(1);
+                    }catch(Exception ioe){}
 
+                    //Get the data from players
+                    byte[] buf = new byte[256];
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                    try{
+                        socket.receive(packet);
+                    }catch(Exception ioe){/*lazy exception handling :)*/}
+
+                    serverData=new String(buf);
+                    serverData=serverData.trim();
+
+                    if (!serverData.equals("")){
+                        System.out.println("Server Data:" +serverData);
+                    }
+
+
+                }
             }
         };
 
         Thread projectileSender = new Thread() {
             public void run() {
                 while (true) {
-                    //Listen for server for updates. Update the necessary arraylists
-                    // for(Projectile p : projectiles) {
-                    //     try {
-                    //         p.update();
-                    //     }
-                    //     catch(Exception e) {
-                    //         //    Concurrent update
-                    //     }
-                    //
-                    // }
-                    // ArrayList<Projectile> temp = new ArrayList<Projectile>();
-                    //
-                    // for(Projectile p : projectiles) {
-                    //     if(p.isAlive()) {
-                    //         temp.add(p);
-                    //     }
-                    // }
-                    //
-                    // projectiles = temp;
 
                     for(Iterator ite = projectiles.keySet().iterator(); ite.hasNext();){
                         String name=(String)ite.next();

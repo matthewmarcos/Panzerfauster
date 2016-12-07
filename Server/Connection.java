@@ -86,7 +86,7 @@ public class Connection implements Runnable {
                 System.out.println(this.username + " is ready.");
                 this.isReady = true;
                 readyCount++;
-                if(readyCount == 3) {
+                if(readyCount == 2) {
                     this.broadcast("?start");
                     GameState.startUDPServer();
                 }
