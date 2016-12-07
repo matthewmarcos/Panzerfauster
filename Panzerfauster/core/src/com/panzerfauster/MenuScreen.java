@@ -44,7 +44,7 @@ public class MenuScreen implements Screen {
     private boolean isInitiated = false;
     private String username;
     private TextButton mechanicsButton;
-    private boolean connected;
+    private boolean connected, sentStart = false;
 
 
     private MenuScreen() {
@@ -236,11 +236,26 @@ public class MenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
-                if(connected) {
+                if(!connected) return;
+                if(connected && !sentStart) {
                     playButton.setDisabled(true);
-                    GameScreen.getScreen().startGame();
-                    Panzerfauster.getInstance().setGameScreen();
+                    try {
+                        chatOut.writeUTF("?ready");
+                    }
+                    catch(IOException e) {
+                        return;
+                    }
+                    catch(Exception e) {
+                        return;
+                    }
+                    playButton.setText("Waiting for players");
+                    sentStart = true;
+                    return;
                 }
+
+                Panzerfauster.getInstance().setGameScreen();
+
+
             }
         });
 
@@ -340,7 +355,6 @@ public class MenuScreen implements Screen {
                         while (true) {
                             try {
                                 s = chatIn.readUTF();
-                                chatBoxTextArea.appendText(s);
                             }
                             catch(IOException e) {
                                 // Disconnected
@@ -349,6 +363,12 @@ public class MenuScreen implements Screen {
                             catch(Exception e) {
                                 continue;
                             }
+
+                            if(s.equals("?start")) {
+                               System.out.println("Pwede na magstart");
+                                continue;
+                            }
+                            chatBoxTextArea.appendText(s);
 
                         }
                     }

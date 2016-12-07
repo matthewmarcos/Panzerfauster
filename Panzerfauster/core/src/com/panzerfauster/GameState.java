@@ -24,7 +24,7 @@ public class GameState implements Runnable, InputProcessor {
     private static String serverIP = "";
     private Tank           player;
     private String         username;
-    private boolean        GAME_RUNNING; // RUNNING or NOT
+    private boolean        GAME_RUNNING = false; // RUNNING or NOT
     private DatagramSocket socket;
     private DatagramPacket packet;
     private InetAddress    address;
@@ -36,7 +36,6 @@ public class GameState implements Runnable, InputProcessor {
     private GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
-        this.GAME_RUNNING = false;
         try {
             socket = new DatagramSocket();
             System.out.println("Created datagram socket");

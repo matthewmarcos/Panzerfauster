@@ -4,8 +4,8 @@ import java.util.*;
 
 public class Connection implements Runnable {
 
-    // private static ArrayList<Connection> connections = new ArrayList<Connection>();
     private static HashMap<String, Connection> connections = new HashMap<String, Connection>();
+    private static int readyCount = 0;
 
     private Socket conn;
     private DataOutputStream out;
@@ -14,6 +14,7 @@ public class Connection implements Runnable {
     private String username;
     private String ipAddress;
     private int port;
+    private boolean isReady = false;
 
     public Connection (
             Socket conn,
@@ -52,14 +53,7 @@ public class Connection implements Runnable {
 
             return;
         }
-        // for(Connection c : connections) {
-        //     if(this.username.equals(c.getUsername())) {
-        //         try{
-        //             out.writeUTF("?fail");
-        //         } catch(Exception e) {}
-        //         return;
-        //     }
-        // }
+
 
         // Username does not exist in server
         try{
@@ -78,12 +72,6 @@ public class Connection implements Runnable {
             try {
                 msg = in.readUTF();
             }
-            // catch (IOException e) {
-            //     // Connection closed
-            //     e.printStackTrace();
-            //     // Delete this connection
-            //     break;
-            // }
             catch(Exception e) {
                 // Error in connection
                 System.out.println(this.username + " has disconnected");
@@ -91,6 +79,18 @@ public class Connection implements Runnable {
                 this.broadcast(this.username + " has disconnected.\n");
                 Connection.printConnectedUsers();
                 break;
+            }
+
+            // If users are ready;
+            if(msg.equals("?ready") && !this.isReady) {
+                System.out.println(this.username + " is ready.");
+                this.isReady = true;
+                readyCount++;
+                if(readyCount == 3) {
+                    this.broadcast("?start");
+                    GameState.startUDPServer();
+                }
+                continue;
             }
 
             this.broadcast(this.username + ": " + msg + "\n");
@@ -138,7 +138,15 @@ public class Connection implements Runnable {
     }
 
     public static void removeConnection(String s){
+        if(connections.get(s).isReady()) {
+            readyCount--;
+        }
+
         connections.remove(s);
+    }
+
+    public boolean isReady() {
+        return this.isReady;
     }
 
     public static void printConnectedUsers() {
@@ -146,15 +154,9 @@ public class Connection implements Runnable {
 
         System.out.println("Connected users: " + connections.size());
 
-        // for(Connection c : connections) {
-        //     System.out.println((i++) +") " + c.getUsername());
-        // }
-
         for(Iterator ite=connections.keySet().iterator();ite.hasNext();){
             String name=(String)ite.next();
             System.out.println((i++) +") " + name);
-            // NetPlayer player=(NetPlayer)connections.get(name);
-            // send(player,msg);
         }
     }
 }

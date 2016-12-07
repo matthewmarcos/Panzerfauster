@@ -2,6 +2,7 @@ package com.panzerfauster.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.panzerfauster.GameState;
 import com.panzerfauster.Panzerfauster;
 
 public class DesktopLauncher {
@@ -13,6 +14,7 @@ public class DesktopLauncher {
         config.height = 600;
         config.resizable = false;
 
+        GameState.getState();
         new LwjglApplication(new Panzerfauster(), config);
     }
 }

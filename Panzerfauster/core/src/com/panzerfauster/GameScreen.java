@@ -58,12 +58,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        // Use different listener when this becomes the state
-        Gdx.input.setInputProcessor(GameState.getState());
-    }
-
-
-    public void startGame() {
         if(!GameState.getState().isGAME_RUNNING()) {
             batch = new SpriteBatch();
             camera = new OrthographicCamera(1000, 600);
@@ -83,7 +77,11 @@ public class GameScreen implements Screen {
             GameState.getState().startGame();
             GameState.getState().setGAME_RUNNING(true);
         }
+        // Use different listener when this becomes the state
+        Gdx.input.setInputProcessor(GameState.getState());
     }
+
+
 
     @Override
     public void render(float delta) {
