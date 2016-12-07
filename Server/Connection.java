@@ -126,7 +126,8 @@ public class Connection implements Runnable {
             new Thread(new Runnable(){
                 Connection udpConn = new Connection(socket, packet, server);
                 public void run(){
-                    byte[] buf = new byte[256];
+                    while(true){
+                        byte[] buf = new byte[256];
                      String playerData=new String(buf);
                         
                         //remove excess bytes
@@ -139,8 +140,6 @@ public class Connection implements Runnable {
                                         String tokens[] = playerData.split(" ");
                                         PanzerfausterPlayer player=new PanzerfausterPlayer(packet.getAddress(), tokens[1]);
                                         System.out.println("Player connected: "+tokens[1]);
-                                        byte[] ipAddress = tokens[2].getBytes();
-                                        //game.update(tokens[1].trim(),player);
                                         broadcast("?connected "+tokens[1]);
                                         playerCount++;
                                         System.out.println(playerCount);
@@ -155,16 +154,12 @@ public class Connection implements Runnable {
                                   break;    
                               case GAME_START:
                                   System.out.println("Game State: START");
-                                  broadcast("START");
+                                  broadcast("?start");
                                   gameStage=IN_PROGRESS;
                                   break;
                               case IN_PROGRESS:
-                                  //System.out.println("Game State: IN_PROGRESS");
-                                  
-                                  //Player data was received!
-                                  if (playerData.startsWith("PLAYER")){
-                                      //Tokenize:
-                                      //The format: PLAYER <player name> <x> <y>
+                                      if (playerData.startsWith("?player")){
+                                      
                                       String[] playerInfo = playerData.split(":");                    
                                       String pname =playerInfo[1];
                                       int x = Integer.parseInt(playerInfo[2].trim());
@@ -174,12 +169,14 @@ public class Connection implements Runnable {
                                       player.setX(x);
                                       player.setY(y);
                                       //Update the game state
-                                    playerMap.put(pname, player);
+                                      playerMap.put(pname, player);
                                       //Send to all the updated game state
                                       broadcast(udpConn.toString());
                                   }
                                   break;
-                        }                 
+                        }             
+                    }
+                        
                 }
 
             }){

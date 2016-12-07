@@ -173,6 +173,7 @@ public class GameState implements Runnable, InputProcessor {
         };
 
         playerSender.start();
+        playerListener.start();
     }
 
 
@@ -251,7 +252,7 @@ public class GameState implements Runnable, InputProcessor {
             }
 
             public String sendString(){
-                String retval = null;
+                String retval = "";
                 retval+="?player ";
                 retval+=username + " ";
                 return retval;
