@@ -29,8 +29,10 @@ public class GameState implements Runnable, InputProcessor {
     private        InetAddress               address;
     private        TextArea                  chatBoxTextArea;
 
+    private String serverData;
+    private boolean connected;
 
-    private GameState() {
+    public GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
         this.GAME_RUNNING = false;
@@ -96,63 +98,61 @@ public class GameState implements Runnable, InputProcessor {
     public void run() {
         //Create threads that talk to the server.
 
-        Thread playerSender = new Thread() {
+        final Thread playerListener = new Thread() {
             public void run() {
-                // EntityPacket entity = new EntityPacket(tankData, projectileData, username);
-                //
-                // tankData = entity.getTankData();
-                // String msg = tankData.toString();
-                //
-                // try {
-                //
-                //     MulticastSocket socket = new MulticastSocket(4446);
-                //     InetAddress group = InetAddress.getByName("200.0.0.1");
-                //     socket.joinGroup(group);
-                //
-                //     byte[] buf = new byte[256];
-                //
-                //     for(int i = 0; i < 5; i++) {
-                //         DatagramPacket packet = new DatagramPacket(buf, buf.length, group, 4438);
-                //         socket.send(packet);
-                //         // get response
-                //         packet = new DatagramPacket(buf, buf.length);
-                //         socket.receive(packet);
-                //
-                //         // display response
-                //         String received = new String(packet.getData());
-                //         System.out.println(received);
-                //     }
-                //
-                // }
-                // catch(Exception e) {
-                // }
 
+                while (true) {
+
+                    byte[] buf = new byte[256];
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                    try {
+                        socket.receive(packet);
+                    } catch (Exception ioe) {/*lazy exception handling :)*/}
+
+                    if (serverData.startsWith("?player")) {
+                        String[] playersInfo = serverData.split(":");
+                        for (int i = 0; i < playersInfo.length; i++) {
+                            String[] playerInfo = playersInfo[i].split(" ");
+                            String pname = playerInfo[1];
+                            int x = Integer.parseInt(playerInfo[2]);
+                            int y = Integer.parseInt(playerInfo[3]);
+                        }
+
+
+                    }
+                }
             }
+
         };
 
-        Thread playerListener = new Thread() {
+
+        final Thread playerSender = new Thread() {
+
             public void run() {
 
+                String playerData = sendString();
+
+                send(playerData);
             }
+
         };
 
         Thread projectileSender = new Thread() {
             public void run() {
                 while (true) {
                     //Listen for server for updates. Update the necessary arraylists
-                    for(Projectile p : projectiles) {
+                    for (Projectile p : projectiles) {
                         try {
                             p.update();
-                        }
-                        catch(Exception e) {
+                        } catch (Exception e) {
                             //    Concurrent update
                         }
 
                     }
                     ArrayList<Projectile> temp = new ArrayList<Projectile>();
 
-                    for(Projectile p : projectiles) {
-                        if(p.isAlive()) {
+                    for (Projectile p : projectiles) {
+                        if (p.isAlive()) {
                             temp.add(p);
                         }
                     }
@@ -161,8 +161,7 @@ public class GameState implements Runnable, InputProcessor {
 
                     try {
                         Thread.sleep(25);
-                    }
-                    catch(Exception e) {
+                    } catch (Exception e) {
 
                     }
                 }
@@ -177,66 +176,88 @@ public class GameState implements Runnable, InputProcessor {
 
         playerSender.start();
         playerListener.start();
-        projectileSender.start();
-        projectileListener.start();
-
     }
 
 
-    @Override
-    public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.ESCAPE) {
-            Panzerfauster.getInstance().setMainMenuScreen();
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.ESCAPE) {
+                    Panzerfauster.getInstance().setMainMenuScreen();
+                }
+                return true;
+            }
+
+
+            @Override
+            public boolean keyUp(int keycode) {
+                return false;
+            }
+
+
+            @Override
+            public boolean keyTyped(char character) {
+                return false;
+            }
+
+
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                // This function fires when the user clicks on the screen.
+                // The player fires a projectule in the direction it is facing
+                this.player.fire();
+
+                return false;
+            }
+
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+                return false;
+            }
+
+
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+
+                return false;
+            }
+
+
+            @Override
+            public boolean mouseMoved(int screenX, int screenY) {
+                return false;
+            }
+
+
+
+            public boolean scrolled(int amount) {
+                return false;
+            }
+
+            public void send(String msg) {
+                try {
+                    byte[] buf = msg.getBytes();
+
+                    //InetAddress address = InetAddress.getByName(server);
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4444);
+                    socket.send(packet);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+            public  void setAddress(InetAddress address) {
+                this.address = address;
+            }
+
+            public String sendString(){
+                String retval = "";
+                retval+="?player ";
+                retval+=username + " ";
+                return retval;
+
+            }
         }
-        return true;
-    }
-
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // This function fires when the user clicks on the screen.
-        // The player fires a projectule in the direction it is facing
-        this.player.fire();
-
-        return false;
-    }
-
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
-        return false;
-    }
-
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-        return false;
-    }
-
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
-
-}

@@ -20,6 +20,9 @@ import com.badlogic.gdx.utils.Align;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -44,7 +47,11 @@ public class MenuScreen implements Screen {
     private DataInputStream  chatIn;
     private boolean isInitiated = false;
     private String username;
+
+    private DatagramSocket socket;
     private ArrayList<String> chatString = new ArrayList<String>();
+
+    private TextButton mechanicsButton;
 
 
     private MenuScreen() {
@@ -86,7 +93,9 @@ public class MenuScreen implements Screen {
             initEnterButton();
             initUsernameTextField();
             initIpTextField();
+            initMechanicsButton();
             connectTable.setWidth(256f);
+            connectTable.add(mechanicsButton).size(120, 30f).padBottom(30f).row();
             connectTable.add(ipTextField).padBottom(10f).size(256f, 30f).row();
             connectTable.add(usernameTextField).padBottom(10f).size(256f, 30f).row();
             connectTable.add(enterButton).size(120, 30f).padBottom(30f).row();
@@ -241,8 +250,46 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent ev, float x, float y) {
                 playButton.setDisabled(true);
 
+                //insert UDP here
+                try{
+                    send("?connect " + usernameTextField.getText() + " " + ipTextField.getText() );
+                    System.out.println();
+                    chatBoxTextArea.appendText("Game Loading... Waiting for connections\n");
 
-                Panzerfauster.getInstance().setGameScreen();
+                }catch(Exception e){}
+
+                byte[] buf = new byte[256];
+                DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                try{
+                    socket.receive(packet);
+                }catch(Exception ioe){/*lazy exception handling :)*/}
+
+                String serverData=new String(buf);
+                serverData=serverData.trim();
+
+                if(serverData.startsWith("?start")) {
+                    //begin game
+                    Panzerfauster.getInstance().setGameScreen();
+                    try{
+                        GameState newGame = new GameState();
+                                newGame.setAddress(InetAddress.getByName(ipTextField.getText()));
+                    }catch(Exception e){}
+
+                }
+
+            }
+        });
+
+    }
+
+    private void initMechanicsButton() {
+
+        mechanicsButton = new TextButton("Mechanics", textButtonStyle);
+
+        mechanicsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent ev, float x, float y) {
+                Panzerfauster.getInstance().setMechanicsScreen();
             }
         });
 
@@ -256,8 +303,9 @@ public class MenuScreen implements Screen {
         enterButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
-                final String ipAddress = ipTextField.getText();
+               final String ipAddress = ipTextField.getText();
                 username = usernameTextField.getText();
+
 
                 if(enterButton.isDisabled()) {
                     return;
@@ -349,6 +397,19 @@ public class MenuScreen implements Screen {
 
     private void adjustChatString(){
         chatString.remove(0);
+
+    }
+
+    public void send(String msg){
+        try{
+            byte[] buf = msg.getBytes();
+
+            //InetAddress address = InetAddress.getByName(server);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(ipTextField.getText()),4444);
+            socket.send(packet);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
     }
 }
