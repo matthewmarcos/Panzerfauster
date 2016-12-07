@@ -98,34 +98,7 @@ public class GameState implements Runnable, InputProcessor {
 
         Thread playerSender = new Thread() {
             public void run() {
-                // EntityPacket entity = new EntityPacket(tankData, projectileData, username);
-                //
-                // tankData = entity.getTankData();
-                // String msg = tankData.toString();
-                //
-                // try {
-                //
-                //     MulticastSocket socket = new MulticastSocket(4446);
-                //     InetAddress group = InetAddress.getByName("200.0.0.1");
-                //     socket.joinGroup(group);
-                //
-                //     byte[] buf = new byte[256];
-                //
-                //     for(int i = 0; i < 5; i++) {
-                //         DatagramPacket packet = new DatagramPacket(buf, buf.length, group, 4438);
-                //         socket.send(packet);
-                //         // get response
-                //         packet = new DatagramPacket(buf, buf.length);
-                //         socket.receive(packet);
-                //
-                //         // display response
-                //         String received = new String(packet.getData());
-                //         System.out.println(received);
-                //     }
-                //
-                // }
-                // catch(Exception e) {
-                // }
+            
 
             }
         };
