@@ -44,6 +44,7 @@ public class MenuScreen implements Screen {
     private boolean isInitiated = false;
     private String username;
     private TextButton mechanicsButton;
+    private boolean connected;
 
 
     private MenuScreen() {
@@ -235,9 +236,11 @@ public class MenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent ev, float x, float y) {
-                playButton.setDisabled(true);
-                GameScreen.getScreen().startGame();
-                Panzerfauster.getInstance().setGameScreen();
+                if(connected) {
+                    playButton.setDisabled(true);
+                    GameScreen.getScreen().startGame();
+                    Panzerfauster.getInstance().setGameScreen();
+                }
             }
         });
 
@@ -329,8 +332,9 @@ public class MenuScreen implements Screen {
                         }
 
                         // Success
-
                         chatBoxTextArea.appendText("\nConnected to " + ipAddress + "\n");
+                        GameState.setServerIP(ipAddress);
+                        connected = true;
 
                         //Main chat loop
                         while (true) {

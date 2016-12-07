@@ -17,10 +17,11 @@ import java.util.ArrayList;
 
 public class GameState implements Runnable, InputProcessor {
 
+    public static  int    port     = 4444;
     private static ArrayList<Tank>       tanks;
     private static ArrayList<Projectile> projectiles;
     private static GameState state = new GameState();
-
+    private static String serverIP = "";
     private Tank           player;
     private String         username;
     private boolean        GAME_RUNNING; // RUNNING or NOT
@@ -29,12 +30,25 @@ public class GameState implements Runnable, InputProcessor {
     private InetAddress    address;
     private TextArea       chatBoxTextArea;
     private boolean        fired;
+    private double lastUpdatedServer;
 
 
     private GameState() {
         this.tanks = new ArrayList<Tank>();
         this.projectiles = new ArrayList<Projectile>();
         this.GAME_RUNNING = false;
+        try {
+            socket = new DatagramSocket();
+            System.out.println("Created datagram socket");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void setServerIP(String serverIP) {
+        GameState.serverIP = serverIP;
     }
 
 
@@ -204,6 +218,7 @@ public class GameState implements Runnable, InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        updateServer();
         return false;
     }
 
@@ -215,19 +230,38 @@ public class GameState implements Runnable, InputProcessor {
 
 
     public void updateServer() {
+
+        double timeSinceLastUpdate = System.currentTimeMillis() - lastUpdatedServer;
+        if(timeSinceLastUpdate < 15) {
+            return;
+        }
+
+        lastUpdatedServer = System.currentTimeMillis();
+
         String msg;
-        int x, y, angle;
+        int x, y;
+        float angle;
         x = player.getXcoord();
         y = player.getYcoord();
+        angle = player.getAngle();
 
         msg = "Player " + username;
-        msg += " " + x + " " + y;
+        msg += " " + x + " " + y + " " + angle;
         if(player.isFired()) {
             msg += " fired";
             player.setFired(false);
         }
 
         System.out.println(msg);
+
+        try {
+            byte[] buf = msg.getBytes();
+            InetAddress address = InetAddress.getByName(GameState.serverIP);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, GameState.port);
+            socket.send(packet);
+        }
+        catch(Exception e) {
+        }
 
     }
 
