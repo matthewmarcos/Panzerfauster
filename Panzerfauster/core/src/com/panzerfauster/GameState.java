@@ -2,6 +2,7 @@ package com.panzerfauster;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.scenes.scene2d.actions.IntAction;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 
 import java.net.DatagramPacket;
@@ -131,13 +132,13 @@ public class GameState implements Runnable, InputProcessor {
         Thread playerListener = new Thread() {
 
             public void run() {
+                try{
+                    socket = new DatagramSocket();
+                }
+                catch(Exception e) {}
 
-            }
-        };
+                String serverData = "";
 
-        Thread playerSender = new Thread() {
-            public void run() {
-                String serverData;
                 while(true){
                     try{
                         Thread.sleep(1);
@@ -154,11 +155,37 @@ public class GameState implements Runnable, InputProcessor {
                     serverData=serverData.trim();
 
                     if (!serverData.equals("")){
-                        System.out.println("Server Data:" +serverData);
+                        parseServerData(serverData);
                     }
 
-
                 }
+
+            }
+        };
+
+        Thread playerSender = new Thread() {
+            public void run() {
+                String serverData;
+                // while(true){
+                //     try{
+                //         Thread.sleep(1);
+                //     }catch(Exception ioe){}
+                //
+                //     //Get the data from players
+                //     byte[] buf = new byte[256];
+                //     DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                //     try{
+                //         socket.receive(packet);
+                //     }catch(Exception ioe){/*lazy exception handling :)*/}
+                //
+                //     serverData=new String(buf);
+                //     serverData=serverData.trim();
+                //
+                //     if (!serverData.equals("")){
+                //         parseServerData(serverData);
+                //     }
+                //
+                // }
             }
         };
 
@@ -210,6 +237,48 @@ public class GameState implements Runnable, InputProcessor {
         projectileSender.start();
         projectileListener.start();
 
+    }
+
+
+    private void parseServerData(String serverData) {
+        // HashMap<String, Tank> tempTanks = new HashMap<String, Tank>();
+        System.out.println("Server data: " + serverData);
+
+        for(String info: serverData.split("$")) {
+            System.out.println("!info: " + info);
+
+            if(info.trim().equals("")) return;
+
+            String[] wew = info.trim().split("&");
+
+            String tankName = wew[0];
+            if(tankName.equals(this.username)) continue;
+
+            try{
+                int x = Integer.parseInt(wew[1]);
+                int y = Integer.parseInt(wew[2]);
+                float angle = Float.parseFloat(wew[3]);
+
+                System.out.print("Name: " + tankName);
+                System.out.print(" x: " + x);
+                System.out.print(" y: " + y);
+                System.out.println(" angle: " + angle);
+
+                //    If does not exist in hashmap, instantiate. Else update
+                if(!tanks.containsKey(tankName)) {
+                    tanks.put(tankName, new Tank("sprites/tank1.png", false, tankName, x, y, 5, 250f, angle));
+                }
+                else {
+                    Tank t = tanks.get(tankName);
+                    t.setPosition(x, y);
+                    t.setAngle(angle);
+                }
+            }
+            catch(Exception e) {
+
+            }
+
+        }
     }
 
 
@@ -296,7 +365,7 @@ public class GameState implements Runnable, InputProcessor {
             player.setFired(false);
         }
 
-        System.out.println(msg);
+        // System.out.println(msg);
 
         try {
             byte[] buf = msg.getBytes();

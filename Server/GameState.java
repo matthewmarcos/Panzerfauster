@@ -81,7 +81,7 @@ public class GameState {
 
         PanzerfausterPlayer p = playerData.get(username);
 
-        p.update(x, y, angle);
+        p.update(x, y, angle, packet);
         // System.out.println(p.toString());
 
         playerData.put(username, p);
@@ -93,11 +93,20 @@ public class GameState {
         String msg = "";
         ArrayList<PanzerfausterPlayer> players = new ArrayList<PanzerfausterPlayer>(playerData.values());
         for(PanzerfausterPlayer p : players) {
-            msg += p.toString() + " | ";
+            msg += p.toString().trim() + "$";
         }
 
-        // System.out.println(msg);
-
+        DatagramPacket packet;
+        byte buf[] = msg.getBytes();
+        for(PanzerfausterPlayer p : players) {
+            packet = new DatagramPacket(buf, buf.length, p.getAddress(),p.getPort());
+            try{
+                serverSocket.send(packet);
+            }catch(Exception e){
+                // ioe.printStackTrace();
+                break;
+            }
+        }
     }
 
     private GameState() {

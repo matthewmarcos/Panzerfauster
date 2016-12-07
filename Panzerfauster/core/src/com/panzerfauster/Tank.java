@@ -120,6 +120,11 @@ public class Tank extends Entity {
         this.sprite.setRotation(this.angle);
     }
 
+    public void setAngle(float angle) {
+        this.angle = angle;
+        this.sprite.setRotation(this.angle);
+    }
+
 
     public void moveLeft() {
         //        Move left by speed
