@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-
+import java.util.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -18,6 +18,7 @@ public class GameState {
     private static GameState state = new GameState();
     private static boolean isRunning = false;
     private static DatagramSocket serverSocket = null;
+    private static HashMap<String, PanzerfausterPlayer> playerData;
 
     public static GameState getState() {
         return state;
@@ -57,17 +58,25 @@ public class GameState {
 
                     //remove excess bytes
                     playerData = playerData.trim();
-                    if (!playerData.equals("")){
-                        System.out.println(playerData);
+                    if(!playerData.equals("")) {
+                        parsePlayerData(playerData);
                     }
+
                 }
             }
         }){}.start();
     }
 
-    public void broadcastUDP() {
+    public static void parsePlayerData(String playerData) {
+        System.out.println(playerData);
+    }
+
+    public static void broadcastUDP() {
 
     }
 
-    private GameState() {}
+    private GameState() {
+        playerData = new HashMap<String, PanzerfausterPlayer>();
+
+    }
 }

@@ -73,7 +73,6 @@ public class GameScreen implements Screen {
             controlsSprite.setPosition(300, -292);
 
             GameState.getState().setPlayer(player);
-            GameState.getState().addTank("me", player);
             GameState.getState().startGame();
             GameState.getState().setGAME_RUNNING(true);
         }
@@ -113,8 +112,6 @@ public class GameScreen implements Screen {
 
         // Update instructions position
         controlsSprite.setPosition(player.getXcoord() + 300, player.getYcoord()-292);
-        // float controlsX = (GameScreen.getMapWidth() / 2) - controlsSprite.getWidth();
-        // float controlsY = -((GameScreen.getMapHeight() / 2) - controlsSprite.getHeight());
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -130,7 +127,7 @@ public class GameScreen implements Screen {
         for(Tank s : GameState.getTanks()) {
             s.getSprite().draw(batch);
         }
-
+        player.getSprite().draw(batch);
         controlsSprite.draw(batch);
         batch.end();
     }

@@ -128,14 +128,14 @@ public class GameState implements Runnable, InputProcessor {
     public void run() {
         //Create threads that talk to the server.
 
-        final Thread playerSender = new Thread() {
+        Thread playerListener = new Thread() {
 
             public void run() {
 
             }
         };
 
-        Thread playerListener = new Thread() {
+        Thread playerSender = new Thread() {
             public void run() {
                 String serverData;
                 while(true){
