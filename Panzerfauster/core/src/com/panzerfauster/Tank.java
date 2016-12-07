@@ -150,9 +150,5 @@ public class Tank extends Entity {
     }
 
 
-    public TankData getTankData() {
-        return new TankData(this.id, this.hp, this.maxHp, this.bulletDamage, this.xcoord, this.ycoord, this.kills,
-            this.lastFired, this.speed, this.angle, this.cooldown);
-    }
 
 }

@@ -2,7 +2,6 @@ package com.panzerfauster;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.scenes.scene2d.actions.IntAction;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 
 import java.net.DatagramPacket;
@@ -20,39 +19,29 @@ import java.util.Iterator;
 
 public class GameState implements Runnable, InputProcessor {
 
-    public static  int    port     = 4444;
-    private static HashMap<String, Tank> tanks;
+    public static int port = 4444;
+    private static HashMap<String, Tank>       tanks;
     private static HashMap<String, Projectile> projectiles;
-    private static int idCounter = 0;
-    private static GameState state = new GameState();
-    private static String serverIP = "";
-    private Tank           player;
-    private boolean        GAME_RUNNING = false; // RUNNING or NOT
+    private static HashMap<String, TankData>   tankData;
+    private static int       idCounter = 0;
+    private static GameState state     = new GameState();
+    private static String    serverIP  = "";
+    private Tank player;
+    private boolean GAME_RUNNING = false; // RUNNING or NOT
     private DatagramSocket socket;
     private DatagramPacket packet;
     private InetAddress    address;
     private TextArea       chatBoxTextArea;
     private boolean        fired;
-    private double lastUpdatedServer;
+    private double         lastUpdatedServer;
     private String username = "";
-
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-
-    public void setGameStarted(boolean gameStarted) {
-        this.gameStarted = gameStarted;
-    }
-
-
     private boolean gameStarted;
 
 
     private GameState() {
         this.tanks = new HashMap<String, Tank>();
         this.projectiles = new HashMap<String, Projectile>();
+        this.tankData = new HashMap<String, TankData>();
         try {
             socket = new DatagramSocket();
             System.out.println("Created datagram socket");
@@ -60,6 +49,11 @@ public class GameState implements Runnable, InputProcessor {
         catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static HashMap<String, TankData> getTankData() {
+        return tankData;
     }
 
 
@@ -72,9 +66,13 @@ public class GameState implements Runnable, InputProcessor {
         return state;
     }
 
+    public static HashMap<String, Tank> getTanksMap() {
+        return tanks;
+    }
 
     public static ArrayList<Tank> getTanks() {
-        ArrayList<Tank> tanksList = new ArrayList<Tank>(tanks.values());;
+        ArrayList<Tank> tanksList = new ArrayList<Tank>(tanks.values());
+        ;
         return tanksList;
     }
 
@@ -85,13 +83,18 @@ public class GameState implements Runnable, InputProcessor {
     }
 
 
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
+
+
     public void addTank(String playerName, Tank t) {
-        tanks.put(playerName + " tank "+ (idCounter++) + "", t);
+        tanks.put(playerName + " tank " + (idCounter++) + "", t);
     }
 
 
     public void addProjectile(Projectile p) {
-        projectiles.put(this.username + "projectile " +(idCounter++) + "", p);
+        projectiles.put(this.username + "projectile " + (idCounter++) + "", p);
     }
 
 
@@ -107,6 +110,11 @@ public class GameState implements Runnable, InputProcessor {
 
     public String getUsername() {
         return username;
+    }
+
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 
@@ -132,29 +140,33 @@ public class GameState implements Runnable, InputProcessor {
         Thread playerListener = new Thread() {
 
             public void run() {
-                try{
+                try {
                     socket = new DatagramSocket();
                 }
-                catch(Exception e) {}
+                catch(Exception e) {
+                }
 
                 String serverData = "";
 
-                while(true){
-                    try{
+                while (true) {
+                    try {
                         Thread.sleep(1);
-                    }catch(Exception ioe){}
+                    }
+                    catch(Exception ioe) {
+                    }
 
                     //Get the data from players
                     byte[] buf = new byte[256];
                     DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                    try{
+                    try {
                         socket.receive(packet);
-                    }catch(Exception ioe){/*lazy exception handling :)*/}
+                    }
+                    catch(Exception ioe) {/*lazy exception handling :)*/}
 
-                    serverData=new String(buf);
-                    serverData=serverData.trim();
+                    serverData = new String(buf);
+                    serverData = serverData.trim();
 
-                    if (!serverData.equals("")){
+                    if(!serverData.equals("")) {
                         parseServerData(serverData);
                     }
 
@@ -165,27 +177,7 @@ public class GameState implements Runnable, InputProcessor {
 
         Thread playerSender = new Thread() {
             public void run() {
-                String serverData;
-                // while(true){
-                //     try{
-                //         Thread.sleep(1);
-                //     }catch(Exception ioe){}
-                //
-                //     //Get the data from players
-                //     byte[] buf = new byte[256];
-                //     DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                //     try{
-                //         socket.receive(packet);
-                //     }catch(Exception ioe){/*lazy exception handling :)*/}
-                //
-                //     serverData=new String(buf);
-                //     serverData=serverData.trim();
-                //
-                //     if (!serverData.equals("")){
-                //         parseServerData(serverData);
-                //     }
-                //
-                // }
+
             }
         };
 
@@ -193,8 +185,8 @@ public class GameState implements Runnable, InputProcessor {
             public void run() {
                 while (true) {
 
-                    for(Iterator ite = projectiles.keySet().iterator(); ite.hasNext();){
-                        String name=(String)ite.next();
+                    for(Iterator ite = projectiles.keySet().iterator(); ite.hasNext(); ) {
+                        String name = (String)ite.next();
                         Projectile p = (Projectile)projectiles.get(name);
                         try {
                             p.update();
@@ -206,8 +198,8 @@ public class GameState implements Runnable, InputProcessor {
 
                     HashMap<String, Projectile> temp = new HashMap<String, Projectile>();
 
-                    for(Iterator ite = projectiles.keySet().iterator(); ite.hasNext();){
-                        String name=(String)ite.next();
+                    for(Iterator ite = projectiles.keySet().iterator(); ite.hasNext(); ) {
+                        String name = (String)ite.next();
                         Projectile p = (Projectile)projectiles.get(name);
                         if(p.isAlive()) {
                             temp.put(name, p);
@@ -241,20 +233,25 @@ public class GameState implements Runnable, InputProcessor {
 
 
     private void parseServerData(String serverData) {
-        // HashMap<String, Tank> tempTanks = new HashMap<String, Tank>();
-        System.out.println("Server data: " + serverData);
+        HashMap<String, TankData> tempTanks = new HashMap<String, TankData>();
+        // System.out.println("Server data: " + serverData);
 
-        for(String info: serverData.split("$")) {
-            System.out.println("!info: " + info);
+        // Pattern a = Pattern.compile("\$")
+        for(String info : serverData.split("\\$")) {
+            // System.out.println("!info: " + info);
 
-            if(info.trim().equals("")) return;
+            if(info.trim().equals("")) {
+                ;
+            }
 
             String[] wew = info.trim().split("&");
 
             String tankName = wew[0];
-            if(tankName.equals(this.username)) continue;
+            if(tankName.equals(this.username)) {
+                continue;
+            }
 
-            try{
+            try {
                 int x = Integer.parseInt(wew[1]);
                 int y = Integer.parseInt(wew[2]);
                 float angle = Float.parseFloat(wew[3]);
@@ -265,20 +262,16 @@ public class GameState implements Runnable, InputProcessor {
                 System.out.println(" angle: " + angle);
 
                 //    If does not exist in hashmap, instantiate. Else update
-                if(!tanks.containsKey(tankName)) {
-                    tanks.put(tankName, new Tank("sprites/tank1.png", false, tankName, x, y, 5, 250f, angle));
-                }
-                else {
-                    Tank t = tanks.get(tankName);
-                    t.setPosition(x, y);
-                    t.setAngle(angle);
-                }
+                tempTanks.put(tankName, new TankData(tankName, x, y, angle));
+
             }
             catch(Exception e) {
 
             }
 
         }
+
+        tankData = tempTanks;
     }
 
 
@@ -342,7 +335,9 @@ public class GameState implements Runnable, InputProcessor {
 
     public void updateServer() {
 
-        if(!gameStarted) return;
+        if(!gameStarted) {
+            return;
+        }
 
         double timeSinceLastUpdate = System.currentTimeMillis() - lastUpdatedServer;
         if(timeSinceLastUpdate < 15) {

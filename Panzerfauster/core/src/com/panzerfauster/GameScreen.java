@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.net.DatagramPacket;
+import java.util.Iterator;
 
 public class GameScreen implements Screen {
 
@@ -117,6 +118,24 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camera.combined);
+
+        for(Iterator ite = GameState.getTankData().keySet().iterator(); ite.hasNext(); ) {
+            String name = (String)ite.next();
+            TankData td = (TankData) GameState.getTankData().get(name);
+            String userName = td.getUsername();
+            int x = td.getX();
+            int y = td.getY();
+            float angle = td.getAngle();
+
+            if(!GameState.getTanksMap().containsKey(userName)) {
+                GameState.getTanksMap().put(userName, new Tank("sprites/tank1.png", false, userName, x, y, 5, 250f, angle));
+            }
+            else {
+                GameState.getTanksMap().get(userName).setPosition(x, y);
+                GameState.getTanksMap().get(userName).setAngle(angle);
+
+            }
+        }
 
         //  Start rendering
         batch.begin();
