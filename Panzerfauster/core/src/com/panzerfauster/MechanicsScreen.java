@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,6 +25,7 @@ public class MechanicsScreen implements Screen {
     private Texture    controlsTexture;
     private Sprite     controlsSprite;
     private static MechanicsScreen screen = new MechanicsScreen();
+    private SpriteBatch batch;
 
 
     private MechanicsScreen() {
@@ -40,7 +42,8 @@ public class MechanicsScreen implements Screen {
     public void show() {
         stage = new Stage();
         font = new BitmapFont();
-        controlsTexture = new Texture(Gdx.files.internal("controls.png"));
+        batch = new SpriteBatch();
+        controlsTexture = new Texture(Gdx.files.internal("mechanics.png"));
         controlsSprite = new Sprite(controlsTexture);
 
         messageTable = new Table();
@@ -62,9 +65,13 @@ public class MechanicsScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0f, 0, 0f, 1f);
+        Gdx.gl.glClearColor(1f, 1, 1f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
+
+        batch.begin();
+        controlsSprite.draw(batch);
+
+        batch.end();
     }
 
 
