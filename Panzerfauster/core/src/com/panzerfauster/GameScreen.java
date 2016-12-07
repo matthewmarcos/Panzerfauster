@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
             controlsSprite.setPosition(300, -292);
 
             GameState.getState().setPlayer(player);
-            GameState.addTank(player);
+            GameState.addTank("me", player);
             GameState.getState().startGame();
             GameState.getState().setGAME_RUNNING(true);
         }

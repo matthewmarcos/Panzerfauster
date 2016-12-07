@@ -353,6 +353,7 @@ public class MenuScreen implements Screen {
                         // Success
                         chatBoxTextArea.appendText("\nConnected to " + ipAddress + "\n");
                         GameState.setServerIP(ipAddress);
+                        GameState.getState().setUsername(username);
                         connected = true;
 
                         //Main chat loop

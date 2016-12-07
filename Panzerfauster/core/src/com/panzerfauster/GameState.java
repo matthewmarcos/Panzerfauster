@@ -8,6 +8,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by matt on 11/11/16.
@@ -18,12 +20,12 @@ import java.util.ArrayList;
 public class GameState implements Runnable, InputProcessor {
 
     public static  int    port     = 4444;
-    private static ArrayList<Tank>       tanks;
-    private static ArrayList<Projectile> projectiles;
+    private static HashMap<String, Tank> tanks;
+    private static HashMap<String, Projectile> projectiles;
+    private static int idCounter = 0;
     private static GameState state = new GameState();
     private static String serverIP = "";
     private Tank           player;
-    private String         username;
     private boolean        GAME_RUNNING = false; // RUNNING or NOT
     private DatagramSocket socket;
     private DatagramPacket packet;
@@ -31,6 +33,12 @@ public class GameState implements Runnable, InputProcessor {
     private TextArea       chatBoxTextArea;
     private boolean        fired;
     private double lastUpdatedServer;
+    private static String username = "";
+
+
+    public static void setUsername(String username) {
+        username = username;
+    }
 
 
     public void setGameStarted(boolean gameStarted) {
@@ -42,8 +50,8 @@ public class GameState implements Runnable, InputProcessor {
 
 
     private GameState() {
-        this.tanks = new ArrayList<Tank>();
-        this.projectiles = new ArrayList<Projectile>();
+        this.tanks = new HashMap<String, Tank>();
+        this.projectiles = new HashMap<String, Projectile>();
         try {
             socket = new DatagramSocket();
             System.out.println("Created datagram socket");
@@ -65,22 +73,24 @@ public class GameState implements Runnable, InputProcessor {
 
 
     public static ArrayList<Tank> getTanks() {
-        return tanks;
+        ArrayList<Tank> tanksList = new ArrayList<Tank>(tanks.values());;
+        return tanksList;
     }
 
 
     public static ArrayList<Projectile> getProjectiles() {
-        return projectiles;
+        ArrayList<Projectile> projectileList = new ArrayList<Projectile>(projectiles.values());
+        return projectileList;
     }
 
 
-    public static void addTank(Tank t) {
-        tanks.add(t);
+    public static void addTank(String playerName, Tank t) {
+        tanks.put(playerName + " tank "+ (idCounter++) + "", t);
     }
 
 
     public static void addProjectile(Projectile p) {
-        projectiles.add(p);
+        projectiles.put(username + "projectile " +(idCounter++) + "", p);
     }
 
 
@@ -135,20 +145,43 @@ public class GameState implements Runnable, InputProcessor {
             public void run() {
                 while (true) {
                     //Listen for server for updates. Update the necessary arraylists
-                    for(Projectile p : projectiles) {
+                    // for(Projectile p : projectiles) {
+                    //     try {
+                    //         p.update();
+                    //     }
+                    //     catch(Exception e) {
+                    //         //    Concurrent update
+                    //     }
+                    //
+                    // }
+                    // ArrayList<Projectile> temp = new ArrayList<Projectile>();
+                    //
+                    // for(Projectile p : projectiles) {
+                    //     if(p.isAlive()) {
+                    //         temp.add(p);
+                    //     }
+                    // }
+                    //
+                    // projectiles = temp;
+
+                    for(Iterator ite = projectiles.keySet().iterator(); ite.hasNext();){
+                        String name=(String)ite.next();
+                        Projectile p = (Projectile)projectiles.get(name);
                         try {
                             p.update();
                         }
                         catch(Exception e) {
                             //    Concurrent update
                         }
-
                     }
-                    ArrayList<Projectile> temp = new ArrayList<Projectile>();
 
-                    for(Projectile p : projectiles) {
+                    HashMap<String, Projectile> temp = new HashMap<String, Projectile>();
+
+                    for(Iterator ite = projectiles.keySet().iterator(); ite.hasNext();){
+                        String name=(String)ite.next();
+                        Projectile p = (Projectile)projectiles.get(name);
                         if(p.isAlive()) {
-                            temp.add(p);
+                            temp.put(name, p);
                         }
                     }
 
