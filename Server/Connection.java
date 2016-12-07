@@ -4,7 +4,8 @@ import java.util.*;
 
 public class Connection implements Runnable {
 
-    private static ArrayList<Connection> connections = new ArrayList<Connection>();
+    // private static ArrayList<Connection> connections = new ArrayList<Connection>();
+    private static HashMap<String, Connection> connections = new HashMap<String, Connection>();
 
     private Socket conn;
     private DataOutputStream out;
@@ -44,14 +45,21 @@ public class Connection implements Runnable {
         System.out.println(username + " has connected");
 
         // Check if username exists in the server
-        for(Connection c : connections) {
-            if(this.username.equals(c.getUsername())) {
-                try{
-                    out.writeUTF("?fail");
-                } catch(Exception e) {}
-                return;
-            }
+        if(connections.containsKey(username)) {
+            try{
+                out.writeUTF("?fail");
+            } catch(Exception e) {}
+
+            return;
         }
+        // for(Connection c : connections) {
+        //     if(this.username.equals(c.getUsername())) {
+        //         try{
+        //             out.writeUTF("?fail");
+        //         } catch(Exception e) {}
+        //         return;
+        //     }
+        // }
 
         // Username does not exist in server
         try{
@@ -61,7 +69,7 @@ public class Connection implements Runnable {
 
         // At this point,
         this.broadcast(this.username + " has connected.\n");
-        connections.add(this); //Eligible to receive broadcasts
+        connections.put(username, this); //Eligible to receive broadcasts
         Connection.printConnectedUsers();
 
         // Main listening for inputs
@@ -79,7 +87,7 @@ public class Connection implements Runnable {
             catch(Exception e) {
                 // Error in connection
                 System.out.println(this.username + " has disconnected");
-                Connection.removeConnection(this);
+                Connection.removeConnection(this.username);
                 this.broadcast(this.username + " has disconnected.\n");
                 Connection.printConnectedUsers();
                 break;
@@ -102,10 +110,11 @@ public class Connection implements Runnable {
     public void broadcast(String message) {
         // Send messages to out
         try {
-            for(Connection c : connections) {
+            for(Iterator ite=connections.keySet().iterator();ite.hasNext();){
+                String name=(String)ite.next();
+                Connection c = (Connection)connections.get(name);
                 c.write(message);
             }
-
         }
         catch (Exception e) {
             System.out.println("Error in broadcasting");
@@ -113,7 +122,7 @@ public class Connection implements Runnable {
         }
     }
 
-    public static ArrayList<Connection> getConnections(){
+    public static HashMap<String, Connection> getConnections(){
         return connections;
     }
 
@@ -128,8 +137,8 @@ public class Connection implements Runnable {
         return this.username;
     }
 
-    public static void removeConnection(Connection c){
-        connections.remove(c);
+    public static void removeConnection(String s){
+        connections.remove(s);
     }
 
     public static void printConnectedUsers() {
@@ -137,8 +146,15 @@ public class Connection implements Runnable {
 
         System.out.println("Connected users: " + connections.size());
 
-        for(Connection c : connections) {
-            System.out.println((i++) +") " + c.getUsername());
+        // for(Connection c : connections) {
+        //     System.out.println((i++) +") " + c.getUsername());
+        // }
+
+        for(Iterator ite=connections.keySet().iterator();ite.hasNext();){
+            String name=(String)ite.next();
+            System.out.println((i++) +") " + name);
+            // NetPlayer player=(NetPlayer)connections.get(name);
+            // send(player,msg);
         }
     }
 }

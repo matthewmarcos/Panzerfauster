@@ -12,7 +12,7 @@ public class PazerfausterServer implements Runnable {
     private DataInputStream in;
     private int port;
     private ArrayList<Thread> clients;
-    private ArrayList<Connection> connections;
+    private HashMap<String, Connection> connections;
 
     private final int PORT = 4444;
     private DatagramSocket socket;
@@ -68,10 +68,13 @@ public class PazerfausterServer implements Runnable {
 
     public void broadcastText(String f) {
         try{
-            for(Connection c : this.connections) {
+            for(Iterator ite=connections.keySet().iterator();ite.hasNext();){
+                String name=(String)ite.next();
+                Connection c = (Connection)connections.get(name);
                 c.write(f);
             }
-         }catch(Exception e){
+         }
+         catch(Exception e){
             e.printStackTrace();
          }
     }
